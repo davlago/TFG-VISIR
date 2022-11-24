@@ -1,0 +1,23 @@
+{
+  "name": "tfg-visir",
+  "version": "1.0.0",
+  "description": "TFG version 1.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davlago/TFG-VISIR.git"
+  },
+  "author": "David Lago, Ignacio Urretavizcaya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davlago/TFG-VISIR/issues"
+  },
+  "homepage": "https://github.com/davlago/TFG-VISIR#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
