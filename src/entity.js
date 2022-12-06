@@ -5,14 +5,14 @@
 
 export default class Entity {
     constructor() {
+        
+    }
+
+    update() {
 
     }
 
-    update(){
-
-    }
-    
-    renderer(){
+    renderer() {
 
     }
 
