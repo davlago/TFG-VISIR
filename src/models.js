@@ -4,7 +4,6 @@
 
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 
-let stickman;
 let young;
 let adult;
 let elderly;
@@ -28,7 +27,7 @@ export default class Models {
     }
 
     getModelsArray() {
-        return [stickman, young, adult, elderly]
+        return [young, adult, elderly]
     }
 }
 
@@ -39,7 +38,8 @@ async function loadYoung() {
             '/models/young.fbx',
             (object) => {
                 young = object;
-                young.scale.set(0.06, 0.06, 0.06);
+                //young.scale.set(0.06, 0.06, 0.06);
+                young.scale.set(0.2, 0.2, 0.2);
                 console.log("Cargado young")
                 resolve();
             });
