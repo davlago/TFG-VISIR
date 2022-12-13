@@ -12,6 +12,10 @@ export default class User extends Entity{
         this.setPosition(0,0,0);
     }
 
+    update(){
+        this.user.position.x +=0.1;
+    }
+
     setPosition(x,y,z){
         this.user.position.set(x,y,z);
     }

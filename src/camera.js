@@ -17,7 +17,7 @@ export default class Camera extends Entity {
         this.camera.position.set(x,y,z);
     }
 
-    getCamera() {
+    get3DObject() {
         return this.camera;
     }
 

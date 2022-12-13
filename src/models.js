@@ -38,8 +38,7 @@ async function loadYoung() {
             '/models/young.fbx',
             (object) => {
                 young = object;
-                //young.scale.set(0.06, 0.06, 0.06);
-                young.scale.set(0.2, 0.2, 0.2);
+                young.scale.set(0.06, 0.06, 0.06);
                 console.log("Cargado young")
                 resolve();
             });

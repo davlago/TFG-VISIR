@@ -7,37 +7,34 @@ import Camera from './camera';
 import Room from './room';
 import Light from './light';
 import User from './user';
+import Controller from './controller';
 
 
 const sizes = {
     width: window.innerWidth*0.985,
     height: window.innerHeight*0.975
 }
-
-let container = document.getElementById('threejs');
-
-let renderer;
-
-let scene;
-
-let entities = {};
-
 const roomSize ={
     x:200,
     y:50,
     z:200
 }
 
+let renderer;
+let scene;
+let entities = {};
+
 export function initSimulator(models, textures) {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(sizes.width, sizes.height);
-    container.appendChild(renderer.domElement);
+    document.getElementById('threejs').appendChild(renderer.domElement);
 
     scene = new THREE.Scene();
     entities["camera"] = new Camera(sizes);
     entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
     entities["ligth"] = new Light(scene,0xffffff, 1, 250 );
-    entities["user"] = new User(models.getModelsArray()[0]);
+    entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
+    entities["controller"] = new Controller(entities["camera"].get3DObject(), renderer.domElement);
     
     addToSceneInit();
     window.requestAnimationFrame(gameLoop);
@@ -50,7 +47,7 @@ function addToSceneInit(){
 }
 
 function gameLoop() {
-    renderer.render(scene, entities["camera"].getCamera());
+    renderer.render(scene, entities["camera"].get3DObject());
     for (let [entityName, entity] of Object.entries(entities)) {
         entity.update();
         entity.renderer();
