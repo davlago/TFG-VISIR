@@ -12,7 +12,7 @@ export default class User extends Entity{
         this.setPosition(0,0,0);
     }
 
-    renderer(){
+    update(){
         this.user.position.x +=0.1;
     }
 

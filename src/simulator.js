@@ -23,7 +23,11 @@ const roomSize ={
 let renderer;
 let scene;
 let entities = {};
-
+/**
+ * 
+ * @param {*} models 
+ * @param {*} textures 
+ */
 export function initSimulator(models, textures) {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(sizes.width, sizes.height);
@@ -34,7 +38,7 @@ export function initSimulator(models, textures) {
     entities["controller"] = new Controller(entities["camera"].get3DObject(), renderer.domElement);
     
     entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
-    entities["light"] = new Light(scene,0xffffff, 1, 250 );
+    entities["light"] = new Light(0xffffff, 1, 250 );
     entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
     
     addToSceneInit();
@@ -43,16 +47,19 @@ export function initSimulator(models, textures) {
 
 function addToSceneInit(){
     scene.add(entities["room"].get3DObject());
-    scene.add(entities["user"].get3DObject());
+    //scene.add(entities["user"].get3DObject());
     scene.add(entities["light"].get3DObject());
+    entities["camera"].addToScene(scene);
+    entities["user"].addToScene(scene);
     console.log(scene);
 }
 
 function gameLoop() {
-    renderer.render(scene, entities["camera"].get3DObject());
+    // Calcular dt
     for (let [entityName, entity] of Object.entries(entities)) {
-        entity.update();
-        entity.renderer();
+        entity.update(); // Pasar el dt
+        //entity.renderer();
     }
+    renderer.render(scene, entities["camera"].get3DObject());
     window.requestAnimationFrame(gameLoop);
 }
