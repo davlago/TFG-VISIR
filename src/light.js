@@ -8,7 +8,7 @@ import * as THREE from "three";
 
 export default class Light extends Entity{
 
-    constructor( scene, color, intensity, distance ){
+    constructor( color, intensity, distance ){
         super();
         this.light = new THREE.Group();
         for(let i = 0; i< 4; i++){
@@ -16,7 +16,6 @@ export default class Light extends Entity{
         }
         console.log(this.light);
         this.setPosition(0, 50*0.9, 0);
-        this.addToScene(scene);
     }
 
     setPosition(x,y,z){
@@ -35,10 +34,6 @@ export default class Light extends Entity{
             light.distance = distance;
             light.castShadow = false; // default false
         })
-    }
-
-    addToScene(scene){
-        scene.add(this.light);
     }
 
     get3DObject(){

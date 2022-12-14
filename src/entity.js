@@ -16,4 +16,10 @@ export default class Entity {
 
     }
 
+    /*
+    addToScene(scene){
+        scene.add(this.get3DObject());
+    }
+    */
+
 }

@@ -31,10 +31,11 @@ export function initSimulator(models, textures) {
 
     scene = new THREE.Scene();
     entities["camera"] = new Camera(sizes);
-    entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
-    entities["ligth"] = new Light(scene,0xffffff, 1, 250 );
-    entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
     entities["controller"] = new Controller(entities["camera"].get3DObject(), renderer.domElement);
+    
+    entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
+    entities["light"] = new Light(scene,0xffffff, 1, 250 );
+    entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
     
     addToSceneInit();
     window.requestAnimationFrame(gameLoop);
@@ -43,6 +44,7 @@ export function initSimulator(models, textures) {
 function addToSceneInit(){
     scene.add(entities["room"].get3DObject());
     scene.add(entities["user"].get3DObject());
+    scene.add(entities["light"].get3DObject());
     console.log(scene);
 }
 
