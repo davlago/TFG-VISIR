@@ -10,7 +10,6 @@ let elderly;
 export default class Models {
 
     constructor() {
-        console.log(window.location.pathname);
     }
 
     loadModels() {

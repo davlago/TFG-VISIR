@@ -14,7 +14,6 @@ export default class Light extends Entity{
         for(let i = 0; i< 4; i++){
             this.light.add(new THREE.PointLight( color, intensity, distance ));
         }
-        console.log(this.light);
         this.setPosition(0, 50*0.9, 0);
     }
 

@@ -1,14 +1,12 @@
 /**
- * Nombre: Simulator
- * Descripción: Clase que controla todo, con un gameloop
+ * Clase Simulator, tiene toda la información
  */
 import * as THREE from 'three';
 import Camera from './camera';
 import Room from './room';
 import Light from './light';
 import User from './user';
-import Controller from './controller';
-
+import CameraManager from './cameraManager';
 
 const sizes = {
     width: window.innerWidth*0.985,
@@ -20,46 +18,59 @@ const roomSize ={
     z:200
 }
 
-let renderer;
-let scene;
-let entities = {};
-/**
- * 
- * @param {*} models 
- * @param {*} textures 
- */
-export function initSimulator(models, textures) {
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(sizes.width, sizes.height);
-    document.getElementById('threejs').appendChild(renderer.domElement);
+export default class Simulator{
 
-    scene = new THREE.Scene();
-    entities["camera"] = new Camera(sizes);
-    entities["controller"] = new Controller(entities["camera"].get3DObject(), renderer.domElement);
-    
-    entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
-    entities["light"] = new Light(0xffffff, 1, 250 );
-    entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
-    
-    addToSceneInit();
-    window.requestAnimationFrame(gameLoop);
-}
-
-function addToSceneInit(){
-    scene.add(entities["room"].get3DObject());
-    //scene.add(entities["user"].get3DObject());
-    scene.add(entities["light"].get3DObject());
-    entities["camera"].addToScene(scene);
-    entities["user"].addToScene(scene);
-    console.log(scene);
-}
-
-function gameLoop() {
-    // Calcular dt
-    for (let [entityName, entity] of Object.entries(entities)) {
-        entity.update(); // Pasar el dt
-        //entity.renderer();
+    constructor() {
+        this.renderer;
+        this.CameraManager;
+        this.scene;
+        this.entities = {};
+        this.models;
+        this.textures;
+        this.lastUpdate;
     }
-    renderer.render(scene, entities["camera"].get3DObject());
-    window.requestAnimationFrame(gameLoop);
+
+    initSimulator(models, textures){
+        this.models = models;
+        this.textures = textures;
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setSize(sizes.width, sizes.height);
+        document.getElementById('threejs').appendChild(this.renderer.domElement);
+
+        this.scene = new THREE.Scene();
+        this.entities["camera"] = new Camera(sizes);
+
+        this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
+
+        this.entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
+        this.entities["light"] = new Light(0xffffff, 1, 250 );
+        this.entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
+    
+        this.addToSceneInit();
+        this.lastUpdate = Date.now();
+
+        const that = this; //Para llamar al requestAnimationFrame
+        window.requestAnimationFrame(function() {that.gameLoop()});
+    }
+
+    addToSceneInit(){
+        for (let [entityName, entity] of Object.entries(this.entities)) {
+            entity.addToScene(this.scene);
+        }
+    }
+    
+    gameLoop() {
+        let now = Date.now();
+        let dt = now - this.lastUpdate;
+        this.lastUpdate = now;
+        for (let [entityName, entity] of Object.entries(this.entities)) {
+            entity.update(dt);
+        }
+        this.cameraManager.update();
+        this.renderer.render(this.scene, this.entities["camera"].get3DObject());
+
+        const that = this; //Para llamar al requestAnimationFrame
+        window.requestAnimationFrame(function() {that.gameLoop()});
+    }
+
 }

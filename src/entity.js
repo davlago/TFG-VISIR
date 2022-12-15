@@ -15,20 +15,13 @@ export default class Entity {
         this.onEnable();
     }
 
-    update() {
+    onEnable() {}
 
-    }
+    update(deltaTime) {}
 
-    get3DObject() {
+    get3DObject() {}
 
-    }
-
-    
     addToScene(scene){
         scene.add(this.get3DObject());
     }
-
-    onEnable() {}
-    
-
 }
