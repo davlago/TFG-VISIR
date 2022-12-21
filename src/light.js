@@ -11,6 +11,7 @@ export default class Light extends Entity{
     constructor( color, intensity, distance ){
         super();
         this.light = new THREE.Group();
+        this.light.name = "Lights";
         for(let i = 0; i< 4; i++){
             this.light.add(new THREE.PointLight( color, intensity, distance ));
         }

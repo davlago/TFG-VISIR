@@ -7,12 +7,12 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 let young;
 let adult;
 let elderly;
-export default class Models {
+export default class ModelManager {
 
     constructor() {
     }
 
-    loadModels() {
+    loadModels(modelsInfoArray) {
         return new Promise((resolve, reject) => {
             loadYoung().then(function () {
                 loadAdult().then(function () {

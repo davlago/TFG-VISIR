@@ -1,12 +1,17 @@
-import Models from './models.js';
-import Textures from './textures.js';
+import ModelsManager from './modelManager';
+import TextureManager from './textureManager';
 import Simulator from './Simulator.js';
+import * as data from './data.json'; //READ JSON
 
-let models = new Models();
-let textures = new Textures();
-let simulator = new Simulator();
+const modelsKey = "models";
+const dataKey = "infoData";
+const texturesKey = "textures";
 
-models.loadModels().then(function () {
-    textures.loadTextures();
-    simulator.initSimulator(models, textures);
+let modelManager = new ModelsManager();
+let textureManager = new TextureManager();
+let simulator = new Simulator(data[dataKey]);
+
+modelManager.loadModels(data[modelsKey]).then(function () {
+    textureManager.loadTextures();
+    simulator.initSimulator(modelManager, textureManager);
 }); 

@@ -6,9 +6,9 @@ import Entity from "./entity";
 import * as THREE from 'three';
 
 export default class Camera extends Entity {
-    constructor(sizes) {
+    constructor(sizeWidth, sizeHeight) {
         super();
-        this.camera = new THREE.PerspectiveCamera(100, sizes.width / sizes.height, 1, 1000)
+        this.camera = new THREE.PerspectiveCamera(100, sizeWidth / sizeHeight, 1, 1000)
         this.setPosition(0,100,150);
         this.camera.rotateX(-0.5)
     }

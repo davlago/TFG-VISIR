@@ -8,19 +8,13 @@ import Light from './light';
 import User from './user';
 import CameraManager from './cameraManager';
 
-const sizes = {
-    width: window.innerWidth*0.985,
-    height: window.innerHeight*0.975
-}
-const roomSize ={
-    x:200,
-    y:50,
-    z:200
-}
+
+const roomSizeKey = "roomSize";
 
 export default class Simulator{
 
-    constructor() {
+    constructor(data) {
+        this.data = data;
         this.renderer;
         this.CameraManager;
         this.scene;
@@ -31,23 +25,25 @@ export default class Simulator{
     }
 
     initSimulator(models, textures){
+        console.log("Iniciando Simulador");
         this.models = models;
         this.textures = textures;
         this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setSize(sizes.width, sizes.height);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('threejs').appendChild(this.renderer.domElement);
 
         this.scene = new THREE.Scene();
-        this.entities["camera"] = new Camera(sizes);
+        this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
 
         this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
 
-        this.entities["room"] = new Room(roomSize, textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
+        this.entities["room"] = new Room(this.data[roomSizeKey], textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
         this.entities["light"] = new Light(0xffffff, 1, 250 );
         this.entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
     
         this.addToSceneInit();
         this.lastUpdate = Date.now();
+        console.log(this.scene)
 
         const that = this; //Para llamar al requestAnimationFrame
         window.requestAnimationFrame(function() {that.gameLoop()});

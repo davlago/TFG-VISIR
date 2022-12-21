@@ -4,7 +4,7 @@
 
  import { TextureLoader } from "three";
 
-export default class Textures {
+export default class TextureManager {
 
     constructor() {
         this.loader = new TextureLoader();
