@@ -39,7 +39,7 @@ export default class Simulator{
 
         this.entities["room"] = new Room(this.data[roomSizeKey], textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
         this.entities["light"] = new Light(0xffffff, 1, 250 );
-        this.entities["user"] = new User(models.getModelsArray()[0]); //Ejemplo
+        this.entities["user"] = new User(models.models["young"]); //Ejemplo
     
         this.addToSceneInit();
         this.lastUpdate = Date.now();
