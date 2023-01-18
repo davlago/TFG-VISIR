@@ -19,15 +19,15 @@ export default class Simulator{
         this.CameraManager;
         this.scene;
         this.entities = {};
-        this.models;
-        this.textures;
+        this.modelsManager;
+        this.texturesManager;
         this.lastUpdate;
     }
 
-    initSimulator(models, textures){
+    initSimulator(modelsManager, texturesManager){
         console.log("Iniciando Simulador");
-        this.models = models;
-        this.textures = textures;
+        this.modelsManager = modelsManager;
+        this.texturesManager = texturesManager;
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('threejs').appendChild(this.renderer.domElement);
@@ -37,9 +37,13 @@ export default class Simulator{
 
         this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
 
-        this.entities["room"] = new Room(this.data[roomSizeKey], textures.getWindowOpen(), textures.getWindowClose(), textures.getWood());
+        this.entities["room"] = new Room(this.data[roomSizeKey],
+            texturesManager.getOneTexture("windowOpen"),
+            texturesManager.getOneTexture("windowClose"),
+            texturesManager.getOneTexture("wood")
+        );
         this.entities["light"] = new Light(0xffffff, 1, 250 );
-        this.entities["user"] = new User(models.models["young"]); //Ejemplo
+        this.entities["user"] = new User(modelsManager.getModels()["young"]); //Ejemplo
     
         this.addToSceneInit();
         this.lastUpdate = Date.now();

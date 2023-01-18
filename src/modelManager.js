@@ -13,8 +13,8 @@ export default class ModelManager {
 
     loadModels(modelsInfoArray) {
         return new Promise((resolve, reject) => {
-            var promises=[];
-            for (var i in modelsInfoArray) {
+            let promises=[];
+            for (let i in modelsInfoArray) {
                 promises.push(this.load(modelsInfoArray[i]))
             }
 
@@ -40,6 +40,10 @@ export default class ModelManager {
                     resolve();
                 });
         });
+    }
+
+    getModels(){
+        return this.models;
     }
     
 }

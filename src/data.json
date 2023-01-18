@@ -21,7 +21,7 @@
         },
         {
             "key": "windowClose",
-            "file": "../textures/windowClose.jpg"
+            "file": "../textures/windowClose.png"
         }
     ],
     "models": [

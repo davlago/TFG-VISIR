@@ -9,6 +9,7 @@ import * as THREE from 'three';
 
     constructor(roomSize, textureWallOpen, textureWallClose, textureFloor){
         super();
+        console.log(textureWallOpen, textureWallClose, textureFloor)
         this.cubeMaterialArray = [];
         this.setTextures(textureWallOpen,textureWallClose, textureFloor);
         this.mesh = new THREE.Mesh( this.geometry, this.cubeMaterialArray);

@@ -7,35 +7,42 @@
 export default class TextureManager {
 
     constructor() {
-        this.loader = new TextureLoader();
-        this.woodMaterial;
-        this.brickMaterial;
-        this.windowCloseMaterial;
-        this.windowOpenMaterial;
+        this.textures = {};
     }
 
-    loadTextures(){
-        this.woodMaterial = this.loader.load('../textures/wood-texture.jpg');
-        this.brickMaterial = this.loader.load('../textures/brick-wall.jpg');
-        this.windowOpenMaterial = this.loader.load('../textures/windowOpen.png');
-        this.windowCloseMaterial = this.loader.load('../textures/windowClose.png');
-
+    loadTextures(materialsInfoArray){
+        return new Promise((resolve, reject) => {
+            let promises=[];
+            for (let i in materialsInfoArray) {
+                promises.push(this.load(materialsInfoArray[i]))
+            }
+            Promise.all(promises).then(function(){
+                console.log("All textures loaded");
+                resolve();
+            });
+        });
     }
 
-    getWood(){
-        return this.woodMaterial;
+    load(texture){
+        return new Promise((resolve, reject) => {
+            let textureLoader = new TextureLoader();
+            textureLoader.load(texture.file,
+                (object) => {
+                    this.textures[texture.key]=object;
+                    console.log("Loaded "+ texture.key);
+                    resolve();
+                });
+        });
     }
 
-    getBrick(){
-        return this.brickMaterial;
+    getTextures(){
+        return this.textures;
     }
 
-    getWindowClose(){
-        return this.windowCloseMaterial;
-    }
-    
-    getWindowOpen(){
-        return this.windowOpenMaterial;
+    getOneTexture(key){
+        console.log(key);
+        console.log(this.textures);
+        return this.textures[key];
     }
 
 }
