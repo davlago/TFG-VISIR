@@ -40,8 +40,6 @@ export default class TextureManager {
     }
 
     getOneTexture(key){
-        console.log(key);
-        console.log(this.textures);
         return this.textures[key];
     }
 
