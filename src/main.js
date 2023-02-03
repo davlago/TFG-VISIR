@@ -12,6 +12,7 @@ let textureManager = new TextureManager();
 let simulator = new Simulator(data[dataKey]);
 
 modelManager.loadModels(data[modelsKey]).then(function () {
-    textureManager.loadTextures();
-    simulator.initSimulator(modelManager, textureManager);
+    textureManager.loadTextures(data[texturesKey]).then(function () {
+        simulator.initSimulator(modelManager, textureManager);
+    });
 }); 
