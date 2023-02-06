@@ -1,7 +1,7 @@
-import ModelsManager from './modelManager';
-import TextureManager from './textureManager';
-import Simulator from './Simulator.js';
-import * as data from './data.json'; //READ JSON
+import ModelsManager from './src/loaders/modelManager';
+import TextureManager from './src/loaders/textureManager';
+import Simulator from './src/engine/Simulator.js';
+import * as data from './assets/data/data.json'; //READ JSON
 
 const modelsKey = "models";
 const dataKey = "infoData";

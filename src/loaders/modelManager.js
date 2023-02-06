@@ -45,6 +45,10 @@ export default class ModelManager {
     getModels(){
         return this.models;
     }
+
+    getOneModel(key){
+        return this.models[key];
+    }
     
 }
 

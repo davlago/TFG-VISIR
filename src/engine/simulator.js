@@ -2,11 +2,11 @@
  * Clase Simulator, tiene toda la información
  */
 import * as THREE from 'three';
-import Camera from './camera';
-import Room from './room';
-import Light from './light';
-import User from './user';
+import Camera from '../objects/camera';
+import Room from '../objects/room';
+import Light from '../objects/light';
 import CameraManager from './cameraManager';
+import Community from '../objects/community';
 
 
 const roomSizeKey = "roomSize";
@@ -21,7 +21,7 @@ export default class Simulator{
         this.entities = {};
         this.modelsManager;
         this.texturesManager;
-        this.lastUpdate;
+        this.clock = new THREE.Clock();
     }
 
     initSimulator(modelsManager, texturesManager){
@@ -43,7 +43,7 @@ export default class Simulator{
             texturesManager.getOneTexture("wood")
         );
         this.entities["light"] = new Light(0xffffff, 1, 250 );
-        this.entities["user"] = new User(modelsManager.getModels()["young"]); //Ejemplo
+        this.entities["community"] = new Community(this.scene, 0, 20, null,{x:0,y:20,z:0} ,modelsManager , texturesManager.getOneTexture("wood")); //Ejemplo
     
         this.addToSceneInit();
         this.lastUpdate = Date.now();
@@ -60,11 +60,9 @@ export default class Simulator{
     }
     
     gameLoop() {
-        let now = Date.now();
-        let dt = now - this.lastUpdate;
-        this.lastUpdate = now;
+        let deltaTimeSec = this.clock.getDelta();
         for (let [entityName, entity] of Object.entries(this.entities)) {
-            entity.update(dt);
+            entity.update(deltaTimeSec);
         }
         this.cameraManager.update();
         this.renderer.render(this.scene, this.entities["camera"].get3DObject());

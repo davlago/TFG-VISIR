@@ -6,8 +6,9 @@ import Entity from "./entity";
 
 export default class User extends Entity{
 
-    constructor(model) {
+    constructor(model, index) {
         super();
+        this.data = index;
         this.user = model;
         this.setPosition(0,0,0);
     }
