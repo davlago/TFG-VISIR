@@ -1,3 +1,7 @@
+/**
+ * Clase sacada de los ejemplo de Three
+ */
+
 import {
 	AnimationClip,
 	AnimationMixer,

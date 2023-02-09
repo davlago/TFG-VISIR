@@ -24,6 +24,11 @@ export default class Simulator{
         this.clock = new THREE.Clock();
     }
 
+    /**
+     * Funcion que inicia el simulador creando las principales componentes
+     * @param {*} modelsManager Manejador de modelos
+     * @param {*} texturesManager Manejador de texturas
+     */
     initSimulator(modelsManager, texturesManager){
         console.log("Iniciando Simulador");
         this.modelsManager = modelsManager;
@@ -53,12 +58,18 @@ export default class Simulator{
         window.requestAnimationFrame(function() {that.gameLoop()});
     }
 
+    /**
+     * Función que añade las entitades a la scena para que se representen
+     */
     addToSceneInit(){
         for (let [entityName, entity] of Object.entries(this.entities)) {
             entity.addToScene(this.scene);
         }
     }
     
+    /**
+     * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
+     */
     gameLoop() {
         let deltaTimeSec = this.clock.getDelta();
         for (let [entityName, entity] of Object.entries(this.entities)) {

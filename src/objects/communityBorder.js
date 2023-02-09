@@ -15,12 +15,23 @@ export default class CommunityBorder {
         this.circle.name = "Borde "+index;
     }
 
+    
+    /**
+     * Función para establecer la posición del borde
+     * @param {Number} x 
+     * @param {Number} y Altura
+     * @param {Number} z 
+     */
     setPosition(x, y, z) {
         this.circle.position.x = x;
         this.circle.position.y = y;
         this.circle.position.z = z;
     }
 
+    /**
+     * Función que devuelve el objecto3D
+     * @returns Objecto borde
+     */
     get3DObject() {
         return this.circle;
     }
