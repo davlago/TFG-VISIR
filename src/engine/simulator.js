@@ -7,6 +7,7 @@ import Room from '../objects/room';
 import Light from '../objects/light';
 import CameraManager from './cameraManager';
 import Community from '../objects/community';
+import PolygonDist from '../utils/polygonDist';
 
 
 const roomSizeKey = "roomSize";
@@ -48,7 +49,18 @@ export default class Simulator{
             texturesManager.getOneTexture("wood")
         );
         this.entities["light"] = new Light(0xffffff, 1, 250 );
-        this.entities["community"] = new Community(this.scene, 0, 20, null,{x:0,y:20,z:0} ,modelsManager , texturesManager.getOneTexture("wood")); //Ejemplo
+
+        //Creación de comunidades
+        //De momento manual
+        this.entities["communities"] = [];
+        this.polygonDist = new PolygonDist();
+        let vertexArray = this.polygonDist.generatePolygon(5, this.data[roomSizeKey].coordX/2.8);
+        console.log(vertexArray)   
+        for(let i = 0; i < vertexArray.length-1; i++){
+            let community = new Community(0, 20, null, vertexArray[i] ,modelsManager , texturesManager.getOneTexture("wood"));
+            this.entities["communities"].push(community)
+        }
+        
     
         this.addToSceneInit();
         this.lastUpdate = Date.now();
@@ -63,7 +75,17 @@ export default class Simulator{
      */
     addToSceneInit(){
         for (let [entityName, entity] of Object.entries(this.entities)) {
-            entity.addToScene(this.scene);
+            console.log(entityName)
+            console.log(entity)
+            if(Array.isArray(entity)){
+                for(let e of entity){
+                    e.addToScene(this.scene);   
+                }
+            }
+            else{
+                entity.addToScene(this.scene);
+            }
+            console.log(entityName);
         }
     }
     
@@ -73,7 +95,14 @@ export default class Simulator{
     gameLoop() {
         let deltaTimeSec = this.clock.getDelta();
         for (let [entityName, entity] of Object.entries(this.entities)) {
-            entity.update(deltaTimeSec);
+            if(Array.isArray(entity)){
+                for(let e of entity){
+                    e.update(deltaTimeSec);   
+                }
+            }
+            else{
+                entity.update(deltaTimeSec);
+            }
         }
         this.cameraManager.update();
         this.renderer.render(this.scene, this.entities["camera"].get3DObject());

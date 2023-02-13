@@ -10,25 +10,30 @@ import * as THREE from 'three';
 
 export default class Community extends Entity {
 
-    constructor(scene, index, radius, data, pos, models, textureBase) {
+    constructor(index, radius, data, pos, models, textureBase) {
         super();
-        this.scene = scene;
         this.modelManager = models;
         this.geometry = new THREE.CylinderGeometry(radius, radius, 17, 32);
         this.material = new THREE.MeshPhongMaterial({ map: textureBase, transparent: true, opacity: 0 });
         this.circle = new THREE.Mesh(this.geometry, this.material);
         this.circle.name = index;
-        this.border = new CommunityBorder(scene, index, radius)
+        this.border = new CommunityBorder(index, radius)
+        
+        console.log(pos);
+
         this.setPosition(pos.x, pos.y, pos.z);
         this.userList = [];
         this.communityObject = new THREE.Group();
         this.communityObject.name = "Community " + index;
+        this.communityComplete = new THREE.Group();
+        this.communityComplete.add(this.communityObject);
+        this.communityComplete.add(this.circle);
+        this.communityComplete.add(this.border.get3DObject());
 
         //De momento hasta que se meta data
-        let userArray = [{ model: "young" }, { model: "adult" }, { model: "elderly" }, { model: "elderly" }];
+        let userArray = [{ model: "young" }, { model: "adult" }, { model: "elderly" }];
 
         this.createCommunity(userArray);
-        this.addToScene();
     }
 
     /**
@@ -42,21 +47,13 @@ export default class Community extends Entity {
 
             //TODO función que genere la posición de cada usuario para ir pasandosela
             //De momento a mano
-            user.setPosition(i * 10, 0, i * 10);
+            let pos = this.getPosition();
+            user.setPosition(pos.x +i*10, pos.y, pos.z + i*10);
             this.userList.push(user);
             this.communityObject.add(user.get3DObject());
         }
     }
 
-    /**
-     * Añade la comunidad completa junto a sus elementos auxiliares a la escena
-     */
-    addToScene() {
-        this.scene.add(this.circle);
-        this.scene.add(this.border.get3DObject());
-        this.scene.add(this.communityObject);
-
-    }
 
     /**
      * Función para establecer la posición de la comunidad
@@ -98,6 +95,14 @@ export default class Community extends Entity {
             "z": this.circle.position.z
         }
         return pos;
+    }
+
+    /**
+     * Función que devuelve el objecto communidad
+     * @returns Object con la comunidad y sus usuarios
+     */
+    get3DObject(){
+        return this.communityComplete;
     }
 
 }

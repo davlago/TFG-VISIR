@@ -6,8 +6,7 @@ import * as THREE from 'three';
 
 export default class CommunityBorder {
 
-    constructor(scene, index, radius) {
-        this.scene = scene;
+    constructor( index, radius) {
         this.geometry = new THREE.CylinderGeometry( radius,radius,2, 32);
         this.edges = new THREE.EdgesGeometry( this.geometry );
         this.material = new THREE.MeshBasicMaterial( { color: 0x008000 } );
