@@ -4,9 +4,11 @@ import DataManager from './src/simulator/loaders/dataManager';
 
 import Simulator from './src/simulator/simulator';
 
-const modelsKey = "models";
 const dataKey = "infoData";
+
 const texturesKey = "textures";
+const modelsKey = "models";
+
 
 let dataManager = new DataManager();
 

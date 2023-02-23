@@ -11,8 +11,8 @@ import * as THREE from 'three';
         super();
         this.cubeMaterialArray = [];
         this.setTextures(textureWallOpen,textureWallClose, textureFloor);
-        this.mesh = new THREE.Mesh( this.geometry, this.cubeMaterialArray);
-        this.mesh.name = "Room";
+        this.object = new THREE.Mesh( this.geometry, this.cubeMaterialArray);
+        this.object.name = "Room";
         this.setSize(roomSize.coordX*1.25,roomSize.coordY,roomSize.coordZ*1.25);
         this.setPosition(0,roomSize.coordY/2,0);
 
@@ -25,7 +25,7 @@ import * as THREE from 'three';
      * @param {Number} z
      */
     setSize(x,y,z){
-        this.mesh.geometry = new THREE.BoxGeometry( x, y, z );
+        this.object.geometry = new THREE.BoxGeometry( x, y, z );
     }
 
     /**
@@ -47,24 +47,6 @@ import * as THREE from 'three';
         this.cubeMaterialArray.push( new THREE.MeshStandardMaterial( { map: textureFloor, transparent: false,side: THREE.BackSide } ) );
         this.cubeMaterialArray.push( new THREE.MeshStandardMaterial( { map: textureWallOpen, transparent: false,side: THREE.BackSide } ) );
         this.cubeMaterialArray.push( new THREE.MeshStandardMaterial( { map: textureWallOpen, transparent: false,side: THREE.BackSide } ) );
-    }
-
-    /** Establecer posición de la habitación
-    * @param {*} x 
-    * @param {*} y altura
-    * @param {*} z 
-    */
-    setPosition(x,y,z){
-        this.mesh.position.x = x;
-        this.mesh.position.y = y;
-        this.mesh.position.z = z;
-    }
-
-    /**
-     * Devuelve el Objecto3D
-     */
-    get3DObject(){
-        return this.mesh;
     }
 
 }

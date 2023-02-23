@@ -43,7 +43,6 @@ export default class ModelManager {
             let fbxLoader = new FBXLoader();
             fbxLoader.load(model.file,
                 (object) => {
-                    object.scale.set(0.06, 0.06, 0.06);
                     this.models[model.key] = object;
                     console.log("Loaded " + model.key);
                     resolve();

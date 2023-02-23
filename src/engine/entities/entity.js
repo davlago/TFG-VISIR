@@ -4,9 +4,59 @@
  */
 
 export default class Entity {
+
     constructor() {
-        this.isActive = true;        
+        this.object;
+        this.isActive = true;
+        this.position = { x: 0, y: 0, z: 0 };
+        this.scale = { x: 1, y: 1, z: 1 };
+        this.rotation;
     }
+
+    getIsActive() {
+        return this.isActive;
+    }
+
+    setIsActive(activate) {
+        this.isActive = activate;
+    }
+
+    getPosition() {
+        return this.position;
+    }
+
+    setPosition(x, y, z) {
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = z;
+
+        this.object.position.set(x, y, z);
+    }
+
+    getScale() {
+        return this.scale;
+    }
+
+    setScale(x, y, z) {
+        this.scale.x = x;
+        this.scale.y = y;
+        this.scale.z = z;
+
+        this.object.scale.set(x, y, z);
+    }
+
+    getRotation() {
+        return this.rotation;
+    }
+
+    setRotation(rotation) {
+        this.rotation = rotation;
+    }
+
+    get3DObject() {
+        return this.object;
+    }
+
 
     /**
      * Función para activar entidades
@@ -18,24 +68,22 @@ export default class Entity {
         this.onEnable();
     }
 
-    onEnable() {}
+    /**
+     * Función para ¿? entidades
+     */
+    onEnable() { }
 
     /**
      * Función para actualizar entidades
      * @param {*} deltaTime 
      */
-    update(deltaTime) {}
-
-    /**
-     * Devuelve el Objecto3D
-     */
-    get3DObject() {}
+    update(deltaTime) { }
 
     /**
      * Función para añadir a la scena
      * @param {*} scene 
      */
-    addToScene(scene){
+    addToScene(scene) {
         scene.add(this.get3DObject());
     }
 }

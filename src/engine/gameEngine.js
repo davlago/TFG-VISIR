@@ -3,11 +3,8 @@
  */
 import * as THREE from 'three';
 import Camera from './entities/camera';
-import Room from '../simulator/entities/room';
-import Light from './entities/light';
 import CameraManager from './cameraManager';
-import Community from '../simulator/entities/community';
-import PolygonDist from '../utils/polygonDist';
+
 
 
 const roomSizeKey = "roomSize";
@@ -42,8 +39,6 @@ export default class GameEngine{
         this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
 
         this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
-
-        this.entities["light"] = new Light(0xffffff, 1, 250 );
 
         this.createMyEntities();
 
