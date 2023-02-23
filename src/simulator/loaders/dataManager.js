@@ -2,7 +2,7 @@
  * Clase para cargar la data
  */
 
-import * as data from '../../assets/data/data.json';
+import * as data from '../../../assets/data/data.json';
 
 export default class DataManager {
 

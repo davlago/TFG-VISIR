@@ -2,7 +2,7 @@
  * Clase usuario, tiene toda la información
  */
 
-import Entity from "./entity";
+import Entity from "../../engine/entities/entity";
 
 export default class User extends Entity{
 

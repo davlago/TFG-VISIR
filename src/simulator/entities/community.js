@@ -3,9 +3,9 @@
  */
 
 import CommunityBorder from './communityBorder.js';
-import { clone } from '../utils/SkeletonUtils';
+import { clone } from '../../utils/SkeletonUtils';
 import User from './user.js';
-import Entity from './entity.js';
+import Entity from "../../engine/entities/entity";
 import * as THREE from 'three';
 
 export default class Community extends Entity {

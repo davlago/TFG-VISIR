@@ -1,8 +1,8 @@
-import ModelsManager from './src/loaders/modelManager';
-import TextureManager from './src/loaders/textureManager';
-import DataManager from './src/loaders/DataManager';
+import ModelsManager from './src/engine/loaders/modelManager';
+import TextureManager from './src/engine/loaders/textureManager';
+import DataManager from './src/simulator/loaders/dataManager';
 
-import Simulator from './src/engine/Simulator.js';
+import GameEngine from './src/engine/gameEngine';
 
 const modelsKey = "models";
 const dataKey = "infoData";
@@ -12,7 +12,7 @@ let dataManager = new DataManager();
 
 let modelManager = new ModelsManager();
 let textureManager = new TextureManager();
-let simulator = new Simulator(dataManager.getData(dataKey));
+let simulator = new GameEngine(dataManager.getData(dataKey));
 
 modelManager.loadModels(dataManager.getData(modelsKey)).then(function () {
     textureManager.loadTextures(dataManager.getData(texturesKey)).then(function () {

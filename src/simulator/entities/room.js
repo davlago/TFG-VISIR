@@ -2,7 +2,7 @@
  * Clase de la habitación principal
  */
 
-import Entity from "./entity";
+import Entity from "../../engine/entities/entity";
 import * as THREE from 'three';
 
  export default class Room extends Entity{

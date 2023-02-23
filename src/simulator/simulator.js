@@ -2,11 +2,11 @@
  * Clase Simulator, tiene toda la información
  */
 import * as THREE from 'three';
-import Camera from '../objects/camera';
-import Room from '../objects/room';
-import Light from '../objects/light';
+import Camera from './entities/camera';
+import Room from './entities/room';
+import Light from './entities/light';
 import CameraManager from './cameraManager';
-import Community from '../objects/community';
+import Community from './entities/community';
 import PolygonDist from '../utils/polygonDist';
 
 
