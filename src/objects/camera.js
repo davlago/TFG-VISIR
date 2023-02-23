@@ -13,9 +13,20 @@ export default class Camera extends Entity {
         this.camera.rotateX(-0.5)
     }
 
+    /**
+     * Función para establecer la posición de la cámara
+     * @param {Number} x 
+     * @param {Number} y Altura
+     * @param {Number} z 
+     */
     setPosition(x,y,z){
         this.camera.position.set(x,y,z);
     }
+
+    /**
+     * Función que devuelve el objecto camara
+     * @returns Objecto cámara
+     */
 
     get3DObject() {
         return this.camera;

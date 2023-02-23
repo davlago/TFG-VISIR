@@ -13,6 +13,9 @@ export default class CameraManager{
 
     }
 
+    /**
+     * Función que realiza el update en la camara cogiendo los controles que le demos
+     */
     update() {
         this.controls.update()
     }
