@@ -1,23 +1,21 @@
-import ModelsManager from './src/engine/loaders/modelManager';
+import ModelManager from './src/engine/loaders/modelManager';
 import TextureManager from './src/engine/loaders/textureManager';
-import DataManager from './src/simulator/loaders/dataManager';
+import * as texturesModelsData from './assets/data/texturesModelsData.json';
 
 import Simulator from './src/simulator/simulator';
-
-const dataKey = "infoData";
 
 const texturesKey = "textures";
 const modelsKey = "models";
 
-
-let dataManager = new DataManager();
-
-let modelManager = new ModelsManager();
+let modelManager = new ModelManager();
 let textureManager = new TextureManager();
-let simulator = new Simulator(dataManager.getData(dataKey));
+let simulator = new Simulator();
 
-modelManager.loadModels(dataManager.getData(modelsKey)).then(function () {
-    textureManager.loadTextures(dataManager.getData(texturesKey)).then(function () {
-        simulator.initSimulator(modelManager, textureManager);
-    });
-}); 
+let promises = [
+    modelManager.loadModels(texturesModelsData[modelsKey]),
+    textureManager.loadTextures(texturesModelsData[texturesKey])
+]
+
+Promise.all(promises).then(function () {
+    simulator.initSimulator(modelManager, textureManager);
+});

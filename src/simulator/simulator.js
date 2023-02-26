@@ -6,55 +6,129 @@ import Community from './entities/community';
 import PolygonDist from '../utils/polygonDist';
 import GameEngine from '../engine/gameEngine';
 import Light from './entities/light';
+import DataManager from './loaders/dataManager';
+
+import * as simulatorData from '../../assets/data/simulatorData.json';
+import User from './entities/user';
+import UsersDist from '../utils/usersDist';
+
+import { clone } from '../utils/SkeletonUtils';
+
 
 
 const roomSizeKey = "roomSize";
+const usersKey = "users";
+const usersDetailsKey = "explicit_community";
+const ageKey = "ageGroup";
+const langKey = "language";
+
+const coordAcom = [1, 7, 21, 42, 73];
+
 
 
 export default class Simulator extends GameEngine {
 
-    constructor(data) {
-        super(data);
-        this.roomX = this.data[roomSizeKey].coordX;
-        this.roomY = this.data[roomSizeKey].coordY;
-        this.roomZ = this.data[roomSizeKey].coordZ;
+    constructor() {
+        super();
 
-        this.lightPosition = [
-            { x: - this.roomX / 3, y: this.roomY / 2, z: + this.roomZ / 3 },
-            { x: + this.roomX / 3, y: this.roomY / 2, z: + this.roomZ / 3 },
-            { x: - this.roomX / 3, y: this.roomY / 2, z: - this.roomZ / 3 },
-            { x: + this.roomX / 3, y: this.roomY / 2, z: - this.roomZ / 3 }]
+        this.dataManager = new DataManager();
+        this.roomSize = simulatorData[roomSizeKey];
+        let lightPosition = { x: this.roomSize.coordX / 3, y: this.roomSize.coordY / 2, z: this.roomSize.coordZ / 3 }
+
+        this.lightsPosition = [
+            { x: - lightPosition.x, y: lightPosition.y, z: + lightPosition.z },
+            { x: + lightPosition.x, y: lightPosition.y, z: + lightPosition.z },
+            { x: - lightPosition.x, y: lightPosition.y, z: - lightPosition.z },
+            { x: + lightPosition.x, y: lightPosition.y, z: - lightPosition.z }
+        ]
 
     }
 
     createMyEntities() {
+        return new Promise((resolve, reject) => {
 
-        this.entities["light"] = [];
+            const that = this;
+            this.dataManager.loadData().then(() => {
 
-        //Crear las 4 luces de la habitación
-        for (let i = 0; i < 4; i++) {
-            let light = new Light(0xffffff, 1, 250);
-            let pos = this.lightPosition[i];
-            light.setPosition(pos.x, pos.y, pos.z);
-            this.entities["light"].push(light);
+                that.entities["light"] = [];
+
+                //Crear las 4 luces de la habitación
+                for (let i = 0; i < 4; i++) {
+                    let light = new Light(0xffffff, 1, 250);
+                    let pos = that.lightsPosition[i];
+                    light.setPosition(pos.x, pos.y, pos.z);
+                    that.entities["light"].push(light);
+                }
+
+                //Crear la habitación
+                that.entities["room"] = new Room(that.roomSize,
+                    that.texturesManager.getOneTexture("windowOpen"),
+                    that.texturesManager.getOneTexture("windowClose"),
+                    that.texturesManager.getOneTexture("wood")
+                );
+
+
+                that.entities["communities"] = [];
+
+                let polygonDist = new PolygonDist();
+                let usersDist = new UsersDist();
+
+                let communities = that.dataManager.getCommunities();
+                let numCommunities = Object.keys(communities).length;
+                let vertexArray = polygonDist.generatePolygon(numCommunities, that.roomSize.coordX / 2.8);
+
+                let aux = 0;
+                for (const [key, value] of Object.entries(communities)) {
+
+                    let usersArray = value.getDataByKey(usersKey);
+                    let numUsers = usersArray.length;
+
+                    let radius = that.generateRadius(numUsers);
+                    let center = vertexArray[aux];
+
+                    let community = new Community(key, radius, value, center, that.texturesManager.getOneTexture("wood"));
+
+                    usersDist.generateGeomPos(numUsers, radius);
+                    let coords = usersDist.getCoords();
+                    for (let i = 0; i < numUsers; i++) {
+                        let userId = usersArray[i];
+                        let userInfo = that.dataManager.getUserById(userId);
+                        let userModel = userInfo.getDataByKey(usersDetailsKey);
+                        let model = that.getModel(userModel);
+                        let user = new User(userId, model, userInfo);
+                        user.setPosition(coords[i].x, 0, coords[i].z);
+                        community.addUser(userId, user);
+                    }
+
+                    that.entities["communities"].push(community)
+                    aux++;
+                }
+                resolve();
+            });
+        });
+    }
+
+    getModel(userModel) {
+        let age = userModel[ageKey];
+        if (age === undefined || age === "") {
+            age = "young";
         }
+        let model = this.modelManager.getOneModel(age);
+        return clone(model);
+    }
 
-        //Crear la habitación
-        this.entities["room"] = new Room(this.data[roomSizeKey],
-            this.texturesManager.getOneTexture("windowOpen"),
-            this.texturesManager.getOneTexture("windowClose"),
-            this.texturesManager.getOneTexture("wood")
-        );
-
-
-        //Crear comunidades de forma auxiliar
-        this.entities["communities"] = [];
-        this.polygonDist = new PolygonDist();
-        let vertexArray = this.polygonDist.generatePolygon(5, this.roomX / 2.8);
-        for (let i = 0; i < vertexArray.length - 1; i++) {
-            let community = new Community(0, 20, null, vertexArray[i], this.modelsManager, this.texturesManager.getOneTexture("wood"));
-            this.entities["communities"].push(community)
+    generateRadius(length) {
+        let grand;
+        for (let i = 0; i < coordAcom.length; i++) {
+            if (coordAcom[i] >= length) {
+                grand = i;
+                break;
+            }
         }
+        let radius = grand * 10;
+        if (radius === 0) radius = 4;
+        return radius;
     }
 
 }
+

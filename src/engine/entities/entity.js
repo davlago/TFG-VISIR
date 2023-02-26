@@ -37,6 +37,14 @@ export default class Entity {
         return this.scale;
     }
 
+    setName(name){
+        this.object.name = name;
+    }
+
+    getName(){
+        return this.object.name;
+    }
+
     setScale(x, y, z) {
         this.scale.x = x;
         this.scale.y = y;

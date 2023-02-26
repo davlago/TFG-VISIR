@@ -6,10 +6,11 @@ import Entity from "../../engine/entities/entity";
 
 export default class User extends Entity{
 
-    constructor(model, index) {
+    constructor(index, model, data) {
         super();
-        this.data = index;
+        this.userInfo = data;
         this.object = model;
+        this.setName("User " + index);
         this.setScale(0.06, 0.06, 0.06);
     }
 

@@ -1,11 +1,4 @@
 {
-    "infoData": {
-        "roomSize": {
-            "coordX": 200,
-            "coordY": 50,
-            "coordZ": 200
-        }
-    },
     "textures": [
         {
             "key": "wood",

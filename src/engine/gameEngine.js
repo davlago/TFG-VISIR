@@ -11,25 +11,24 @@ const roomSizeKey = "roomSize";
 
 export default class GameEngine{
 
-    constructor(data) {
-        this.data = data;
+    constructor() {
         this.renderer;
         this.CameraManager;
         this.scene;
         this.entities = {};
-        this.modelsManager;
+        this.modelManager;
         this.texturesManager;
         this.clock = new THREE.Clock();
     }
 
     /**
      * Funcion que inicia el simulador creando las principales componentes
-     * @param {*} modelsManager Manejador de modelos
+     * @param {*} modelManager Manejador de modelos
      * @param {*} texturesManager Manejador de texturas
      */
-    initSimulator(modelsManager, texturesManager){
+    async initSimulator(modelManager, texturesManager){
         console.log("Iniciando Simulador");
-        this.modelsManager = modelsManager;
+        this.modelManager = modelManager;
         this.texturesManager = texturesManager;
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -40,7 +39,7 @@ export default class GameEngine{
 
         this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
 
-        this.createMyEntities();
+        await this.createMyEntities();
 
         this.addToSceneInit();
 
@@ -49,7 +48,9 @@ export default class GameEngine{
     }
 
     createMyEntities(){
-        //Esta función se rellena en el simulador, ya que es externa al motor de juego
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
     }
 
     /**
