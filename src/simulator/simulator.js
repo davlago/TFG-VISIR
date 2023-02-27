@@ -3,27 +3,26 @@
  */
 import Room from './entities/room';
 import Community from './entities/community';
-import PolygonDist from '../utils/polygonDist';
 import GameEngine from '../engine/gameEngine';
 import Light from './entities/light';
-import DataManager from './loaders/dataManager';
+import DataManager from './managers/dataManager';
+import CameraManager from './managers/cameraManager';
 
 import * as simulatorData from '../../assets/data/simulatorData.json';
 import User from './entities/user';
-import UsersDist from '../utils/usersDist';
 
 import { clone } from '../utils/SkeletonUtils';
+
+import * as geometryUtils from "../utils/geometryUtils";
 
 
 
 const roomSizeKey = "roomSize";
+const generalCameraPositionKey = "cameraGeneralPosition";
 const usersKey = "users";
 const usersDetailsKey = "explicit_community";
 const ageKey = "ageGroup";
 const langKey = "language";
-
-const coordAcom = [1, 7, 21, 42, 73];
-
 
 
 export default class Simulator extends GameEngine {
@@ -44,11 +43,17 @@ export default class Simulator extends GameEngine {
 
     }
 
+    createManagers(){
+        this.cameraManager = new CameraManager(this.entities["camera"], simulatorData[generalCameraPositionKey]);
+        this.cameraManager.focusObj(this.entities["room"]);
+    }
+
     createMyEntities() {
         return new Promise((resolve, reject) => {
 
             const that = this;
             this.dataManager.loadData().then(() => {
+
 
                 that.entities["light"] = [];
 
@@ -68,14 +73,12 @@ export default class Simulator extends GameEngine {
                 );
 
 
-                that.entities["communities"] = [];
 
-                let polygonDist = new PolygonDist();
-                let usersDist = new UsersDist();
+                that.entities["communities"] = [];
 
                 let communities = that.dataManager.getCommunities();
                 let numCommunities = Object.keys(communities).length;
-                let vertexArray = polygonDist.generatePolygon(numCommunities, that.roomSize.coordX / 2.8);
+                let vertexArray = geometryUtils.generatePolygon(numCommunities, that.roomSize.coordX / 2.8);
 
                 let aux = 0;
                 for (const [key, value] of Object.entries(communities)) {
@@ -83,13 +86,12 @@ export default class Simulator extends GameEngine {
                     let usersArray = value.getDataByKey(usersKey);
                     let numUsers = usersArray.length;
 
-                    let radius = that.generateRadius(numUsers);
+                    let radius = geometryUtils.generateRadius(numUsers, simulatorData.geometrical.coordAcom);
                     let center = vertexArray[aux];
 
                     let community = new Community(key, radius, value, center, that.texturesManager.getOneTexture("wood"));
 
-                    usersDist.generateGeomPos(numUsers, radius);
-                    let coords = usersDist.getCoords();
+                    let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorData.geometrical.coordAcom, simulatorData.geometrical.coordCircle);
                     for (let i = 0; i < numUsers; i++) {
                         let userId = usersArray[i];
                         let userInfo = that.dataManager.getUserById(userId);
@@ -116,19 +118,5 @@ export default class Simulator extends GameEngine {
         let model = this.modelManager.getOneModel(age);
         return clone(model);
     }
-
-    generateRadius(length) {
-        let grand;
-        for (let i = 0; i < coordAcom.length; i++) {
-            if (coordAcom[i] >= length) {
-                grand = i;
-                break;
-            }
-        }
-        let radius = grand * 10;
-        if (radius === 0) radius = 4;
-        return radius;
-    }
-
 }
 

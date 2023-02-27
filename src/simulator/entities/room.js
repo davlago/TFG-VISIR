@@ -12,7 +12,7 @@ import * as THREE from 'three';
         this.cubeMaterialArray = [];
         this.setTextures(textureWallOpen,textureWallClose, textureFloor);
         this.object = new THREE.Mesh( this.geometry, this.cubeMaterialArray);
-        this.object.name = "Room";
+        this.setName("Room");
         this.setSize(roomSize.coordX*1.25,roomSize.coordY,roomSize.coordZ*1.25);
         this.setPosition(0,roomSize.coordY/2,0);
 

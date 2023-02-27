@@ -3,7 +3,6 @@
  */
 import * as THREE from 'three';
 import Camera from './entities/camera';
-import CameraManager from './cameraManager';
 
 
 
@@ -37,14 +36,18 @@ export default class GameEngine{
         this.scene = new THREE.Scene();
         this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
 
-        this.cameraManager = new CameraManager(this.entities["camera"].get3DObject(), this.renderer.domElement);
-
         await this.createMyEntities();
+
+        this.createManagers();
+
 
         this.addToSceneInit();
 
         const that = this; //Para llamar al requestAnimationFrame
         window.requestAnimationFrame(function() {that.gameLoop()});
+    }
+
+    createManagers(){
     }
 
     createMyEntities(){

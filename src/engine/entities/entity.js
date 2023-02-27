@@ -10,7 +10,6 @@ export default class Entity {
         this.isActive = true;
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = { x: 1, y: 1, z: 1 };
-        this.rotation;
     }
 
     getIsActive() {
@@ -57,8 +56,10 @@ export default class Entity {
         return this.rotation;
     }
 
-    setRotation(rotation) {
-        this.rotation = rotation;
+    setRotation(x,y,z) {
+        this.object.rotateX(x);
+        this.object.rotateX(y);
+        this.object.rotateX(z);
     }
 
     get3DObject() {

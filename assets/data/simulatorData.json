@@ -3,5 +3,16 @@
         "coordX": 200,
         "coordY": 50,
         "coordZ": 200
+    },
+
+    "cameraGeneralPosition": {
+        "x" : 0,
+        "y" : 100,
+        "z" : 150
+    },
+
+    "geometrical":{
+        "coordAcom" : [1, 7, 21, 42, 73],
+        "coordCircle" : [1, 6, 14, 21, 29]
     }
 }
