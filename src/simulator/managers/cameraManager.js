@@ -6,6 +6,8 @@ export default class CameraManager {
 
     constructor(camera, pos) {
         this.camera = camera;
+        //PROVISIONAL
+        this.camera.setRotation(-1.5708,0,0)
 
         this.camera.setPosition(pos.x, pos.y, pos.z);
         let cameraGenPos = { x: pos.x, y: pos.y, z: pos.z }
@@ -14,20 +16,17 @@ export default class CameraManager {
 
     }
 
-    /**
-     * Función que realiza el update en la camara cogiendo los controles que le demos
-     */
-    update() {
+    setPosition(name) {
+        let pos = this.cameraPositions[name];
+        this.camera.setPosition(pos.x, pos.y + 100, pos.z)
     }
 
-    focusPos(position, rotation) {
-        this.camera.setPosition(position.x, position.y, position.z);
-        this.camera.setRotation(rotation.x, rotation.y, rotation.z);
+    addCameraPosition(name, pos) {
+        this.cameraPositions[name] = pos;
     }
-
     focusObj(object) {
-        let pos = object.getPosition();
-        this.camera.lookAt(pos);
+        let pos = object.position;
+        //this.camera.lookAt(pos);
     }
 
 }

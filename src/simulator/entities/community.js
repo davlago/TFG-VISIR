@@ -3,7 +3,6 @@
  */
 
 import CommunityBorder from './communityBorder.js';
-import User from './user.js';
 import Entity from "../../engine/entities/entity";
 import * as THREE from 'three';
 
@@ -13,7 +12,7 @@ export default class Community extends Entity {
         super();
         this.communityInfo = data;
         this.geometry = new THREE.CylinderGeometry(radius, radius, 17, 32);
-        this.material = new THREE.MeshPhongMaterial({ map: textureBase, transparent: true, opacity: 0 });
+        this.material = new THREE.MeshPhongMaterial({ map: textureBase, transparent: true, opacity: 0});
         this.circle = new THREE.Mesh(this.geometry, this.material);
         this.circle.name = index;
         this.border = new CommunityBorder(index, radius)
@@ -26,6 +25,7 @@ export default class Community extends Entity {
         this.object.add(this.communityObject);
         this.object.add(this.circle);
         this.object.add(this.border.get3DObject());
+        this.setName(index);
 
         this.setPosition(pos.x, pos.y, pos.z);
     }
@@ -33,6 +33,10 @@ export default class Community extends Entity {
     addUser(idUser, user){
         this.communityUsers[idUser] = user;
         this.communityObject.add(user.get3DObject());
+    }
+
+    getCircle(){
+        return this.circle;
     }
 
 }

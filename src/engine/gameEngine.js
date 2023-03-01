@@ -12,7 +12,6 @@ export default class GameEngine{
 
     constructor() {
         this.renderer;
-        this.CameraManager;
         this.scene;
         this.entities = {};
         this.modelManager;
@@ -87,9 +86,7 @@ export default class GameEngine{
                 entity.update(deltaTimeSec);
             }
         }
-        this.cameraManager.update();
         this.renderer.render(this.scene, this.entities["camera"].get3DObject());
-
         const that = this; //Para llamar al requestAnimationFrame
         window.requestAnimationFrame(function() {that.gameLoop()});
     }

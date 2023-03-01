@@ -1,6 +1,8 @@
 /**
  * Clase Simulator, tiene toda la información
  */
+import * as THREE from 'three';
+
 import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
@@ -34,6 +36,7 @@ export default class Simulator extends GameEngine {
         this.roomSize = simulatorData[roomSizeKey];
         let lightPosition = { x: this.roomSize.coordX / 3, y: this.roomSize.coordY / 2, z: this.roomSize.coordZ / 3 }
 
+
         this.lightsPosition = [
             { x: - lightPosition.x, y: lightPosition.y, z: + lightPosition.z },
             { x: + lightPosition.x, y: lightPosition.y, z: + lightPosition.z },
@@ -43,9 +46,35 @@ export default class Simulator extends GameEngine {
 
     }
 
+    onDocumentMouseDown(event, that,commClick){
+        event.preventDefault();
+        that.mouse.x = ( event.clientX / that.renderer.domElement.clientWidth ) * 2 - 1;
+        that.mouse.y = - ( event.clientY / that.renderer.domElement.clientHeight ) * 2 + 1;
+        that.raycaster.setFromCamera( that.mouse, that.entities["camera"].get3DObject() );
+
+        //PROVISIONAL
+        let intersects = that.raycaster.intersectObjects(commClick);
+        if(intersects.length > 0){
+            let selectObject = intersects[0].object;
+            that.cameraManager.setPosition(selectObject.name)
+            that.cameraManager.focusObj(selectObject.parent);
+        }
+
+    }
+
     createManagers(){
         this.cameraManager = new CameraManager(this.entities["camera"], simulatorData[generalCameraPositionKey]);
-        this.cameraManager.focusObj(this.entities["room"]);
+        this.cameraManager.focusObj(this.entities["room"].get3DObject());
+
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        let commClick = [];
+        for(let e of this.entities["communities"]){
+           commClick.push(e.getCircle());  
+           this.cameraManager.addCameraPosition(e.getName(), e.getPosition()); 
+        }
+        window.addEventListener('mousedown', (event) => {this.onDocumentMouseDown(event, this,commClick)}, false);
+
     }
 
     createMyEntities() {

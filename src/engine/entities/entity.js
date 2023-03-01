@@ -57,9 +57,9 @@ export default class Entity {
     }
 
     setRotation(x,y,z) {
-        this.object.rotateX(x);
-        this.object.rotateX(y);
-        this.object.rotateX(z);
+        this.object.rotation.x = x;
+        this.object.rotation.y = y;
+        this.object.rotation.z = z;
     }
 
     get3DObject() {
