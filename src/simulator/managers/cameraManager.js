@@ -2,9 +2,10 @@
  * Clase para controllar la camara y la escena
  */
 
+import { OrbitControls } from '../../utils/OrbitControls';
 export default class CameraManager {
 
-    constructor(camera, pos) {
+    constructor(camera, pos, renderer) {
         this.camera = camera;
         //PROVISIONAL
         this.camera.setRotation(-1.5708,0,0)
@@ -13,20 +14,27 @@ export default class CameraManager {
         let cameraGenPos = { x: pos.x, y: pos.y, z: pos.z }
         this.cameraPositions = {};
         this.cameraPositions["general"] = cameraGenPos;
+        this.controls = new OrbitControls( this.camera.get3DObject(), renderer.domElement );
+        this.controls.enablePan = false; //Deshabilitar mover
 
     }
 
     setPosition(name) {
         let pos = this.cameraPositions[name];
-        this.camera.setPosition(pos.x, pos.y + 100, pos.z)
+        this.camera.setPosition(pos.x, pos.y + 50, pos.z)
     }
 
     addCameraPosition(name, pos) {
-        this.cameraPositions[name] = pos;
+        let newPos = pos;
+        newPos.y +=50;
+        this.cameraPositions[name] = newPos;
     }
     focusObj(object) {
         let pos = object.position;
-        //this.camera.lookAt(pos);
+        this.controls.target = pos;
+    }
+    update(deltaTime){
+        this.controls.update();
     }
 
 }

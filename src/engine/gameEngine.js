@@ -55,6 +55,9 @@ export default class GameEngine{
         });
     }
 
+    myUpdates(){
+    }
+
     /**
      * Función que añade las entitades a la scena para que se representen
      */
@@ -86,6 +89,7 @@ export default class GameEngine{
                 entity.update(deltaTimeSec);
             }
         }
+        this.myUpdates(deltaTimeSec);
         this.renderer.render(this.scene, this.entities["camera"].get3DObject());
         const that = this; //Para llamar al requestAnimationFrame
         window.requestAnimationFrame(function() {that.gameLoop()});

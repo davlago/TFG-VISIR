@@ -46,7 +46,7 @@ export default class Simulator extends GameEngine {
 
     }
 
-    onDocumentMouseDown(event, that,commClick){
+    onDocumentMouseUp(event, that,commClick){
         event.preventDefault();
         that.mouse.x = ( event.clientX / that.renderer.domElement.clientWidth ) * 2 - 1;
         that.mouse.y = - ( event.clientY / that.renderer.domElement.clientHeight ) * 2 + 1;
@@ -56,14 +56,19 @@ export default class Simulator extends GameEngine {
         let intersects = that.raycaster.intersectObjects(commClick);
         if(intersects.length > 0){
             let selectObject = intersects[0].object;
+            console.log(selectObject);
             that.cameraManager.setPosition(selectObject.name)
             that.cameraManager.focusObj(selectObject.parent);
         }
 
     }
 
+    myUpdates(deltaTime){
+        this.cameraManager.update();
+    }
+
     createManagers(){
-        this.cameraManager = new CameraManager(this.entities["camera"], simulatorData[generalCameraPositionKey]);
+        this.cameraManager = new CameraManager(this.entities["camera"], simulatorData[generalCameraPositionKey], this.renderer);
         this.cameraManager.focusObj(this.entities["room"].get3DObject());
 
         this.raycaster = new THREE.Raycaster();
@@ -73,7 +78,7 @@ export default class Simulator extends GameEngine {
            commClick.push(e.getCircle());  
            this.cameraManager.addCameraPosition(e.getName(), e.getPosition()); 
         }
-        window.addEventListener('mousedown', (event) => {this.onDocumentMouseDown(event, this,commClick)}, false);
+        window.addEventListener('dblclick', (event) => {this.onDocumentMouseUp(event, this,commClick)}, false);
 
     }
 

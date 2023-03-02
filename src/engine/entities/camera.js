@@ -11,9 +11,4 @@ export default class Camera extends Entity {
         super();
         this.object = new THREE.PerspectiveCamera(100, sizeWidth / sizeHeight, 1, 1000)
     }
-
-    lookAt(pos){
-        let newVector = new Vector3(pos.x, pos.y, pos.y);
-        this.object.lookAt(newVector);
-    }
 }
