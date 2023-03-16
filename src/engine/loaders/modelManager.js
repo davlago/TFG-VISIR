@@ -3,6 +3,8 @@
  */
 
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader';
+
 
 
 export default class ModelManager {
@@ -20,7 +22,12 @@ export default class ModelManager {
         return new Promise((resolve, reject) => {
             let promises = [];
             for (let i in modelsInfoArray) {
-                promises.push(this.load(modelsInfoArray[i]))
+                if (modelsInfoArray[i].format === "3mf") {
+                    promises.push(this.load3mf(modelsInfoArray[i]))
+                }
+                else if (modelsInfoArray[i].format === "fbx") {
+                    promises.push(this.loadFbx(modelsInfoArray[i]))
+                }
             }
 
             Promise.all(promises).then(function () {
@@ -38,17 +45,40 @@ export default class ModelManager {
      * @param {Object} model Objeto con la información necesaria para cargar el modelo
      * @returns devuelve una promesa que se resuelve cuando el modelo a terminado de cargarse
      */
-    load(model) {
+    load3mf(model) {
+
         return new Promise((resolve, reject) => {
-            let fbxLoader = new FBXLoader();
-            fbxLoader.load(model.file,
+
+            let threeMFLoader = new ThreeMFLoader();
+            threeMFLoader.load(model.file,
                 (object) => {
                     this.models[model.key] = object;
                     console.log("Loaded " + model.key);
                     resolve();
                 });
         });
-    }
+
+    };
+
+    /**
+    * Función que realiza la carga y la escala del modelo y lo va guardando en el this.models, que es nuestro array de modelos
+    * @param {Object} model Objeto con la información necesaria para cargar el modelo
+    * @returns devuelve una promesa que se resuelve cuando el modelo a terminado de cargarse
+    */
+    loadFbx(model) {
+        return new Promise((resolve, reject) => {
+            let fBXLoader = new FBXLoader();
+            fBXLoader.load(model.file,
+                (object) => {
+                    this.models[model.key] = object;
+                    console.log("Loaded " + model.key);
+                    resolve();
+                });
+        });
+
+    };
+
+
 
     /**
      * Función que devuelve el array de modelos

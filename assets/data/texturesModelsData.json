@@ -2,33 +2,37 @@
     "textures": [
         {
             "key": "wood",
-            "file": "../textures/wood-texture.jpg"
+            "file": "/textures/wood-texture.jpg"
         },
         {
             "key": "brick",
-            "file": "../textures/brick-wall.jpg"
+            "file": "/textures/brick-wall.jpg"
         },
         {
             "key": "windowOpen",
-            "file": "../textures/windowOpen.png"
+            "file": "/textures/windowOpen.png"
         },
         {
             "key": "windowClose",
-            "file": "../textures/windowClose.png"
+            "file": "/textures/windowClose.png"
         }
     ],
     "models": [
+        
         {
-            "key": "young",
-            "file": "/models/young.fbx"
+            "format": "3mf",
+            "key": "Female",
+            "file": "/models/female.3mf"
         },
         {
-            "key": "adult",
+            "format": "fbx",
+            "key": "Male",
             "file": "/models/adult.fbx"
         },
         {
-            "key": "elderly",
-            "file": "/models/elderly.fbx"
+            "format": "fbx",
+            "key": "Not specified",
+            "file": "/models/notSpecified.fbx"
         }
     ]
 }

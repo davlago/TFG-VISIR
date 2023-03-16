@@ -23,8 +23,10 @@ const roomSizeKey = "roomSize";
 const generalCameraPositionKey = "cameraGeneralPosition";
 const usersKey = "users";
 const usersDetailsKey = "explicit_community";
-const ageKey = "ageGroup";
-const langKey = "language";
+const genderKey = "Gender";
+const artKey = "RelationshipWithArt";
+
+
 
 
 export default class Simulator extends GameEngine {
@@ -145,12 +147,16 @@ export default class Simulator extends GameEngine {
     }
 
     getModel(userModel) {
-        let age = userModel[ageKey];
-        if (age === undefined || age === "") {
-            age = "young";
+        let gender = userModel[genderKey];
+        try{
+            let model = this.modelManager.getOneModel(gender);
+            return clone(model);
+        }catch(err){
+            console.log("Cant clone: "+ gender);
+            let model = this.modelManager.getOneModel("Not specified");
+            return clone(model);
         }
-        let model = this.modelManager.getOneModel(age);
-        return clone(model);
+       
     }
 }
 
