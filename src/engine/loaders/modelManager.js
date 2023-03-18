@@ -50,12 +50,16 @@ export default class ModelManager {
         return new Promise((resolve, reject) => {
 
             let threeMFLoader = new ThreeMFLoader();
-            threeMFLoader.load(model.file,
-                (object) => {
-                    this.models[model.key] = object;
-                    console.log("Loaded " + model.key);
-                    resolve();
-                });
+            try {
+                threeMFLoader.load(model.file,
+                    (object) => {
+                        this.models[model.key] = object;
+                        console.log("Loaded " + model.key);
+                        resolve();
+                    });
+            } catch (err) {
+                console.log("Error in load model " + model.key)
+            }
         });
 
     };
@@ -68,13 +72,19 @@ export default class ModelManager {
     loadFbx(model) {
         return new Promise((resolve, reject) => {
             let fBXLoader = new FBXLoader();
-            fBXLoader.load(model.file,
-                (object) => {
-                    this.models[model.key] = object;
-                    console.log("Loaded " + model.key);
-                    resolve();
-                });
+            try {
+
+                fBXLoader.load(model.file,
+                    (object) => {
+                        this.models[model.key] = object;
+                        console.log("Loaded " + model.key);
+                        resolve();
+                    });
+            } catch (err) {
+                console.log("Error in load model " + model.key)
+            }
         });
+
 
     };
 

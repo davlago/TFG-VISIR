@@ -3,6 +3,7 @@
  */
 import * as THREE from 'three';
 import Camera from './entities/camera';
+import Scene from './entities/scene';
 
 
 
@@ -11,8 +12,8 @@ const roomSizeKey = "roomSize";
 export default class GameEngine{
 
     constructor() {
-        this.renderer;
-        this.scene;
+        this.renderer = new THREE.WebGLRenderer();;
+        this.scene = new Scene();
         this.entities = {};
         this.modelManager;
         this.texturesManager;
@@ -28,11 +29,9 @@ export default class GameEngine{
         console.log("Iniciando Simulador");
         this.modelManager = modelManager;
         this.texturesManager = texturesManager;
-        this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('threejs').appendChild(this.renderer.domElement);
 
-        this.scene = new THREE.Scene();
         this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
 
         await this.createMyEntities();
@@ -55,7 +54,7 @@ export default class GameEngine{
         });
     }
 
-    myUpdates(){
+    postUpdates(){
     }
 
     /**
@@ -65,11 +64,14 @@ export default class GameEngine{
         for (let [entityName, entity] of Object.entries(this.entities)) {
             if(Array.isArray(entity)){
                 for(let e of entity){
-                    e.addToScene(this.scene);   
+                    this.scene.add(e.get3DObject())
+                    if(e.hasChildren()){
+                        this.scene.add(e.getChildrenGroup())
+                    }
                 }
             }
             else{
-                entity.addToScene(this.scene);
+                this.scene.add(entity.get3DObject())
             }
         }
     }
@@ -89,8 +91,8 @@ export default class GameEngine{
                 entity.update(deltaTimeSec);
             }
         }
-        this.myUpdates(deltaTimeSec);
-        this.renderer.render(this.scene, this.entities["camera"].get3DObject());
+        this.postUpdates(deltaTimeSec);
+        this.renderer.render(this.scene.get3DObject(), this.entities["camera"].get3DObject());
         const that = this; //Para llamar al requestAnimationFrame
         window.requestAnimationFrame(function() {that.gameLoop()});
     }

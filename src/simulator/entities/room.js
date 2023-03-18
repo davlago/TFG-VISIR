@@ -2,10 +2,10 @@
  * Clase de la habitación principal
  */
 
-import Entity from "../../engine/entities/entity";
+import RenderableEntity from "../../engine/entities/renderableEntity";
 import * as THREE from 'three';
 
- export default class Room extends Entity{
+ export default class Room extends RenderableEntity{
 
     constructor(roomSize, textureWallOpen, textureWallClose, textureFloor){
         super();

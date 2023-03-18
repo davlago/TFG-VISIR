@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+
+
 /**
  * Nombre: Entidad
  * Descripción: TODO
@@ -10,8 +13,17 @@ export default class Entity {
         this.isActive = true;
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = { x: 1, y: 1, z: 1 };
+        this.childrenGroup = new THREE.Group(); //Grupo de usuarios;
+        this.childrenEntities = {};
     }
 
+    hasChildren(){
+        return !(this.childrenGroup.children.length === 0);
+    }
+
+    getChildrenGroup(){
+        return this.childrenGroup;
+    }
     getIsActive() {
         return this.isActive;
     }
@@ -30,6 +42,7 @@ export default class Entity {
         this.position.z = z;
 
         this.object.position.set(x, y, z);
+        this.childrenGroup.position.set(x,y,z);
     }
 
     getScale() {
@@ -86,13 +99,10 @@ export default class Entity {
      * Función para actualizar entidades
      * @param {*} deltaTime 
      */
-    update(deltaTime) { }
+    update(deltaTime) {
+        if(this.isActive){
 
-    /**
-     * Función para añadir a la scena
-     * @param {*} scene 
-     */
-    addToScene(scene) {
-        scene.add(this.get3DObject());
+        }
     }
+
 }

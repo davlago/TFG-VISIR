@@ -2,7 +2,7 @@
  * Clase para tener las luces generales de la habitación
  */
 
-import Entity from "../../engine/entities/entity";
+import Entity from "./entity";
 
 import * as THREE from "three";
 
