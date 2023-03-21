@@ -25,6 +25,8 @@ export default class InputManager {
 
         let intersects = that.raycaster.intersectObjects(that.entitiesObjArray);
         if(intersects.length > 0){
+            //si hay alguien de mi nivel (soy comunidad(lv1) o soy usuario (lv2) lo dessecciono y mando activar a esta)
+            //Debo saber yo como inputmanager quien está pulsado?
             let selectObject = intersects[0].object;
             console.log(selectObject);
             that.entities[selectObject.name].setClicked();
