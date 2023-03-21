@@ -34,10 +34,9 @@ export default class GameEngine{
 
         this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
 
-        await this.createMyEntities();
-
         this.createManagers();
 
+        await this.createMyEntities();
 
         this.addToSceneInit();
 

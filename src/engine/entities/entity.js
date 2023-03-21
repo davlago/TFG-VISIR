@@ -8,13 +8,20 @@ import * as THREE from 'three';
 
 export default class Entity {
 
-    constructor() {
+    constructor(name) {
         this.object;
-        this.isActive = true;
+        this.isActive = false;
+        this.isClicked = false;
+        this.isActivated = false;
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = { x: 1, y: 1, z: 1 };
         this.childrenGroup = new THREE.Group(); //Grupo de usuarios;
         this.childrenEntities = {};
+        this.name = "No_Name";
+    }
+
+    setClicked(){
+        this.isClicked = true;
     }
 
     hasChildren(){
@@ -50,11 +57,12 @@ export default class Entity {
     }
 
     setName(name){
+        this.name = name;
         this.object.name = name;
     }
 
     getName(){
-        return this.object.name;
+        return this.name;
     }
 
     setScale(x, y, z) {
@@ -100,9 +108,7 @@ export default class Entity {
      * @param {*} deltaTime 
      */
     update(deltaTime) {
-        if(this.isActive){
 
-        }
     }
 
 }

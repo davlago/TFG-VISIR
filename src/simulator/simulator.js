@@ -16,6 +16,7 @@ import User from './entities/user';
 import { clone } from '../utils/SkeletonUtils';
 
 import * as geometryUtils from "../utils/geometryUtils";
+import InputManager from './managers/inputManager';
 
 
 
@@ -63,17 +64,7 @@ export default class Simulator extends GameEngine {
 
     createManagers(){
         this.cameraManager = new CameraManager(this.entities["camera"], simulatorMap[generalCameraPositionKey], this.renderer);
-        this.cameraManager.focusObj(this.entities["room"].get3DObject());
-
-        this.raycaster = new THREE.Raycaster();
-        this.mouse = new THREE.Vector2();
-        let commClick = [];
-        for(let e of this.entities["communities"]){
-           commClick.push(e.get3DObject());  
-           this.cameraManager.addCameraPosition(e.getName(), e.getPosition()); 
-        }
-        window.addEventListener('dblclick', (event) => {this.onDocumentMouseUp(event, this,commClick)}, false);
-
+        this.inputManager = new InputManager(this.entities["camera"], this.renderer);
     }
 
     createMyEntities() {
@@ -100,7 +91,7 @@ export default class Simulator extends GameEngine {
                     that.texturesManager.getOneTexture("wood")
                 );
 
-
+                this.cameraManager.focusObj(this.entities["room"].get3DObject());
 
                 that.entities["communities"] = [];
 
@@ -118,6 +109,7 @@ export default class Simulator extends GameEngine {
                     let center = vertexArray[aux];
 
                     let community = new Community(key, radius, value, center, that.texturesManager.getOneTexture("wood"));
+                    community.setName(key)
 
                     let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
                     for (let i = 0; i < numUsers; i++) {
@@ -127,10 +119,15 @@ export default class Simulator extends GameEngine {
                         let model = that.getModel(userModel);
                         let user = new User(userId, model, userInfo);
                         user.setPosition(coords[i].x, 0, coords[i].z);
+                        //user.name = userId;
+                        user.setName(userId);
+                        console.log(user.name);
                         community.addUser(userId, user);
+                        this.inputManager.addEntity(user);
                     }
 
-                    that.entities["communities"].push(community)
+                    that.entities["communities"].push(community);
+                    this.inputManager.addEntity(community);
                     aux++;
                 }
                 resolve();
