@@ -14,22 +14,23 @@ export default class InputManager {
         this.entitiesObjArray =[];
         this.camera = camera;
         this.eventsList = []
-        window.addEventListener('dblclick', (event) => {this.onDocumentMouseUp(event, this)}, false);
+        this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this)
+        window.addEventListener('dblclick', (event) => {this.onDocumentMouseUp(event)}, false);
     }
 
-    onDocumentMouseUp(event, that){
+    onDocumentMouseUp(event){
         event.preventDefault();
-        that.mouse.x = ( event.clientX / that.renderer.domElement.clientWidth ) * 2 - 1;
-        that.mouse.y = - ( event.clientY / that.renderer.domElement.clientHeight ) * 2 + 1;
-        that.raycaster.setFromCamera( that.mouse, that.camera.get3DObject() );
+        this.mouse.x = ( event.clientX / this.renderer.domElement.clientWidth ) * 2 - 1;
+        this.mouse.y = - ( event.clientY / this.renderer.domElement.clientHeight ) * 2 + 1;
+        this.raycaster.setFromCamera( this.mouse, this.camera.get3DObject() );
 
-        let intersects = that.raycaster.intersectObjects(that.entitiesObjArray);
+        let intersects = this.raycaster.intersectObjects(this.entitiesObjArray);
         if(intersects.length > 0){
             //si hay alguien de mi nivel (soy comunidad(lv1) o soy usuario (lv2) lo dessecciono y mando activar a esta)
             //Debo saber yo como inputmanager quien está pulsado?
             let selectObject = intersects[0].object;
             console.log(selectObject);
-            that.entities[selectObject.name].setClicked();
+            this.entities[selectObject.name].setClicked();
 
         }
 

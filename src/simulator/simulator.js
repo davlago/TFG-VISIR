@@ -37,24 +37,8 @@ export default class Simulator extends GameEngine {
         super();
 
         this.dataManager = new DataManager();
+        this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
-
-    }
-
-    onDocumentMouseUp(event, that,commClick){
-        event.preventDefault();
-        that.mouse.x = ( event.clientX / that.renderer.domElement.clientWidth ) * 2 - 1;
-        that.mouse.y = - ( event.clientY / that.renderer.domElement.clientHeight ) * 2 + 1;
-        that.raycaster.setFromCamera( that.mouse, that.entities["camera"].get3DObject() );
-
-        //PROVISIONAL
-        let intersects = that.raycaster.intersectObjects(commClick);
-        if(intersects.length > 0){
-            let selectObject = intersects[0].object;
-            console.log(selectObject);
-            that.cameraManager.setPosition(selectObject.name)
-            that.cameraManager.focusObj(selectObject);
-        }
 
     }
 
@@ -69,70 +53,70 @@ export default class Simulator extends GameEngine {
 
     createMyEntities() {
         return new Promise((resolve, reject) => {
-
-            const that = this;
             this.dataManager.loadData().then(() => {
-
-
-                that.entities["light"] = [];
-
-                //Crear las 4 luces de la habitación
-                for (let i = 0; i < 4; i++) {
-                    let light = new Light(0xffffff, 1, 250);
-                    let pos = simulatorMap[lightPositionKey][i];
-                    light.setPosition(pos.x, pos.y, pos.z);
-                    that.entities["light"].push(light);
-                }
-
-                //Crear la habitación
-                that.entities["room"] = new Room(that.roomSize,
-                    that.texturesManager.getOneTexture("windowOpen"),
-                    that.texturesManager.getOneTexture("windowClose"),
-                    that.texturesManager.getOneTexture("wood")
-                );
-
-                this.cameraManager.focusObj(this.entities["room"].get3DObject());
-
-                that.entities["communities"] = [];
-
-                let communities = that.dataManager.getCommunities();
-                let numCommunities = Object.keys(communities).length;
-                let vertexArray = geometryUtils.generatePolygon(numCommunities, that.roomSize.coordX / 2.8);
-
-                let aux = 0;
-                for (const [key, value] of Object.entries(communities)) {
-
-                    let usersArray = value.getDataByKey(usersKey);
-                    let numUsers = usersArray.length;
-
-                    let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
-                    let center = vertexArray[aux];
-
-                    let community = new Community(key, radius, value, center, that.texturesManager.getOneTexture("wood"));
-                    community.setName(key)
-
-                    let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
-                    for (let i = 0; i < numUsers; i++) {
-                        let userId = usersArray[i];
-                        let userInfo = that.dataManager.getUserById(userId);
-                        let userModel = userInfo.getDataByKey(usersDetailsKey);
-                        let model = that.getModel(userModel);
-                        let user = new User(userId, model, userInfo);
-                        user.setPosition(coords[i].x, 0, coords[i].z);
-                        //user.name = userId;
-                        user.setName(userId);
-                        console.log(user.name);
-                        community.addUser(userId, user);
-                        this.inputManager.addEntity(user);
-                    }
-
-                    that.entities["communities"].push(community);
-                    this.inputManager.addEntity(community);
-                    aux++;
-                }
+                this.createSimulatorEntities();
                 resolve();
             });
         });
+    }
+
+    createSimulatorEntities(){
+        this.entities["light"] = [];
+
+        //Crear las 4 luces de la habitación
+        for (let i = 0; i < 4; i++) {
+            let light = new Light(0xffffff, 1, 250);
+            let pos = simulatorMap[lightPositionKey][i];
+            light.setPosition(pos.x, pos.y, pos.z);
+            this.entities["light"].push(light);
+        }
+
+        //Crear la habitación
+        this.entities["room"] = new Room(this.roomSize,
+            this.texturesManager.getOneTexture("windowOpen"),
+            this.texturesManager.getOneTexture("windowClose"),
+            this.texturesManager.getOneTexture("wood")
+        );
+
+        this.cameraManager.focusObj(this.entities["room"].get3DObject());
+
+        this.entities["communities"] = [];
+
+        let communities = this.dataManager.getCommunities();
+        let numCommunities = Object.keys(communities).length;
+        let vertexArray = geometryUtils.generatePolygon(numCommunities, this.roomSize.coordX / 2.8);
+
+        let aux = 0;
+        for (const [key, value] of Object.entries(communities)) {
+
+            let usersArray = value.getDataByKey(usersKey);
+            let numUsers = usersArray.length;
+
+            let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
+            let center = vertexArray[aux];
+
+            let community = new Community(key, radius, value, center, this.texturesManager.getOneTexture("wood"));
+            community.setName(key)
+
+            let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
+            for (let i = 0; i < numUsers; i++) {
+                let userId = usersArray[i];
+                let userInfo = this.dataManager.getUserById(userId);
+                let userModel = userInfo.getDataByKey(usersDetailsKey);
+                let model = this.getModel(userModel);
+                let user = new User(userId, model, userInfo);
+                user.setPosition(coords[i].x, 0, coords[i].z);
+                //user.name = userId;
+                user.setName(userId);
+                console.log(user.name);
+                community.addUser(userId, user);
+                this.inputManager.addEntity(user);
+            }
+
+            this.entities["communities"].push(community);
+            this.inputManager.addEntity(community);
+            aux++;
+        }
     }
 
     getModel(userModel) {

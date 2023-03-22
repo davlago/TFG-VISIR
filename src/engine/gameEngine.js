@@ -16,6 +16,7 @@ export default class GameEngine{
         this.scene = new Scene();
         this.entities = {};
         this.modelManager;
+        this.gameLoop = this.gameLoop.bind(this)
         this.texturesManager;
         this.clock = new THREE.Clock();
     }
@@ -40,8 +41,7 @@ export default class GameEngine{
 
         this.addToSceneInit();
 
-        const that = this; //Para llamar al requestAnimationFrame
-        window.requestAnimationFrame(function() {that.gameLoop()});
+        window.requestAnimationFrame(this.gameLoop);
     }
 
     createManagers(){
@@ -92,8 +92,7 @@ export default class GameEngine{
         }
         this.postUpdates(deltaTimeSec);
         this.renderer.render(this.scene.get3DObject(), this.entities["camera"].get3DObject());
-        const that = this; //Para llamar al requestAnimationFrame
-        window.requestAnimationFrame(function() {that.gameLoop()});
+        window.requestAnimationFrame(this.gameLoop);
     }
 
 }
