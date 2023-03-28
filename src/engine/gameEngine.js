@@ -33,13 +33,11 @@ export default class GameEngine{
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('threejs').appendChild(this.renderer.domElement);
 
-        this.entities["camera"] = new Camera(window.innerWidth, window.innerHeight);
+        this.scene.add("camera", new Camera(window.innerWidth, window.innerHeight));
 
         this.createManagers();
 
         await this.createMyEntities();
-
-        this.addToSceneInit();
 
         window.requestAnimationFrame(this.gameLoop);
     }
@@ -55,43 +53,16 @@ export default class GameEngine{
 
     postUpdates(){
     }
-
-    /**
-     * Función que añade las entitades a la scena para que se representen
-     */
-    addToSceneInit(){
-        for (let [entityName, entity] of Object.entries(this.entities)) {
-            if(Array.isArray(entity)){
-                for(let e of entity){
-                    this.scene.add(e.get3DObject())
-                    if(e.hasChildren()){
-                        this.scene.add(e.getChildrenGroup())
-                    }
-                }
-            }
-            else{
-                this.scene.add(entity.get3DObject())
-            }
-        }
-    }
     
     /**
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
      */
     gameLoop() {
         let deltaTimeSec = this.clock.getDelta();
-        for (let [entityName, entity] of Object.entries(this.entities)) {
-            if(Array.isArray(entity)){
-                for(let e of entity){
-                    e.update(deltaTimeSec);   
-                }
-            }
-            else{
-                entity.update(deltaTimeSec);
-            }
-        }
+        this.scene.update(deltaTimeSec);
         this.postUpdates(deltaTimeSec);
-        this.renderer.render(this.scene.get3DObject(), this.entities["camera"].get3DObject());
+        let scene = this.scene.get3DObject();
+        this.renderer.render(scene, this.scene.getCamera());
         window.requestAnimationFrame(this.gameLoop);
     }
 

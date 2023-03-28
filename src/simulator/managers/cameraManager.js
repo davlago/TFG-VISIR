@@ -30,7 +30,8 @@ export default class CameraManager {
         this.cameraPositions[name] = newPos;
     }
     focusObj(object) {
-        let pos = object.position;
+        let pos = object.getPosition();
+        console.log(pos);
         this.controls.target = pos;
     }
     update(deltaTime){

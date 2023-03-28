@@ -1,10 +1,10 @@
 /**
  * Clase de la comunidad
  */
-import RenderableEntity from "../../engine/entities/renderableEntity";
+import Entity from "../../engine/entities/entity"
 import * as GEOMETRY from "../../utils/geometryObjects";
 
-export default class Community extends RenderableEntity {
+export default class Community extends Entity {
 
     constructor(index, radius, data, pos, textureBase) {
         super();
@@ -25,12 +25,7 @@ export default class Community extends RenderableEntity {
         if (this.isActive) {
             if (this.isClicked) {
                 this.setPosition(this.position.x, this.position.y + 10, this.position.z);
-                this.isActivated = true;
                 this.isClicked = false;
-                this.isActive = false;
-                for (const [key, value] of Object.entries(this.childrenEntities)) {
-                    value.isActive = false;
-                }
             }
         }
     }

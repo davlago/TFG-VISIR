@@ -40,7 +40,7 @@ export default class Entity {
     }
 
     getPosition() {
-        return this.position;
+        return this.object.position;
     }
 
     setPosition(x, y, z) {

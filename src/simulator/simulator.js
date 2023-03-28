@@ -47,8 +47,8 @@ export default class Simulator extends GameEngine {
     }
 
     createManagers(){
-        this.cameraManager = new CameraManager(this.entities["camera"], simulatorMap[generalCameraPositionKey], this.renderer);
-        this.inputManager = new InputManager(this.entities["camera"], this.renderer);
+        this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
+        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer);
     }
 
     createMyEntities() {
@@ -61,26 +61,29 @@ export default class Simulator extends GameEngine {
     }
 
     createSimulatorEntities(){
-        this.entities["light"] = [];
+        let lightArray = [];
 
         //Crear las 4 luces de la habitación
         for (let i = 0; i < 4; i++) {
             let light = new Light(0xffffff, 1, 250);
             let pos = simulatorMap[lightPositionKey][i];
             light.setPosition(pos.x, pos.y, pos.z);
-            this.entities["light"].push(light);
+            lightArray.push(light);
         }
+        this.scene.add("light", lightArray)
 
         //Crear la habitación
-        this.entities["room"] = new Room(this.roomSize,
+        let room = new Room(this.roomSize,
             this.texturesManager.getOneTexture("windowOpen"),
             this.texturesManager.getOneTexture("windowClose"),
             this.texturesManager.getOneTexture("wood")
         );
+        this.scene.add("room", room)
 
-        this.cameraManager.focusObj(this.entities["room"].get3DObject());
 
-        this.entities["communities"] = [];
+        this.cameraManager.focusObj(this.scene.getEntity("room"));
+
+        this.communitiesArray = [];
 
         let communities = this.dataManager.getCommunities();
         let numCommunities = Object.keys(communities).length;
@@ -113,10 +116,11 @@ export default class Simulator extends GameEngine {
                 this.inputManager.addEntity(user);
             }
 
-            this.entities["communities"].push(community);
+            this.communitiesArray.push(community);
             this.inputManager.addEntity(community);
             aux++;
         }
+        this.scene.add("communities", this.communitiesArray);
     }
 
     getModel(userModel) {

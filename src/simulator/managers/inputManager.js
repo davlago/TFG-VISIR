@@ -22,7 +22,7 @@ export default class InputManager {
         event.preventDefault();
         this.mouse.x = ( event.clientX / this.renderer.domElement.clientWidth ) * 2 - 1;
         this.mouse.y = - ( event.clientY / this.renderer.domElement.clientHeight ) * 2 + 1;
-        this.raycaster.setFromCamera( this.mouse, this.camera.get3DObject() );
+        this.raycaster.setFromCamera( this.mouse, this.camera );
 
         let intersects = this.raycaster.intersectObjects(this.entitiesObjArray);
         if(intersects.length > 0){
@@ -37,8 +37,11 @@ export default class InputManager {
     }
 
     addEntity(entity){
-        this.entities[entity.name] = entity;
-        this.entitiesObjArray.push(entity.get3DObject());
+        
+            this.entities[entity.name] = entity;
+            this.entitiesObjArray.push(entity.get3DObject());
+
+       
     }
 
 

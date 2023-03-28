@@ -2,8 +2,8 @@
  * Clase usuario, tiene toda la información
  */
 
-import RenderableEntity from "../../engine/entities/renderableEntity";
-export default class User extends RenderableEntity{
+import Entity from "../../engine/entities/entity"
+export default class User extends Entity{
 
     constructor(index, model, data) {
         super();
