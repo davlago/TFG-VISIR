@@ -1,8 +1,12 @@
 import * as THREE from 'three';
 
-export function cylinder(radius, textureBase, name, opacity){
-    let geometry = new THREE.CylinderGeometry(radius, radius, 17, 32);
-    let material = new THREE.MeshPhongMaterial({ map: textureBase, transparent: true, opacity: opacity});
+export function cylinder(radius, textureBase, name, opacity, height){
+    let geometry = new THREE.CylinderGeometry(radius, radius, height, 32);
+    let material;
+    if(textureBase === null){
+        material = new THREE.MeshPhongMaterial({transparent: true, opacity: opacity});
+    }
+    else material = new THREE.MeshPhongMaterial({ map: textureBase, transparent: true, opacity: opacity});
     let cylinder = new THREE.Mesh(geometry, material);
     cylinder.name = name;
     return cylinder;

@@ -10,12 +10,10 @@ export default class Entity {
 
     constructor(name) {
         this.object;
-        this.isActive = false;
+        this.isActive = true;
         this.isClicked = false;
-        this.isActivated = false;
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = { x: 1, y: 1, z: 1 };
-        this.childrenGroup = new THREE.Group(); //Grupo de usuarios;
         this.childrenEntities = {};
         this.name = "No_Name";
     }
@@ -24,13 +22,14 @@ export default class Entity {
         this.isClicked = true;
     }
 
-    hasChildren(){
-        return !(this.childrenGroup.children.length === 0);
+    getChildrenEntities(){
+        return this.childrenEntities;
     }
 
-    getChildrenGroup(){
-        return this.childrenGroup;
+    hasChildren(){
+        return !(this.childrenEntities.length === 0);
     }
+
     getIsActive() {
         return this.isActive;
     }
@@ -49,7 +48,6 @@ export default class Entity {
         this.position.z = z;
 
         this.object.position.set(x, y, z);
-        this.childrenGroup.position.set(x,y,z);
     }
 
     getScale() {
@@ -87,28 +85,23 @@ export default class Entity {
         return this.object;
     }
 
-
     /**
      * Función para activar entidades
      */
     activate() {
-        if (!this.isActive) {
-            this.isActive = true;
-        }
-        this.onEnable();
+        this.isActive = true;
     }
-
-    /**
-     * Función para ¿? entidades
-     */
-    onEnable() { }
 
     /**
      * Función para actualizar entidades
      * @param {*} deltaTime 
      */
     update(deltaTime) {
-
+        if(this.isActive){
+            this.onUpdate(deltaTime);
+        }
     }
+
+    onUpdate(deltaTime){}
 
 }

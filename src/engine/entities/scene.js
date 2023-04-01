@@ -17,7 +17,10 @@ export default class Scene {
                 this.scene.add(e.get3DObject());
                 this.entities[e.name] = e;
                 if(e.hasChildren()){
-                    this.scene.add(e.getChildrenGroup())
+                    let childrens = e.getChildrenEntities();
+                    for (let [entityName, entity] of Object.entries(childrens)) {
+                        this.scene.add(entity.get3DObject())
+                    }
                 }
             }
         }

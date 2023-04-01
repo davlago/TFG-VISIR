@@ -108,12 +108,11 @@ export default class Simulator extends GameEngine {
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
                 let model = this.getModel(userModel);
                 let user = new User(userId, model, userInfo);
-                user.setPosition(coords[i].x, 0, coords[i].z);
-                //user.name = userId;
+                user.setPosition(coords[i].x+center.x, 2, coords[i].z+center.z);
                 user.setName(userId);
-                console.log(user.name);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
+                //this.scene.add(userId, user);
             }
 
             this.communitiesArray.push(community);

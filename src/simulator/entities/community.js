@@ -9,8 +9,7 @@ export default class Community extends Entity {
     constructor(index, radius, data, pos, textureBase) {
         super();
         this.communityInfo = data;
-        this.cylinder = GEOMETRY.cylinder(radius, textureBase, index, 0);
-        this.childrenGroup.name = "Community " + index;
+        this.cylinder = GEOMETRY.cylinder(radius, textureBase, index, 1, 3);
         this.isActive = true;
         this.object = this.cylinder; //Comunidad, con grupo de usuarios, y la representación grafica
         this.setPosition(pos.x, pos.y, pos.z);
@@ -18,25 +17,13 @@ export default class Community extends Entity {
 
     addUser(idUser, user) {
         this.childrenEntities[idUser] = user;
-        this.childrenGroup.add(user.get3DObject());
     }
 
-    update(deltaTime) {
-        if (this.isActive) {
-            if (this.isClicked) {
-                this.setPosition(this.position.x, this.position.y + 10, this.position.z);
-                this.isClicked = false;
-            }
-        }
-    }
-
-    desactivate() {
-        this.setPosition(this.position.x, this.position.y - 10, this.position.z);
-        this.isActive = true;
-        for (const [key, value] of Object.entries(this.childrenEntities)) {
-            value.isActive = false;
+    onUpdate(deltaTime) {
+        if (this.isClicked) {
+            this.setPosition(this.position.x, this.position.y + 10, this.position.z);
+            this.isClicked = false;
         }
 
     }
-
 }
