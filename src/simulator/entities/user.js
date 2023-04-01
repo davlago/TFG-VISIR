@@ -17,7 +17,6 @@ export default class User extends Entity{
         if (this.isClicked) {
             this.setPosition(this.position.x, this.position.y + 10, this.position.z);
             this.isClicked = false;
-            console.log("Me subo")
         }
 
     }
