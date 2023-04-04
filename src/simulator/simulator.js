@@ -38,6 +38,8 @@ export default class Simulator extends GameEngine {
 
         this.dataManager = new DataManager();
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
+        this.setSelected = this.setSelected.bind(this);
+        this.getSelected = this.getSelected.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
         this.entitySelected;
 
@@ -54,6 +56,7 @@ export default class Simulator extends GameEngine {
 
     setSelected(entity) {
         this.entitySelected = entity;
+        this.cameraManager.focusObj(entity);
     }
 
     getSelected() {
