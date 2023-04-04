@@ -21,9 +21,14 @@ export default class Community extends Entity {
 
     onUpdate(deltaTime) {
         if (this.isClicked) {
-            this.setPosition(this.position.x, this.position.y + 10, this.position.z);
+            this.cylinder.material.color = {r: 136, g: 8, b: 8}
+            console.log(this.cylinder)        
             this.isClicked = false;
         }
 
+    }
+
+    goDown(){
+        this.cylinder.material.color = {r: 1, g: 1, b: 1}
     }
 }

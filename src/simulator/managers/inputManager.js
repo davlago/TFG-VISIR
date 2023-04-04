@@ -6,7 +6,9 @@ import * as THREE from 'three';
 
 export default class InputManager {
 
-    constructor(camera, renderer) {
+    constructor(camera, renderer, setSelected, getSelected) {
+        this.setSelected = setSelected;
+        this.getSelected = getSelected;
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
         this.entities = {};
@@ -33,8 +35,19 @@ export default class InputManager {
                 selectObject = selectObject.parent;
             }
             console.log(selectObject.name);
-            this.entities[selectObject.name].setClicked();
-
+            let entitySelected = this.getSelected();
+            if(entitySelected !== undefined){
+                let entitySelectedName = entitySelected.getName()
+                if(selectObject.name !== entitySelectedName){
+                    this.entities[entitySelectedName].goDown();
+                    this.entities[selectObject.name].setClicked();
+                    this.setSelected(this.entities[selectObject.name]);
+                }   
+            }
+            else{
+                this.entities[selectObject.name].setClicked();
+                this.setSelected(this.entities[selectObject.name]);
+            }
         }
 
     }

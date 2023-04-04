@@ -39,16 +39,25 @@ export default class Simulator extends GameEngine {
         this.dataManager = new DataManager();
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
+        this.entitySelected;
 
     }
 
-    postUpdates(deltaTime){
+    postUpdates(deltaTime) {
         this.cameraManager.update();
     }
 
-    createManagers(){
+    createManagers() {
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
-        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer);
+        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.setSelected, this.getSelected);
+    }
+
+    setSelected(entity) {
+        this.entitySelected = entity;
+    }
+
+    getSelected() {
+        return this.entitySelected;
     }
 
     createMyEntities() {
@@ -60,7 +69,7 @@ export default class Simulator extends GameEngine {
         });
     }
 
-    createSimulatorEntities(){
+    createSimulatorEntities() {
         let lightArray = [];
 
         //Crear las 4 luces de la habitación
@@ -108,7 +117,7 @@ export default class Simulator extends GameEngine {
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
                 let model = this.getModel(userModel);
                 let user = new User(userId, model, userInfo);
-                user.setPosition(coords[i].x+center.x, 2, coords[i].z+center.z);
+                user.setPosition(coords[i].x + center.x, 2, coords[i].z + center.z);
                 user.setName(userId);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
@@ -124,15 +133,15 @@ export default class Simulator extends GameEngine {
 
     getModel(userModel) {
         let gender = userModel[genderKey];
-        try{
+        try {
             let model = this.modelManager.getOneModel(gender);
             return clone(model);
-        }catch(err){
-            console.log("Cant clone: "+ gender);
+        } catch (err) {
+            console.log("Cant clone: " + gender);
             let model = this.modelManager.getOneModel("Not specified");
             return clone(model);
         }
-       
+
     }
 }
 
