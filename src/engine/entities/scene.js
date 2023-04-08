@@ -44,6 +44,13 @@ export default class Scene {
         }
     }
 
+    focusObj(entity){
+        this.entities["lightFocus"].setConfLight(0xff2222, 2, 50);
+        let pos = entity.getPosition();
+        this.entities["lightFocus"].setPosition(pos.x, 10, pos.z);
+        console.log("pongo la luz en ", entity.getPosition())
+    }
+
     getCamera(){
         return this.entities.camera.get3DObject();
     }

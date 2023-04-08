@@ -56,6 +56,4 @@ export default class InputManager {
         this.entities[entity.name] = entity;
         this.entitiesObjArray.push(entity.get3DObject());
     }
-
-
 }

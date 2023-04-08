@@ -5,11 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThreeJS Starter</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body onResize='window.location.href = window.location.href;'>
-    <div id="threejs"></div>
+    <div class="info-space" id="info-space">
+        <div class="info" id="info-box"></div>
+        <div class="smalliIcon" id="icross">
+            <i>i</i>
+        </div>
+        <div class="smallXIcon" id="xcross">
+            <i>x</i>
+        </div>
+        <h1 class="" id="community-title"></h1>
+        <div class="content">
+            <div class="data row" id="community-type-row">
+                <div class="col parameter">Type: </div>
+                <div class="col value" id="community-type"></div>
+            </div>
+            <div class="data row" id="community-explanation-row">
+                <div class="col parameter">Explanation: </div>
+                <div class="col value" id="community-explanation"></div>
+            </div>
+            <div class="data row" id="community-nUsers-row">
+                <div class="col parameter">Nº Users: </div>
+                <div class="col value" id="community-nUsers"></div>
+            </div>
+        </div>
+    </div>
+    <div class="treeJs-container" id="threejs"></div>
 </body>
 
 </html>

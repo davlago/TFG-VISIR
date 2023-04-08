@@ -21,9 +21,7 @@ module.exports = {
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, '../index.html'),
                 minify: true
-            }),
-            new MiniCSSExtractPlugin()
-        ],
+            })        ],
     module:
     {
         rules:
@@ -47,11 +45,7 @@ module.exports = {
                 // CSS
                 {
                     test: /\.css$/,
-                    use:
-                        [
-                            MiniCSSExtractPlugin.loader,
-                            'css-loader'
-                        ]
+                    use: [ 'style-loader', 'css-loader' ]
                 },
 
                 // Textures
@@ -64,21 +58,6 @@ module.exports = {
                                 options:
                                 {
                                     outputPath: 'assets/textures/'
-                                }
-                            }
-                        ]
-                },
-
-                // Models
-                {
-                    test: /\.(fbx)$/,
-                    use:
-                        [
-                            {
-                                loader: 'file-loader',
-                                options:
-                                {
-                                    outputPath: 'assets/models/'
                                 }
                             }
                         ]

@@ -6,11 +6,11 @@ import Entity from "./entity";
 
 import * as THREE from "three";
 
-export default class Light extends Entity{
+export default class Light extends Entity {
 
-    constructor( color, intensity, distance ){
+    constructor(color, intensity, distance) {
         super();
-        this.object = new THREE.PointLight( color, intensity, distance );
+        this.object = new THREE.PointLight(color, intensity, distance);
         this.object.name = "Light";
     }
 
@@ -22,12 +22,10 @@ export default class Light extends Entity{
      * @param {*} intensity 
      * @param {*} distance 
      */
-    setConfLight(color, intensity, distance ){
-        this.light.forEach((light)=>{
-            light.color.setHex( color);
-            light.intensity = intensity;
-            light.distance = distance;
-            light.castShadow = false; // default false
-        })
+    setConfLight(color, intensity, distance) {
+        this.object.color.setHex(color);
+        this.object.intensity = intensity;
+        this.object.distance = distance;
+        this.object.castShadow = false; // default false
     }
 }

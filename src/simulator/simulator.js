@@ -57,11 +57,35 @@ export default class Simulator extends GameEngine {
     setSelected(entity) {
         this.entitySelected = entity;
         this.cameraManager.focusObj(entity);
+        this.scene.focusObj(entity);
+        let type = entity.constructor.name;
+        this.changeBox(entity, type);
+    }
+
+    changeBox(entity, type) {
+        let info = null;
+        if (type === "User") {
+            info = this.dataManager.getUserById(entity.getName()).getData();
+        }
+        else if (type === "Community") {
+            info = this.dataManager.getCommunityById(entity.getName()).getData();
+        }
+        document.getElementById("info-box").className = "info expand";
+        document.getElementById("community-title").className = "myShow";
+        document.getElementById("community-title").innerHTML = info.label || info.name;
+
+        document.getElementById("community-type-row").className = "data row myShow";
+        document.getElementById("community-type").innerHTML = type;
+
+        document.getElementById("icross").className = "smalliIcon hide";
+        document.getElementById("xcross").className = "smallXIcon myShow";
     }
 
     getSelected() {
         return this.entitySelected;
     }
+
+
 
     createMyEntities() {
         return new Promise((resolve, reject) => {
@@ -132,6 +156,9 @@ export default class Simulator extends GameEngine {
             aux++;
         }
         this.scene.add("communities", this.communitiesArray);
+        let lightFocus = new Light(0xffffff, 0, 250);
+        this.scene.add("lightFocus", lightFocus);
+
     }
 
     getModel(userModel) {
@@ -147,4 +174,10 @@ export default class Simulator extends GameEngine {
 
     }
 }
-
+document.getElementById("xcross").addEventListener('mouseup', () => {
+    document.getElementById("info-box").className = "info retract";
+    document.getElementById("icross").className = "smalliIcon myShow"
+    document.getElementById("xcross").className = "smallXIcon hide";
+    document.getElementById("community-title").className = "hide";
+    document.getElementById("community-type-row").className = "data row hide";
+});
