@@ -46,7 +46,7 @@ export default class Simulator extends GameEngine {
     }
 
     postUpdates(deltaTime) {
-        this.cameraManager.update();
+        this.cameraManager.update(deltaTime);
     }
 
     createManagers() {
@@ -115,9 +115,6 @@ export default class Simulator extends GameEngine {
             this.texturesManager.getOneTexture("wood")
         );
         this.scene.add("room", room)
-
-
-        this.cameraManager.focusObj(this.scene.getEntity("room"));
 
         this.communitiesArray = [];
 

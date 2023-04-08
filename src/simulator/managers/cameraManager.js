@@ -16,6 +16,7 @@ export default class CameraManager {
         this.cameraPositions["general"] = cameraGenPos;
         this.controls = new OrbitControls( this.camera.get3DObject(), renderer.domElement );
         this.controls.enablePan = false; //Deshabilitar mover
+        this.target = null;
 
     }
 
@@ -31,10 +32,14 @@ export default class CameraManager {
     }
     focusObj(object) {
         let pos = object.getPosition();
-        console.log(pos);
-        this.controls.target = pos;
+        let newPos = {x:pos.x, y:pos.y+50, z:pos.z}
+        this.camera.focusObj(newPos);
+        this.target = pos;
     }
     update(deltaTime){
+        if(this.target !==null){
+            this.controls.target.lerp(this.target,deltaTime);
+        }
         this.controls.update();
     }
 
