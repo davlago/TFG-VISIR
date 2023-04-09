@@ -24,4 +24,12 @@ export default class User extends Entity{
     goDown(){
         this.setPosition(this.position.x, this.position.y - 10, this.position.z);
     }
+
+    getUserInfo(){
+        return this.userInfo;
+    }
+
+    setCommunity(name){
+        this.userInfo.setData("community",name)
+    }
 }

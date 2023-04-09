@@ -13,18 +13,27 @@ export default class Community extends Entity {
         this.isActive = true;
         this.object = this.cylinder; //Comunidad, con grupo de usuarios, y la representación grafica
         this.setPosition(pos.x, pos.y, pos.z);
+        this.radius = radius;
     }
 
     addUser(idUser, user) {
+        user.setCommunity(this.getName())
         this.childrenEntities[idUser] = user;
     }
 
     onUpdate(deltaTime) {
         if (this.isClicked) {
-            console.log(this.cylinder)        
             this.isClicked = false;
         }
 
+    }
+
+    getCommunityInfo(){
+        return this.communityInfo;
+    }
+
+    getRadius(){
+        return this.radius;
     }
 
     goDown(){

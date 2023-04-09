@@ -1,8 +1,6 @@
 /**
  * Clase Simulator, tiene toda la información
  */
-import * as THREE from 'three';
-
 import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
@@ -16,7 +14,9 @@ import User from './entities/user';
 import { clone } from '../utils/SkeletonUtils';
 
 import * as geometryUtils from "../utils/geometryUtils";
+import CircleFocus from './entities/circleFocus';
 import InputManager from './managers/inputManager';
+import GUI from './GUI';
 
 
 
@@ -42,6 +42,7 @@ export default class Simulator extends GameEngine {
         this.getSelected = this.getSelected.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
         this.entitySelected;
+        this.gui = new GUI(this.dataManager);
 
     }
 
@@ -52,37 +53,6 @@ export default class Simulator extends GameEngine {
     createManagers() {
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
         this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.setSelected, this.getSelected);
-    }
-
-    setSelected(entity) {
-        this.entitySelected = entity;
-        this.cameraManager.focusObj(entity);
-        this.scene.focusObj(entity);
-        let type = entity.constructor.name;
-        this.changeBox(entity, type);
-    }
-
-    changeBox(entity, type) {
-        let info = null;
-        if (type === "User") {
-            info = this.dataManager.getUserById(entity.getName()).getData();
-        }
-        else if (type === "Community") {
-            info = this.dataManager.getCommunityById(entity.getName()).getData();
-        }
-        document.getElementById("info-box").className = "info expand";
-        document.getElementById("community-title").className = "myShow";
-        document.getElementById("community-title").innerHTML = info.label || info.name;
-
-        document.getElementById("community-type-row").className = "data row myShow";
-        document.getElementById("community-type").innerHTML = type;
-
-        document.getElementById("icross").className = "smalliIcon hide";
-        document.getElementById("xcross").className = "smallXIcon myShow";
-    }
-
-    getSelected() {
-        return this.entitySelected;
     }
 
 
@@ -100,8 +70,8 @@ export default class Simulator extends GameEngine {
         let lightArray = [];
 
         //Crear las 4 luces de la habitación
-        for (let i = 0; i < 4; i++) {
-            let light = new Light(0xffffff, 1, 250);
+        for (let i = 0; i < 5; i++) {
+            let light = new Light(0xffffff, 1, 200);
             let pos = simulatorMap[lightPositionKey][i];
             light.setPosition(pos.x, pos.y, pos.z);
             lightArray.push(light);
@@ -145,7 +115,6 @@ export default class Simulator extends GameEngine {
                 user.setName(userId);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
-                //this.scene.add(userId, user);
             }
 
             this.communitiesArray.push(community);
@@ -155,7 +124,6 @@ export default class Simulator extends GameEngine {
         this.scene.add("communities", this.communitiesArray);
         let lightFocus = new Light(0xffffff, 0, 250);
         this.scene.add("lightFocus", lightFocus);
-
     }
 
     getModel(userModel) {
@@ -170,6 +138,60 @@ export default class Simulator extends GameEngine {
         }
 
     }
+
+    focusObj(entity, type) {
+        let pos = entity.getPosition();
+        this.scene.remove("circleFocus");
+        if (type === "Community") {
+            this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, 0xff2222, pos))
+            let lightFocus = this.scene.getEntity("lightFocus");
+            lightFocus.setConfLight(0xff2222, 2, 50);
+            lightFocus.setPosition(pos.x, 10, pos.z);
+            this.cameraManager.focusObj(entity, 50);
+        }
+        else if (type === "User") {
+            let comEntity = this.scene.getEntity(entity.getUserInfo().getDataByKey("community"));
+            this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, 0xff2222, comEntity.getPosition()))
+            let lightFocus = this.scene.getEntity("lightFocus");
+            lightFocus.setConfLight(0xff2222, 0, 50);
+            this.cameraManager.focusObj(entity, 20);
+        }
+
+    }
+
+
+    setSelected(entity) {
+        console.log(entity)
+        this.entitySelected = entity;
+        let type = entity.constructor.name;
+        this.focusObj(entity, type);
+        this.changeBox(entity, type);
+        //this.gui.changeBox(entity, type);
+    }
+
+    changeBox(entity, type) {
+        let info = null;
+        if (type === "User") {
+            info = this.dataManager.getUserById(entity.getName()).getData();
+        }
+        else if (type === "Community") {
+            info = this.dataManager.getCommunityById(entity.getName()).getData();
+        }
+        document.getElementById("info-box").className = "info expand";
+        document.getElementById("community-title").className = "myShow";
+        document.getElementById("community-title").innerHTML = info.label || info.name;
+
+        document.getElementById("community-type-row").className = "data row myShow";
+        document.getElementById("community-type").innerHTML = type;
+
+        document.getElementById("icross").className = "smalliIcon hide";
+        document.getElementById("xcross").className = "smallXIcon myShow";
+    }
+
+    getSelected() {
+        return this.entitySelected;
+    }
+
 }
 document.getElementById("xcross").addEventListener('mouseup', () => {
     document.getElementById("info-box").className = "info retract";

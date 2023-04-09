@@ -9,6 +9,10 @@ export default class EntityInfo {
         this.info = data;
     }
 
+    setData(key, data){
+        this.info[key] = data;
+    }
+
     getDataByKey(key){
         return this.info[key];
     }
