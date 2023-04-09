@@ -5,20 +5,29 @@
 
 export default class EntityInfo {
 
-    constructor(data) {
+    constructor(data, color) {
         this.info = data;
+        this.color = color;
     }
 
-    setData(key, data){
+    setData(key, data) {
         this.info[key] = data;
     }
 
-    getDataByKey(key){
+    getDataByKey(key) {
         return this.info[key];
     }
 
-    getData(){
+    getData() {
         return this.info;
+    }
+
+    setColor(color) {
+        this.color = color;
+    }
+
+    getColor() {
+        return this.color;
     }
 
 }

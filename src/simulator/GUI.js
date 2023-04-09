@@ -1,27 +1,56 @@
 export default class GUI {
 
-    constructor(dataManager) {
+    constructor(dataManager, scene) {
         this.dataManager = dataManager;
+        this.scene = scene;
 
     }
 
     changeBox(entity, type) {
-        let info = null;
+        let title;
+        let communityInfo;
+        let userInfo;
         if (type === "User") {
-            info = this.dataManager.getUserById(entity.getName()).getData();
+            userInfo = this.dataManager.getUserById(entity.getName()).getData();
+            let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
+            communityInfo = this.dataManager.getCommunityById(comEntity.getName()).getData();
+            title = "User: " + this.dataManager.getUserById(entity.getName()).getData().label;
+            document.getElementById("title").className = "myShow";
+            this.showUserInfo(userInfo);
         }
         else if (type === "Community") {
-            info = this.dataManager.getCommunityById(entity.getName()).getData();
+            communityInfo = this.dataManager.getCommunityById(entity.getName()).getData();
+            title = "Community: " + this.dataManager.getCommunityById(entity.getName()).getData().name;
         }
+        this.showCommunityInfo(communityInfo, type);
+
         document.getElementById("info-box").className = "info expand";
-        document.getElementById("community-title").className = "myShow";
-        document.getElementById("community-title").innerHTML = info.label || info.name;
-
-        document.getElementById("community-type-row").className = "data row myShow";
-        document.getElementById("community-type").innerHTML = type;
-
         document.getElementById("icross").className = "smalliIcon hide";
         document.getElementById("xcross").className = "smallXIcon myShow";
+
+        document.getElementById("title").className = "myShow";
+        document.getElementById("title").innerHTML = title;
+
+    }
+
+    showUserInfo(userInfo){
+        document.getElementById("user-gender-row").className = "myShow";
+        document.getElementById("user-gender").innerHTML = userInfo.explicit_community.Gender;
+    }
+
+    showCommunityInfo(communityInfo, type){
+        if(type==="User"){
+            document.getElementById("user-community-title-row").className = "myShow";
+            document.getElementById("user-community-title").innerHTML = communityInfo.name;
+        }
+        if(type === "Community"){
+            document.getElementById("user-community-title-row").className = "hide";
+            document.getElementById("user-gender-row").className = "hide";
+        }
+
+        document.getElementById("community-nUsers-row").className = "myShow";
+        document.getElementById("community-nUsers").innerHTML = communityInfo.users.length;
+        
     }
 
 }
@@ -30,6 +59,8 @@ document.getElementById("xcross").addEventListener('mouseup', () => {
     document.getElementById("info-box").className = "info retract";
     document.getElementById("icross").className = "smalliIcon myShow"
     document.getElementById("xcross").className = "smallXIcon hide";
-    document.getElementById("community-title").className = "hide";
-    document.getElementById("community-type-row").className = "data row hide";
+
+    document.getElementById("title").className = "hide";
+    document.getElementById("community-nUsers-row").className = "hide";
+
 });

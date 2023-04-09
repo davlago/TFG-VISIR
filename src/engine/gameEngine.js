@@ -4,6 +4,8 @@
 import * as THREE from 'three';
 import Camera from './entities/camera';
 import Scene from './entities/scene';
+import Stats from 'stats.js';
+
 
 
 
@@ -12,13 +14,14 @@ const roomSizeKey = "roomSize";
 export default class GameEngine{
 
     constructor() {
-        this.renderer = new THREE.WebGLRenderer();;
+        this.renderer = new THREE.WebGLRenderer();
         this.scene = new Scene();
         this.entities = {};
         this.modelManager;
         this.gameLoop = this.gameLoop.bind(this)
         this.texturesManager;
         this.clock = new THREE.Clock();
+        this.stats;
     }
 
     /**
@@ -31,7 +34,10 @@ export default class GameEngine{
         this.modelManager = modelManager;
         this.texturesManager = texturesManager;
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('threejs').appendChild(this.renderer.domElement);
+        let container =  document.getElementById('threejs');
+        container.appendChild(this.renderer.domElement);
+        this.stats = new Stats();
+		container.appendChild( this.stats.dom );
 
         this.scene.add("camera", new Camera(window.innerWidth, window.innerHeight));
 
@@ -58,11 +64,14 @@ export default class GameEngine{
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
      */
     gameLoop() {
+        this.stats.begin();
         let deltaTimeSec = this.clock.getDelta();
         this.scene.update(deltaTimeSec);
         this.postUpdates(deltaTimeSec);
         let scene = this.scene.get3DObject();
         this.renderer.render(scene, this.scene.getCamera());
+        this.stats.end();
+
         window.requestAnimationFrame(this.gameLoop);
     }
 

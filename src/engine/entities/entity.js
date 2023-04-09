@@ -16,8 +16,13 @@ export default class Entity {
         this.scale = { x: 1, y: 1, z: 1 };
         this.childrenEntities = {};
         this.name = "No_Name";
+        this.info;
     }
 
+    getInfo(){
+        return this.info;
+    }
+    
     setClicked(){
         this.isClicked = true;
     }

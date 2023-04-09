@@ -2,6 +2,7 @@ import UserInfo from '../info/userInfo';
 import CommunityInfo from '../info/communityInfo';
 
 import * as levelData from '../../../assets/data/GAM2.json'
+
 /**
  * Clase para cargar la data
  */
@@ -10,9 +11,10 @@ const userKey = "users";
 const communityKey = "communities";
 export default class DataManager {
 
-    constructor() {
+    constructor(simulatorMap) {
         this.users = {};
         this.communities = {};
+        this.simulatorMap = simulatorMap;
     }
 
     loadData() {
@@ -44,10 +46,13 @@ export default class DataManager {
     loadCommunities() {
         return new Promise((resolve, reject) => {
             let communitiesData = levelData[communityKey];
+            let index = 0;
             for (const communityData of communitiesData) {
-                let community = new CommunityInfo(communityData);
+                let color = this.simulatorMap["communityColors"][index%10];
+                let community = new CommunityInfo(communityData,color);
                 let idCommunity = community.getDataByKey("id");
                 this.communities[idCommunity] = community;
+                index++;
             }
             resolve();
         });

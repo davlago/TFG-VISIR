@@ -19,7 +19,6 @@ import InputManager from './managers/inputManager';
 import GUI from './GUI';
 
 
-
 const roomSizeKey = "roomSize";
 const lightPositionKey = "lightPosition";
 const generalCameraPositionKey = "cameraGeneralPosition";
@@ -36,14 +35,13 @@ export default class Simulator extends GameEngine {
     constructor() {
         super();
 
-        this.dataManager = new DataManager();
+        this.dataManager = new DataManager(simulatorMap);
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.setSelected = this.setSelected.bind(this);
         this.getSelected = this.getSelected.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
         this.entitySelected;
-        this.gui = new GUI(this.dataManager);
-
+        this.gui = new GUI(this.dataManager, this.scene);
     }
 
     postUpdates(deltaTime) {
@@ -142,20 +140,24 @@ export default class Simulator extends GameEngine {
     focusObj(entity, type) {
         let pos = entity.getPosition();
         this.scene.remove("circleFocus");
+        let lightFocus = this.scene.getEntity("lightFocus");
+        let color;
         if (type === "Community") {
-            this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, 0xff2222, pos))
-            let lightFocus = this.scene.getEntity("lightFocus");
-            lightFocus.setConfLight(0xff2222, 2, 50);
+            color = entity.getInfo().getColor();
+            this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, color, pos))
             lightFocus.setPosition(pos.x, 10, pos.z);
             this.cameraManager.focusObj(entity, 50);
         }
         else if (type === "User") {
-            let comEntity = this.scene.getEntity(entity.getUserInfo().getDataByKey("community"));
-            this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, 0xff2222, comEntity.getPosition()))
-            let lightFocus = this.scene.getEntity("lightFocus");
-            lightFocus.setConfLight(0xff2222, 0, 50);
+            let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
+            color = comEntity.getInfo().getColor();
+            this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, color, comEntity.getPosition()))
+            lightFocus.setPosition(comEntity.getPosition().x, 15, comEntity.getPosition().z);
+
             this.cameraManager.focusObj(entity, 20);
         }
+        lightFocus.setConfLight(color, 2, 50);
+
 
     }
 
@@ -165,27 +167,7 @@ export default class Simulator extends GameEngine {
         this.entitySelected = entity;
         let type = entity.constructor.name;
         this.focusObj(entity, type);
-        this.changeBox(entity, type);
-        //this.gui.changeBox(entity, type);
-    }
-
-    changeBox(entity, type) {
-        let info = null;
-        if (type === "User") {
-            info = this.dataManager.getUserById(entity.getName()).getData();
-        }
-        else if (type === "Community") {
-            info = this.dataManager.getCommunityById(entity.getName()).getData();
-        }
-        document.getElementById("info-box").className = "info expand";
-        document.getElementById("community-title").className = "myShow";
-        document.getElementById("community-title").innerHTML = info.label || info.name;
-
-        document.getElementById("community-type-row").className = "data row myShow";
-        document.getElementById("community-type").innerHTML = type;
-
-        document.getElementById("icross").className = "smalliIcon hide";
-        document.getElementById("xcross").className = "smallXIcon myShow";
+        this.gui.changeBox(entity, type);
     }
 
     getSelected() {
@@ -193,10 +175,3 @@ export default class Simulator extends GameEngine {
     }
 
 }
-document.getElementById("xcross").addEventListener('mouseup', () => {
-    document.getElementById("info-box").className = "info retract";
-    document.getElementById("icross").className = "smalliIcon myShow"
-    document.getElementById("xcross").className = "smallXIcon hide";
-    document.getElementById("community-title").className = "hide";
-    document.getElementById("community-type-row").className = "data row hide";
-});

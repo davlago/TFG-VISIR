@@ -6,8 +6,9 @@ import EntityInfo from "../../engine/entities/entityInfo";
 
 export default class CommunityInfo extends EntityInfo{
 
-    constructor(data) {
-        super(data);
+    constructor(data, color) {
+        super(data, color);
+        console.log(color);
     }
 
 }

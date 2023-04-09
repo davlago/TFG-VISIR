@@ -6,8 +6,8 @@ import EntityInfo from "../../engine/entities/entityInfo";
 
 export default class UserInfo extends EntityInfo{
 
-    constructor(data) {
-        super(data);
+    constructor(data, color) {
+        super(data, color);
     }
     
 }

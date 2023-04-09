@@ -8,7 +8,7 @@ export default class User extends Entity{
 
     constructor(index, model, data) {
         super();
-        this.userInfo = data;
+        this.info = data;
         this.object =model;
         this.setScale(0.06, 0.06, 0.06);
     }
@@ -25,11 +25,7 @@ export default class User extends Entity{
         this.setPosition(this.position.x, this.position.y - 10, this.position.z);
     }
 
-    getUserInfo(){
-        return this.userInfo;
-    }
-
     setCommunity(name){
-        this.userInfo.setData("community",name)
+        this.info.setData("community",name)
     }
 }

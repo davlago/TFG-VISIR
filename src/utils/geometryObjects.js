@@ -24,9 +24,9 @@ export function cubeTextures(size, textureArray) {
 
 }
 
-export function circle(radius, color ) {
+export function circle(radius) {
     const geometry = new THREE.CircleGeometry(radius, 32);
-    const material = new THREE.MeshBasicMaterial({ color: color });
+    const material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
     const circle = new THREE.Mesh(geometry, material);
     return circle;
 }

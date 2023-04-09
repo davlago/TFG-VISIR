@@ -8,7 +8,7 @@ export default class Community extends Entity {
 
     constructor(index, radius, data, pos, textureBase) {
         super();
-        this.communityInfo = data;
+        this.info = data;
         this.cylinder = GEOMETRY.cylinder(radius, textureBase, index, 1, 3);
         this.isActive = true;
         this.object = this.cylinder; //Comunidad, con grupo de usuarios, y la representación grafica
@@ -28,9 +28,6 @@ export default class Community extends Entity {
 
     }
 
-    getCommunityInfo(){
-        return this.communityInfo;
-    }
 
     getRadius(){
         return this.radius;
