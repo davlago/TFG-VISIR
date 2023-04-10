@@ -15,6 +15,10 @@
         {
             "key": "windowClose",
             "file": "/textures/windowClose.png"
+        },
+        {
+            "key": "loft",
+            "file": "/textures/wood-loft.jpg"
         }
     ],
     "models": [

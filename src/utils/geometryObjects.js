@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export function cylinder(radius, textureBase, name, opacity, height) {
+export function cylinderTexture(radius, textureBase, name, opacity, height) {
     let geometry = new THREE.CylinderGeometry(radius, radius, height, 32);
     let material;
     if (textureBase === null) {
@@ -26,7 +26,14 @@ export function cubeTextures(size, textureArray) {
 
 export function circle(radius) {
     const geometry = new THREE.CircleGeometry(radius, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+    const material = new THREE.MeshStandardMaterial({ color: 0xFFFFFF });
     const circle = new THREE.Mesh(geometry, material);
     return circle;
+}
+
+export function cylinder(radius, height) {
+    const geometry = new THREE.CylinderGeometry(radius, radius, height, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0xFFFFFF });
+    let cylinder = new THREE.Mesh(geometry, material);
+    return cylinder;
 }

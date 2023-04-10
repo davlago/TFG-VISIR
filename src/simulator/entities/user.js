@@ -15,14 +15,21 @@ export default class User extends Entity{
 
     onUpdate(deltaTime) {
         if (this.isClicked) {
-            this.setPosition(this.position.x, this.position.y + 10, this.position.z);
-            this.isClicked = false;
+            let pos = {x: this.position.x, y: this.position.y + 10, z: this.position.z}
+            this.object.position.lerp(pos,deltaTime);
+            let scale = {x:0.1, y:0.1, z:0.1}
+            this.object.scale.lerp(scale,deltaTime);
+        }
+        else{
+            this.object.position.lerp(this.position,deltaTime);
+            let scale = {x:0.06, y:0.06, z:0.06}
+            this.object.scale.lerp(scale,deltaTime);
         }
 
     }
     
     goDown(){
-        this.setPosition(this.position.x, this.position.y - 10, this.position.z);
+        this.isClicked = false;
     }
 
     setCommunity(name){

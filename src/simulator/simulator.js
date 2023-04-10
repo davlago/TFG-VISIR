@@ -65,16 +65,9 @@ export default class Simulator extends GameEngine {
     }
 
     createSimulatorEntities() {
-        let lightArray = [];
 
-        //Crear las 4 luces de la habitación
-        for (let i = 0; i < 5; i++) {
-            let light = new Light(0xffffff, 1, 200);
-            let pos = simulatorMap[lightPositionKey][i];
-            light.setPosition(pos.x, pos.y, pos.z);
-            lightArray.push(light);
-        }
-        this.scene.add("light", lightArray)
+        let light = new Light(0xffffff, 1);
+        this.scene.add("light", light)
 
         //Crear la habitación
         let room = new Room(this.roomSize,
@@ -99,7 +92,7 @@ export default class Simulator extends GameEngine {
             let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
             let center = vertexArray[aux];
 
-            let community = new Community(key, radius, value, center, this.texturesManager.getOneTexture("wood"));
+            let community = new Community(key, radius, value, center, this.texturesManager.getOneTexture("loft"));
             community.setName(key)
 
             let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
@@ -120,8 +113,7 @@ export default class Simulator extends GameEngine {
             aux++;
         }
         this.scene.add("communities", this.communitiesArray);
-        let lightFocus = new Light(0xffffff, 0, 250);
-        this.scene.add("lightFocus", lightFocus);
+
     }
 
     getModel(userModel) {
@@ -140,24 +132,18 @@ export default class Simulator extends GameEngine {
     focusObj(entity, type) {
         let pos = entity.getPosition();
         this.scene.remove("circleFocus");
-        let lightFocus = this.scene.getEntity("lightFocus");
         let color;
         if (type === "Community") {
             color = entity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, color, pos))
-            lightFocus.setPosition(pos.x, 10, pos.z);
-            this.cameraManager.focusObj(entity, 50);
+            this.cameraManager.focusObj(entity, 30);
         }
         else if (type === "User") {
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             color = comEntity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, color, comEntity.getPosition()))
-            lightFocus.setPosition(comEntity.getPosition().x, 15, comEntity.getPosition().z);
-
-            this.cameraManager.focusObj(entity, 20);
+            this.cameraManager.focusObj(entity, 30);
         }
-        lightFocus.setConfLight(color, 2, 50);
-
 
     }
 

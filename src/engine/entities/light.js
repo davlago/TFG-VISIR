@@ -8,9 +8,10 @@ import * as THREE from "three";
 
 export default class Light extends Entity {
 
-    constructor(color, intensity, distance) {
+    constructor(color, intensity, type) {
         super();
-        this.object = new THREE.PointLight(color, intensity, distance);
+        if(type==="point")this.object = new THREE.SpotLight(color, intensity);
+        else this.object = new THREE.AmbientLight(color, intensity)
         this.object.name = "Light";
     }
 
@@ -22,10 +23,14 @@ export default class Light extends Entity {
      * @param {*} intensity 
      * @param {*} distance 
      */
-    setConfLight(color, intensity, distance) {
+    setConfLight(color, intensity) {
         this.object.color.setHex(color);
         this.object.intensity = intensity;
-        this.object.distance = distance;
-        this.object.castShadow = false; // default false
+    }
+
+    setTarget(obj, radius){
+        this.object.target = obj.get3DObject();
+        let angle = radius*2 + 10;
+        this.object.angle = (Math.PI/180) * angle;
     }
 }
