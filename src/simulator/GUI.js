@@ -1,9 +1,18 @@
 export default class GUI {
 
-    constructor(dataManager, scene) {
+    constructor(dataManager, scene, goDown) {
         this.dataManager = dataManager;
         this.scene = scene;
-
+        this.goDown = goDown;
+        document.getElementById("xcross").addEventListener('dblclick', () => {
+            document.getElementById("info-box").className = "info retract";
+            document.getElementById("icross").className = "smalliIcon myShow"
+            document.getElementById("xcross").className = "smallXIcon hide";
+        
+            document.getElementById("title").className = "hide";
+            document.getElementById("community-nUsers-row").className = "hide";
+            this.goDown();
+        });
     }
 
     changeBox(entity, type) {
@@ -52,15 +61,5 @@ export default class GUI {
         document.getElementById("community-nUsers").innerHTML = communityInfo.users.length;
         
     }
-
 }
 
-document.getElementById("xcross").addEventListener('mouseup', () => {
-    document.getElementById("info-box").className = "info retract";
-    document.getElementById("icross").className = "smalliIcon myShow"
-    document.getElementById("xcross").className = "smallXIcon hide";
-
-    document.getElementById("title").className = "hide";
-    document.getElementById("community-nUsers-row").className = "hide";
-
-});

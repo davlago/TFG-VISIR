@@ -22,10 +22,22 @@ export default class CameraManager {
 
     focusObj(object, zoom) {
         let pos = object.getPosition();
+        this.target = pos;
+
         let newPos = {x:pos.x, y:pos.y+zoom, z:pos.z+zoom}
         this.camera.focusObj(newPos);
-        this.target = pos;
     }
+
+    noFocusObj(object, zoomY, zoomZ){
+        let pos = object.getPosition().clone();
+        pos.y = 0;
+        this.target = pos;
+
+        let newPos = {x:pos.x, y:pos.y+zoomY, z:pos.z+zoomZ}
+        console.log(newPos)
+        this.camera.focusObj(newPos);
+    }
+
     update(deltaTime){
         if(this.target !==null){
             this.controls.target.lerp(this.target,deltaTime);

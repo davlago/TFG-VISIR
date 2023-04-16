@@ -268,3 +268,11 @@ body {
   .green{
     background-color: rgb(11, 241, 30);
   }
+
+  .pointer{
+    cursor: pointer;
+  }
+
+  .noPointer{
+    user-select: none;
+  }

@@ -20,11 +20,11 @@ import GUI from './GUI';
 
 
 const roomSizeKey = "roomSize";
-const lightPositionKey = "lightPosition";
 const generalCameraPositionKey = "cameraGeneralPosition";
 const usersKey = "users";
 const usersDetailsKey = "explicit_community";
 const genderKey = "Gender";
+const ageKey = "ageGroup";
 const artKey = "RelationshipWithArt";
 
 
@@ -39,9 +39,10 @@ export default class Simulator extends GameEngine {
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.setSelected = this.setSelected.bind(this);
         this.getSelected = this.getSelected.bind(this);
+        this.goDown = this.goDown.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
         this.entitySelected;
-        this.gui = new GUI(this.dataManager, this.scene);
+        this.gui = new GUI(this.dataManager, this.scene, this.goDown);
     }
 
     postUpdates(deltaTime) {
@@ -102,7 +103,7 @@ export default class Simulator extends GameEngine {
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
                 let model = this.getModel(userModel);
                 let user = new User(userId, model, userInfo);
-                user.setPosition(coords[i].x + center.x, 2, coords[i].z + center.z);
+                user.setPosition(coords[i].x + center.x, 2.5, coords[i].z + center.z);
                 user.setName(userId);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
@@ -118,12 +119,13 @@ export default class Simulator extends GameEngine {
 
     getModel(userModel) {
         let gender = userModel[genderKey];
+        let age = userModel[ageKey];
         try {
-            let model = this.modelManager.getOneModel(gender);
+            let model = this.modelManager.getOneModel(age+"_"+gender);
             return clone(model);
         } catch (err) {
-            console.log("Cant clone: " + gender);
-            let model = this.modelManager.getOneModel("Not specified");
+            console.log("Cant clone: " + age+"_"+gender);
+            let model = this.modelManager.getOneModel("adult_Female");
             return clone(model);
         }
 
@@ -158,6 +160,13 @@ export default class Simulator extends GameEngine {
 
     getSelected() {
         return this.entitySelected;
+    }
+
+    goDown(){
+        this.entitySelected.goDown();
+        this.entitySelected = undefined;
+        this.scene.remove("circleFocus");
+        this.cameraManager.noFocusObj(this.scene.getEntity("room"),50, 100);
     }
 
 }

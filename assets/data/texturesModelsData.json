@@ -24,19 +24,35 @@
     "models": [
         
         {
-            "format": "3mf",
-            "key": "Female",
-            "file": "/models/female.3mf"
+            "format": "fbx",
+            "key": "adult_Female",
+            "file": "/models/adult_Female.fbx"
         },
         {
             "format": "fbx",
-            "key": "Male",
-            "file": "/models/male.fbx"
+            "key": "adult_Male",
+            "file": "/models/adult_Male.fbx"
         },
         {
             "format": "fbx",
-            "key": "Not specified",
-            "file": "/models/notSpecified.fbx"
+            "key": "young_Female",
+            "file": "/models/young_Female.fbx"
+        },
+        {
+            "format": "fbx",
+            "key": "young_Male",
+            "file": "/models/young_Male.fbx"
+        },
+        {
+            "format": "fbx",
+            "key": "elderly_Female",
+            "file": "/models/elderly_Female.fbx"
+        },
+        {
+            "format": "fbx",
+            "key": "elderly_Male",
+            "file": "/models/elderly_Male.fbx"
         }
+        
     ]
 }

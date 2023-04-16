@@ -14,6 +14,7 @@ export default class Camera extends Entity {
     }
 
     focusObj(pos) {
+        console.log(pos);
         this.target = pos;
     }
 
@@ -22,6 +23,7 @@ export default class Camera extends Entity {
     }
 
     update(deltaTime) {
+        console.log(this.position)
         if (this.target !== null) {
             this.object.position.lerp(this.target, deltaTime);
             if (Math.trunc(this.target.x) === Math.trunc(this.object.position.x) && Math.trunc(this.target.z) === Math.trunc(this.object.position.z)) this.stopCamera();
