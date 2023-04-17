@@ -14,6 +14,8 @@ module.exports = merge(
         mode: 'development',
         devServer:
         {
+            publicPath: "/assets/", // here's the change
+            contentBase: path.join(__dirname, 'public'),
             host: '0.0.0.0',
             port: portFinderSync.getPort(8080),
             contentBase: './dist',
