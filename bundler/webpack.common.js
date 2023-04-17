@@ -19,7 +19,7 @@ module.exports = {
                 ]
             }),
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, '../index.html'),
+                template: path.resolve(__dirname, '../dist/index.html'),
                 minify: true
             })        ],
     module:
