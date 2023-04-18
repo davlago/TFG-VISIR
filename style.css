@@ -173,6 +173,7 @@ body {
     -webkit-animation-fill-mode: forwards;
     z-index: 2;
     pointer-events: all;
+    display: block;
   }
   
   .hide {
@@ -180,6 +181,7 @@ body {
     -webkit-animation-fill-mode: forwards;
     z-index: 1;
     pointer-events: none;
+    display: none;
   }
   
   .info-space {
