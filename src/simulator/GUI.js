@@ -10,6 +10,10 @@ export default class GUI {
         document.getElementById("filterIcon").addEventListener('click', () => {
             this.filterMethod()
         });
+        document.getElementById("xFilter").addEventListener('click', () => {
+            this.filterMethod()
+        });
+
     }
 
     xCrossMethod(){
@@ -55,9 +59,12 @@ export default class GUI {
         }
         this.showCommunityInfo(communityInfo, type);
 
+        
+
         document.getElementById("info-box").className = "info expand";
         document.getElementById("icross").className = "smalliIcon hide";
         document.getElementById("xcross").className = "smallXIcon myShow";
+        document.getElementById("infoDiv").className = "myShow";
 
         document.getElementById("title").className = "myShow";
         document.getElementById("title").innerHTML = title;
