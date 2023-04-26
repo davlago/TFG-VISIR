@@ -10,7 +10,6 @@ export default class Camera extends Entity {
         super();
         this.object = new THREE.PerspectiveCamera(100, sizeWidth / sizeHeight, 1, 1000);
         this.target = null;
-        window.addEventListener('click', (event) => { this.stopCamera() }, false);
     }
 
     focusObj(pos) {

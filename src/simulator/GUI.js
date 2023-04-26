@@ -4,16 +4,38 @@ export default class GUI {
         this.dataManager = dataManager;
         this.scene = scene;
         this.goDown = goDown;
-        document.getElementById("xcross").addEventListener('dblclick', () => {
-            document.getElementById("info-box").className = "info retract";
+        document.getElementById("xcross").addEventListener('click', () => {
+            this.xCrossMethod()
+        });
+        document.getElementById("filterIcon").addEventListener('click', () => {
+            this.filterMethod()
+        });
+    }
+
+    xCrossMethod(){
+        document.getElementById("info-box").className = "info retract";
             document.getElementById("icross").className = "smalliIcon myShow"
             document.getElementById("xcross").className = "smallXIcon hide";
         
             document.getElementById("title").className = "hide";
-            document.getElementById("community-nUsers-row").className = "hide";
+            document.getElementById("infoDiv").className = "hide";
             this.goDown();
-        });
     }
+
+    filterMethod(){
+        if(document.getElementById("filterDiv").className === "hide"){
+            document.getElementById("filter-box").className ="filter expand"
+            document.getElementById("filterDiv").className ="myShow"
+            document.getElementById("filterIcon").className ="hide"
+
+        }
+        else{
+            document.getElementById("filterDiv").className ="hide"
+            document.getElementById("filter-box").className ="filter retractFilter"
+            document.getElementById("filterIcon").className ="myShow"
+        }
+    }
+
 
     changeBox(entity, type) {
         let title;

@@ -14,10 +14,10 @@
             <i class="noPointer">i</i>
         </div>
         <div class="smallXIcon" id="xcross">
-            <i class="pointer">x</i>
+            <i class="pointer">X</i>
         </div>
         <h1 class="" id="title"></h1>
-        <div class="content">
+        <div class="content" id="infoDiv">
             <div class="data row" id="user-community-title-row">
                 <div class="col parameter">Community: </div>
                 <div class="col value" id="user-community-title"></div>
@@ -31,6 +31,74 @@
                 <div class="col parameter">Gender: </div>
                 <div class="col value" id="user-gender"></div>
             </div>
+        </div>
+    </div>
+    <div class="filter-space" id="filter-space">
+        <div class="filter" id="filter-box">
+            <div class="smalliFcon" id="filterIcon">
+                <i class="pointer">Filter</i>
+            </div>
+        </div>
+        <div class="hide" id="filterDiv">
+            <div class="row" style="width: 100%;">
+                <div class="col-5">
+                    <div class="row">
+                        <h3>Gender</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="gen-male"> 
+                        </div>
+                        <div class="col-10">
+                            <label>Male</label> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="gen-female">
+                        </div>
+                        <div class="col-10">
+                            <label>Female</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
+                        <h3>Age</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="age-young"> 
+                        </div>
+                        <div class="col-10">
+                            <label>Young</label> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="age-adult">
+                        </div>
+                        <div class="col-10">
+                            <label>Adult</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="age-elderly">
+                        </div>
+                        <div class="col-10">
+                            <label>Elderly</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2" style="text-align: right;">
+
+                    <i class="pointer"><h3>X</h3></i>
+                </div>
+                   
+                
+            </div>
+
         </div>
     </div>
     <div class="treeJs-container" id="threejs"></div>
