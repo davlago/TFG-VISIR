@@ -1,7 +1,7 @@
 import UserInfo from '../info/userInfo';
 import CommunityInfo from '../info/communityInfo';
 
-import * as levelData from '../../../assets/data/GAM_PROPIO2.json'
+import * as levelData from '../../../assets/data/GAM_FINAL.json'
 
 /**
  * Clase para cargar la data

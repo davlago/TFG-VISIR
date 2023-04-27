@@ -12,7 +12,9 @@ export default class CameraManager {
         this.controls = new OrbitControls( this.camera.get3DObject(), renderer.domElement );
         this.controls.enablePan = false; //Deshabilitar mover
         this.target = null;
-
+        window.addEventListener('contextmenu', (event) => {
+            this.camera.stopCamera()
+        });
     }
 
     setPosition(name) {
@@ -28,19 +30,19 @@ export default class CameraManager {
         this.camera.focusObj(newPos);
     }
 
-    noFocusObj(object, zoomY, zoomZ){
+    noFocusObj(object, zoom){
         let pos = object.getPosition().clone();
         pos.y = 0;
         this.target = pos;
 
-        let newPos = {x:pos.x, y:pos.y+zoomY, z:pos.z+zoomZ}
+        let newPos = {x:pos.x, y:pos.y+zoom.y, z:pos.z+zoom.z}
         console.log(newPos)
         this.camera.focusObj(newPos);
     }
 
     update(deltaTime){
         if(this.target !==null){
-            this.controls.target.lerp(this.target,deltaTime);
+            this.controls.target.lerp(this.target,deltaTime*1.5);
         }
         this.controls.update();
     }

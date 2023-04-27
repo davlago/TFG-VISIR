@@ -10,6 +10,7 @@ export default class Camera extends Entity {
         super();
         this.object = new THREE.PerspectiveCamera(100, sizeWidth / sizeHeight, 1, 1000);
         this.target = null;
+
     }
 
     focusObj(pos) {
@@ -22,9 +23,8 @@ export default class Camera extends Entity {
     }
 
     update(deltaTime) {
-        console.log(this.position)
         if (this.target !== null) {
-            this.object.position.lerp(this.target, deltaTime);
+            this.object.position.lerp(this.target, deltaTime*1.5);
             if (Math.trunc(this.target.x) === Math.trunc(this.object.position.x) && Math.trunc(this.target.z) === Math.trunc(this.object.position.z)) this.stopCamera();
         }
     }

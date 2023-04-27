@@ -14,6 +14,7 @@ import User from './entities/user';
 import { clone } from '../utils/SkeletonUtils';
 
 import * as geometryUtils from "../utils/geometryUtils";
+import { flag } from "../utils/geometryObjects";
 import CircleFocus from './entities/circleFocus';
 import InputManager from './managers/inputManager';
 import GUI from './GUI';
@@ -25,6 +26,7 @@ const usersKey = "users";
 const usersDetailsKey = "explicit_community";
 const genderKey = "Gender";
 const ageKey = "ageGroup";
+const languageKey = "language";
 const artKey = "RelationshipWithArt";
 
 
@@ -40,9 +42,10 @@ export default class Simulator extends GameEngine {
         this.setSelected = this.setSelected.bind(this);
         this.getSelected = this.getSelected.bind(this);
         this.goDown = this.goDown.bind(this);
+        this.filter = this.filter.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
         this.entitySelected;
-        this.gui = new GUI(this.dataManager, this.scene, this.goDown);
+        this.gui = new GUI(this.dataManager, this.scene, this.goDown, this.filter);
     }
 
     postUpdates(deltaTime) {
@@ -82,8 +85,8 @@ export default class Simulator extends GameEngine {
 
         let communities = this.dataManager.getCommunities();
         let numCommunities = Object.keys(communities).length;
-        let vertexArray = geometryUtils.generatePolygon(numCommunities, this.roomSize.coordX / 2.8);
-
+        let vertexArray = geometryUtils.generatePolygon(numCommunities, this.roomSize.coordX * (0.5 - 1 / numCommunities));
+        // (this.roomSize.coordX /2) -(200/numCommunities));
         let aux = 0;
         for (const [key, value] of Object.entries(communities)) {
 
@@ -92,8 +95,11 @@ export default class Simulator extends GameEngine {
 
             let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
             let center = vertexArray[aux];
-
-            let community = new Community(key, radius, value, center, this.texturesManager.getOneTexture("loft"));
+            let texture = this.texturesManager.getOneTexture("loft");
+            if(value.getDataByKey("community-type")==="inexistent"){
+                texture = null
+            }
+            let community = new Community(key, radius, value, center, texture);
             community.setName(key)
 
             let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
@@ -101,7 +107,10 @@ export default class Simulator extends GameEngine {
                 let userId = usersArray[i];
                 let userInfo = this.dataManager.getUserById(userId);
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
+                let flagLan = this.getFlag(userModel[languageKey])
+                flagLan.name = "Flag-" + userId;
                 let model = this.getModel(userModel);
+                model.add(flagLan);
                 let user = new User(userId, model, userInfo);
                 user.setPosition(coords[i].x + center.x, 2.5, coords[i].z + center.z);
                 user.setName(userId);
@@ -117,14 +126,25 @@ export default class Simulator extends GameEngine {
 
     }
 
+    getFlag(language) {
+        try {
+            let flagLan = new flag(this.texturesManager.getOneTexture(language));
+            return clone(flagLan);
+        } catch (err) {
+            console.log("Cant clone: " + language);
+            let flagLan = this.texturesManager.getOneTexture("WHITE");
+            return clone(flagLan);
+        }
+    }
+
     getModel(userModel) {
         let gender = userModel[genderKey];
         let age = userModel[ageKey];
         try {
-            let model = this.modelManager.getOneModel(age+"_"+gender);
+            let model = this.modelManager.getOneModel(age + "_" + gender);
             return clone(model);
         } catch (err) {
-            console.log("Cant clone: " + age+"_"+gender);
+            console.log("Cant clone: " + age + "_" + gender);
             let model = this.modelManager.getOneModel("adult_Female");
             return clone(model);
         }
@@ -162,11 +182,30 @@ export default class Simulator extends GameEngine {
         return this.entitySelected;
     }
 
-    goDown(){
+    goDown() {
         this.entitySelected.goDown();
         this.entitySelected = undefined;
         this.scene.remove("circleFocus");
-        this.cameraManager.noFocusObj(this.scene.getEntity("room"),50, 100);
+        this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
+    }
+
+    filter(arrayFilter) {
+        let usersInfo = this.dataManager.getUsers();
+        let entity, age, gender, language;
+        for (let [userName, user] of Object.entries(usersInfo)) {
+            entity = this.scene.getEntity(userName);
+            if (entity !== undefined) {
+                age = user.getDataByKey("explicit_community")[ageKey];
+                gender = user.getDataByKey("explicit_community")[genderKey];
+                language = user.getDataByKey("explicit_community")[languageKey];
+                if (arrayFilter.includes(age) && arrayFilter.includes(gender) && arrayFilter.includes(language)) {
+                    entity.setVisible(true);
+                }
+                else {
+                    entity.setVisible(false);
+                }
+            }
+        }
     }
 
 }

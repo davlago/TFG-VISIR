@@ -9,12 +9,20 @@
 
 <body onResize='window.location.href = window.location.href;'>
     <div class="info-space" id="info-space">
+        <div id="miDiv">
+            <div class="cuadro-emergente" id="miCuadroEmergente">
+                <p>Select a community or user <br> to view the information</p>
+            </div>
+        </div>
         <div class="info" id="info-box"></div>
         <div class="smalliIcon" id="icross">
-            <i class="noPointer">i</i>
+            <i class="noPointer">
+                <h3>i</h3>
+            </i>
+
         </div>
         <div class="smallXIcon" id="xcross">
-            <i class="pointer">X</i>
+            <h3 class="pointer">X</h3>
         </div>
         <h1 class="" id="title"></h1>
         <div class="content" id="infoDiv">
@@ -36,67 +44,107 @@
     <div class="filter-space" id="filter-space">
         <div class="filter" id="filter-box">
             <div class="smalliFcon" id="filterIcon">
-                <i class="pointer">Filter</i>
+                <h3 class="pointer">Filter</h3>
             </div>
         </div>
         <div class="hide" id="filterDiv">
-            <div class="row" style="width: 100%;">
-                <div class="col-5">
+            <div class="row principalRow">
+                <div class="col-3">
                     <div class="row">
                         <h3>Gender</h3>
                     </div>
-                    <div class="row">
-                        <div class="col-1">
-                            <input type="checkbox" id="gen-male" checked> 
+                    <div class="form-check form-switch">
+
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="gen-Male" checked>
+                                <label>Male</label>
+                            </div>
                         </div>
-                        <div class="col-10">
-                            <label>Male</label> 
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1">
-                            <input type="checkbox" id="gen-female" checked>
-                        </div>
-                        <div class="col-10">
-                            <label>Female</label>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="gen-Female" checked>
+                                <label>Female</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col-3">
                     <div class="row">
                         <h3>Age</h3>
                     </div>
-                    <div class="row">
-                        <div class="col-1">
-                            <input type="checkbox" id="age-young" checked> 
-                        </div>
-                        <div class="col-10">
-                            <label>Young</label> 
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1">
-                            <input type="checkbox" id="age-adult" checked>
-                        </div>
-                        <div class="col-10">
-                            <label>Adult</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1">
-                            <input type="checkbox" id="age-elderly" checked>
-                        </div>
-                        <div class="col-10">
-                            <label>Elderly</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2" style="text-align: right;">
+                    <div class="form-check form-switch">
 
-                    <i class="pointer" id="xFilter"><h3>X</h3></i>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="age-young" checked>
+                                <label>Young</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="age-adult" checked>
+                                <label>Adult</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="age-elderly" checked>
+                                <label>Elderly</label>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-                   
-                
+                <div class="col-4">
+                    <div class="row">
+                        <h3>Language</h3>
+                    </div>
+                    <div class="form-check form-switch">
+
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="lang-ES" checked>
+                                <label>ES</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="lang-IT" checked>
+                                <label>IT</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="lang-GER" checked>
+                                <label>GER</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-check-input" type="checkbox" id="lang-FR" checked>
+                                <label>FR</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-2 right ">
+                    <div class="row">
+                        <h3 class="pointer xFilter" id="xFilter">
+                            X
+                        </h3>
+                    </div>
+                </div>
+
+
             </div>
 
         </div>

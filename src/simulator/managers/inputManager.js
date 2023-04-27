@@ -36,17 +36,21 @@ export default class InputManager {
             }
             console.log(selectObject.name);
             let entitySelected = this.getSelected();
+            let name = selectObject.name;
+            if(selectObject.name.split("-")[0] === "Flag"){
+                name = selectObject.name.split("-")[1]
+            }
             if(entitySelected !== undefined){
                 let entitySelectedName = entitySelected.getName()
                 if(selectObject.name !== entitySelectedName){
                     this.entities[entitySelectedName].goDown();
-                    this.entities[selectObject.name].setClicked();
-                    this.setSelected(this.entities[selectObject.name]);
+                    this.entities[name].setClicked();
+                    this.setSelected(this.entities[name]);
                 }   
             }
             else{
-                this.entities[selectObject.name].setClicked();
-                this.setSelected(this.entities[selectObject.name]);
+                this.entities[name].setClicked();
+                this.setSelected(this.entities[name]);
             }
         }
 
