@@ -19,6 +19,27 @@
         {
             "key": "loft",
             "file": "/textures/wood-loft.jpg"
+        },
+        {
+            "key": "ES",
+            "file": "/textures/flag-ES.png"
+        },
+        {
+            "key": "GER",
+            "file": "/textures/flag-GER.png"
+        },
+        {
+            "key": "FR",
+            "file": "/textures/flag-FR.png"
+        },
+        {
+            "key": "IT",
+            "file": "/textures/flag-IT.png"
+        }
+        ,
+        {
+            "key": "WHITE",
+            "file": "/textures/flag-WHITE.jpg"
         }
     ],
     "models": [
