@@ -2,23 +2,44 @@
     "textures": [
         {
             "key": "wood",
-            "file": "/textures/wood-texture.jpg"
+            "file": "./textures/wood-texture.jpg"
         },
         {
             "key": "brick",
-            "file": "/textures/brick-wall.jpg"
+            "file": "./textures/brick-wall.jpg"
         },
         {
             "key": "windowOpen",
-            "file": "/textures/windowOpen.png"
+            "file": "./textures/windowOpen.png"
         },
         {
             "key": "windowClose",
-            "file": "/textures/windowClose.png"
+            "file": "./textures/windowClose.png"
         },
         {
             "key": "loft",
-            "file": "/textures/wood-loft.jpg"
+            "file": "./textures/wood-loft.jpg"
+        },
+        {
+            "key": "ES",
+            "file": "./textures/flag-ES.png"
+        },
+        {
+            "key": "GER",
+            "file": "./textures/flag-GER.png"
+        },
+        {
+            "key": "FR",
+            "file": "./textures/flag-FR.png"
+        },
+        {
+            "key": "IT",
+            "file": "./textures/flag-IT.png"
+        }
+        ,
+        {
+            "key": "WHITE",
+            "file": "./textures/flag-WHITE.jpg"
         }
     ],
     "models": [
@@ -26,32 +47,32 @@
         {
             "format": "fbx",
             "key": "adult_Female",
-            "file": "/models/adult_Female.fbx"
+            "file": "./models/adult_Female.fbx"
         },
         {
             "format": "fbx",
             "key": "adult_Male",
-            "file": "/models/adult_Male.fbx"
+            "file": "./models/adult_Male.fbx"
         },
         {
             "format": "fbx",
             "key": "young_Female",
-            "file": "/models/young_Female.fbx"
+            "file": "./models/young_Female.fbx"
         },
         {
             "format": "fbx",
             "key": "young_Male",
-            "file": "/models/young_Male.fbx"
+            "file": "./models/young_Male.fbx"
         },
         {
             "format": "fbx",
             "key": "elderly_Female",
-            "file": "/models/elderly_Female.fbx"
+            "file": "./models/elderly_Female.fbx"
         },
         {
             "format": "fbx",
             "key": "elderly_Male",
-            "file": "/models/elderly_Male.fbx"
+            "file": "./models/elderly_Male.fbx"
         }
         
     ]

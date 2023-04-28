@@ -10,7 +10,6 @@ export default class Community extends Entity {
         super();
         this.info = data;
         this.cylinder = GEOMETRY.cylinderTexture(radius, textureBase, index, 1, 3);
-        this.isActive = true;
         this.object = this.cylinder; //Comunidad, con grupo de usuarios, y la representación grafica
         this.setPosition(pos.x, pos.y, pos.z);
         this.radius = radius;

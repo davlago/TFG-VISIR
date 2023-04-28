@@ -15,11 +15,10 @@ module.exports = {
         [
             new CopyWebpackPlugin({
                 patterns: [
-                    { from: path.resolve(__dirname, '../assets') }
-                ]
+                    { from: path.resolve(__dirname, '../assets')}                ]
             }),
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, '../dist/index.html'),
+                template: path.resolve(__dirname, '../index.html'),
                 minify: true
             })        ],
     module:
