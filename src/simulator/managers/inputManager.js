@@ -6,7 +6,7 @@ import * as THREE from 'three';
 
 export default class InputManager {
 
-    constructor(camera, renderer, setSelected, getSelected) {
+    constructor(camera, renderer, animationManager, setSelected, getSelected) {
         this.setSelected = setSelected;
         this.getSelected = getSelected;
         this.raycaster = new THREE.Raycaster();
@@ -17,6 +17,7 @@ export default class InputManager {
         this.camera = camera;
         this.eventsList = []
         this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this)
+        this.animationManager = animationManager;
         window.addEventListener('dblclick', (event) => { this.onDocumentMouseUp(event) }, false);
     }
 
@@ -36,6 +37,7 @@ export default class InputManager {
             }
             console.log(selectObject.name);
             let entitySelected = this.getSelected();
+            console.log(entitySelected);
             let name = selectObject.name;
             if(selectObject.name.split("-")[0] === "Flag"){
                 name = selectObject.name.split("-")[1]
@@ -46,11 +48,14 @@ export default class InputManager {
                     this.entities[entitySelectedName].goDown();
                     this.entities[name].setClicked();
                     this.setSelected(this.entities[name]);
+                    this.animationManager.animateEntity(this.entities[name])
                 }   
             }
             else{
                 this.entities[name].setClicked();
                 this.setSelected(this.entities[name]);
+                this.animationManager.animateEntity(this.entities[name])
+
             }
         }
 

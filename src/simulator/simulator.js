@@ -10,6 +10,7 @@ import CameraManager from './managers/cameraManager';
 
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
+import AnimationManager from './managers/animationManager';
 
 import { clone } from '../utils/SkeletonUtils';
 
@@ -50,11 +51,13 @@ export default class Simulator extends GameEngine {
 
     postUpdates(deltaTime) {
         this.cameraManager.update(deltaTime);
+        this.animationManager.update(deltaTime);
     }
 
     createManagers() {
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
-        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.setSelected, this.getSelected);
+        this.animationManager = new AnimationManager();
+        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager, this.setSelected, this.getSelected);
     }
 
 
@@ -140,11 +143,15 @@ export default class Simulator extends GameEngine {
         let age = userModel[ageKey];
         try {
             let model = this.modelManager.getOneModel(age + "_" + gender);
-            return clone(model);
+            let modelClone = clone(model);
+            modelClone.animations = model.animations;
+            return modelClone;
         } catch (err) {
             console.log("Cant clone: " + age + "_" + gender);
-            let model = this.modelManager.getOneModel("adult_Female");
-            return clone(model);
+            let model = this.modelManager.getOneModel(age + "_" + gender);
+            let modelClone = clone(model);
+            modelClone.animations = model.animations;
+            return modelClone;
         }
 
     }
@@ -184,6 +191,7 @@ export default class Simulator extends GameEngine {
         this.entitySelected = undefined;
         this.scene.remove("circleFocus");
         this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
+        this.animationManager.stopAnimate();
     }
 
     filter(arrayFilter) {

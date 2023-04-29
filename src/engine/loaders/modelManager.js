@@ -54,11 +54,11 @@ export default class ModelManager {
                 threeMFLoader.load(model.file,
                     (object) => {
                         this.models[model.key] = object;
-                        console.log("Loaded " + model.key);
+                        console.log("Loaded ",object);
                         resolve();
                     });
             } catch (err) {
-                console.log("Error in load model " + model.key)
+                console.log("Error in load model ",model.key)
             }
         });
 
@@ -77,11 +77,11 @@ export default class ModelManager {
                 fBXLoader.load(model.file,
                     (object) => {
                         this.models[model.key] = object;
-                        console.log("Loaded " + model.key);
+                        console.log("Loaded ",object);
                         resolve();
                     });
             } catch (err) {
-                console.log("Error in load model " + model.key)
+                console.log("Error in load model ",model.key)
             }
         });
 
