@@ -101,11 +101,11 @@ export default class GUI {
     }
 
 
-    changeBox(entity, type) {
+    changeBox(entity) {
         let title;
         let communityInfo;
         let userInfo;
-        if (type === "User") {
+        if (entity.getType() === "user") {
             userInfo = this.dataManager.getUserById(entity.getName()).getData();
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             communityInfo = this.dataManager.getCommunityById(comEntity.getName()).getData();
@@ -113,11 +113,11 @@ export default class GUI {
             document.getElementById("title").className = "myShow";
             this.showUserInfo(userInfo);
         }
-        else if (type === "Community") {
+        else if (entity.getType() === "community") {
             communityInfo = this.dataManager.getCommunityById(entity.getName()).getData();
             title = "Community: " + this.dataManager.getCommunityById(entity.getName()).getData().name;
         }
-        this.showCommunityInfo(communityInfo, type);
+        this.showCommunityInfo(communityInfo, entity.getType());
         this.infoOpen();
         document.getElementById("title").innerHTML = title;
 
@@ -129,11 +129,11 @@ export default class GUI {
     }
 
     showCommunityInfo(communityInfo, type) {
-        if (type === "User") {
+        if (type === "user") {
             document.getElementById("user-community-title-row").className = "myShow";
             document.getElementById("user-community-title").innerHTML = communityInfo.name;
         }
-        if (type === "Community") {
+        if (type === "community") {
             document.getElementById("user-community-title-row").className = "hide";
             document.getElementById("user-gender-row").className = "hide";
         }

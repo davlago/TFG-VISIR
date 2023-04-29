@@ -100,7 +100,6 @@ export default class Simulator extends GameEngine {
                 texture = null
             }
             let community = new Community(key, radius, value, center, texture);
-            community.setName(key)
 
             let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
             for (let i = 0; i < numUsers; i++) {
@@ -113,7 +112,6 @@ export default class Simulator extends GameEngine {
                 model.add(flagLan);
                 let user = new User(userId, model, userInfo);
                 user.setPosition(coords[i].x + center.x, 2.5, coords[i].z + center.z);
-                user.setName(userId);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
             }
@@ -151,16 +149,16 @@ export default class Simulator extends GameEngine {
 
     }
 
-    focusObj(entity, type) {
+    focusObj(entity) {
         let pos = entity.getPosition();
         this.scene.remove("circleFocus");
         let color;
-        if (type === "Community") {
+        if (entity.getType() === "community") {
             color = entity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, color, pos))
             this.cameraManager.focusObj(entity, 30);
         }
-        else if (type === "User") {
+        else if (entity.getType() === "user") {
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             color = comEntity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, color, comEntity.getPosition()))
@@ -173,9 +171,8 @@ export default class Simulator extends GameEngine {
     setSelected(entity) {
         console.log(entity)
         this.entitySelected = entity;
-        let type = entity.constructor.name;
-        this.focusObj(entity, type);
-        this.gui.changeBox(entity, type);
+        this.focusObj(entity);
+        this.gui.changeBox(entity);
     }
 
     getSelected() {

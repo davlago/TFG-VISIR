@@ -7,10 +7,11 @@ import * as GEOMETRY from "../../utils/geometryObjects";
 export default class Community extends Entity {
 
     constructor(index, radius, data, pos, textureBase) {
-        super();
+        super("community");
         this.info = data;
         this.cylinder = GEOMETRY.cylinderTexture(radius, textureBase, index, 1, 3);
         this.object = this.cylinder; //Comunidad, con grupo de usuarios, y la representación grafica
+        this.setName(index);
         this.setPosition(pos.x, pos.y, pos.z);
         this.radius = radius;
     }

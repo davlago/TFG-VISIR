@@ -8,11 +8,10 @@ import * as THREE from "three";
 
 export default class Light extends Entity {
 
-    constructor(color, intensity, type) {
-        super();
-        if(type==="point")this.object = new THREE.SpotLight(color, intensity);
-        else this.object = new THREE.AmbientLight(color, intensity)
-        this.object.name = "Light";
+    constructor(color, intensity) {
+        super("light");
+        this.object = new THREE.AmbientLight(color, intensity)
+        this.setName("Light")
     }
 
 

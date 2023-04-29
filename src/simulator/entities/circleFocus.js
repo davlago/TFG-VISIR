@@ -8,8 +8,9 @@ import * as GEOMETRY from "../../utils/geometryObjects";
 export default class CircleFocus extends Entity {
 
     constructor(radius, color, pos) {
-        super();
+        super("circleFocus");
         this.object = GEOMETRY.cylinder(radius, 3);
+        this.setName("CircleFocus")
 
         console.log(this.object);
         this.object.material.color.setHex(color);

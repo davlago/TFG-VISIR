@@ -7,9 +7,10 @@ import Entity from "../../engine/entities/entity"
 export default class User extends Entity{
 
     constructor(index, model, data) {
-        super();
+        super("user");
         this.info = data;
         this.object =model;
+        this.setName(index);
         this.setScale(0.06, 0.06, 0.06);
     }
 
