@@ -7,8 +7,15 @@ export default class AnimationManager {
         this.actions = [];
     }
 
-    animateEntity(entity) {
+    animateEntity(entity){
         console.log(entity);
+        let object = entity.get3DObject();
+        const action = this.mixer.clipAction(object.animations[0], object);
+        action.play();
+        this.actions.push(action);
+    }
+
+    animateOneEntity(entity) {
         this.stopAnimate()
         if (entity.getType() === "user") {
             let object = entity.get3DObject();

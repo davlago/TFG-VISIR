@@ -48,13 +48,13 @@ export default class InputManager {
                     this.entities[entitySelectedName].goDown();
                     this.entities[name].setClicked();
                     this.setSelected(this.entities[name]);
-                    this.animationManager.animateEntity(this.entities[name])
+                    //this.animationManager.animateOneEntity(this.entities[name])
                 }   
             }
             else{
                 this.entities[name].setClicked();
                 this.setSelected(this.entities[name]);
-                this.animationManager.animateEntity(this.entities[name])
+                //this.animationManager.animateOneEntity(this.entities[name])
 
             }
         }
@@ -63,6 +63,7 @@ export default class InputManager {
 
     addEntity(entity) {
         this.entities[entity.name] = entity;
+        if(entity.getType() === "user")this.animationManager.animateEntity(entity)
         this.entitiesObjArray.push(entity.get3DObject());
     }
 }

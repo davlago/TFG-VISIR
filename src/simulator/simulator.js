@@ -60,8 +60,6 @@ export default class Simulator extends GameEngine {
         this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager, this.setSelected, this.getSelected);
     }
 
-
-
     createMyEntities() {
         return new Promise((resolve, reject) => {
             this.dataManager.loadData().then(() => {
@@ -191,7 +189,7 @@ export default class Simulator extends GameEngine {
         this.entitySelected = undefined;
         this.scene.remove("circleFocus");
         this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
-        this.animationManager.stopAnimate();
+        //this.animationManager.stopAnimate();
     }
 
     filter(arrayFilter) {
