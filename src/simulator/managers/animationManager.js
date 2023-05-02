@@ -8,7 +8,6 @@ export default class AnimationManager {
     }
 
     animateEntity(entity){
-        console.log(entity);
         let object = entity.get3DObject();
         const action = this.mixer.clipAction(object.animations[0], object);
         action.play();
@@ -26,7 +25,6 @@ export default class AnimationManager {
         else {
             for (let [entityName, user] of Object.entries(entity.getChildrenEntities())) {
                 let object = user.get3DObject();
-                console.log(object);
                 const action = this.mixer.clipAction(object.animations[0], object);
                 action.play();
                 this.actions.push(action);

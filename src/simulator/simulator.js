@@ -177,7 +177,7 @@ export default class Simulator extends GameEngine {
         console.log(entity)
         this.entitySelected = entity;
         this.focusObj(entity);
-        this.gui.changeBox(entity);
+        this.gui.setInfo(entity);
     }
 
     getSelected() {

@@ -1,3 +1,4 @@
+import Chart from 'chart.js/auto';
 export default class GUI {
 
     constructor(dataManager, scene, goDown, filter) {
@@ -6,9 +7,11 @@ export default class GUI {
         this.goDown = goDown;
         this.filter = filter;
 
-        document.getElementById("xcross").addEventListener('click', () => {
+
+        document.getElementById("xInfo").addEventListener('click', () => {
             this.infoClose()
         });
+
         document.getElementById("filterIcon").addEventListener('click', () => {
             this.filterOpen()
         });
@@ -59,10 +62,7 @@ export default class GUI {
         document.getElementById("info-box").style.zIndex = 5;
 
         document.getElementById("icross").className = "smalliIcon myShow"
-        document.getElementById("xcross").className = "smallXIcon hide";
 
-        document.getElementById("title").className = "hide";
-        document.getElementById("infoDiv").className = "hide";
         this.goDown();
         this.alertBox();
     }
@@ -71,9 +71,9 @@ export default class GUI {
         document.getElementById("info-box").className = "info expand";
         document.getElementById("info-box").style.zIndex = 0;
         document.getElementById("icross").className = "smalliIcon hide";
-        document.getElementById("xcross").className = "smallXIcon myShow";
+        document.getElementById("xInfo").className = "pointer xInfo myShow";
         document.getElementById("infoDiv").className = "myShow";
-        document.getElementById("title").className = "myShow";
+
         this.noAlertBox()
     }
 
@@ -101,7 +101,7 @@ export default class GUI {
     }
 
 
-    changeBox(entity) {
+    setInfo(entity) {
         let title;
         let communityInfo;
         let userInfo;
@@ -110,37 +110,184 @@ export default class GUI {
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             communityInfo = this.dataManager.getCommunityById(comEntity.getName()).getData();
             title = "User: " + this.dataManager.getUserById(entity.getName()).getData().label;
-            document.getElementById("title").className = "myShow";
-            this.showUserInfo(userInfo);
+            this.showUserInfo(userInfo)
         }
         else if (entity.getType() === "community") {
             communityInfo = this.dataManager.getCommunityById(entity.getName()).getData();
             title = "Community: " + this.dataManager.getCommunityById(entity.getName()).getData().name;
         }
-        this.showCommunityInfo(communityInfo, entity.getType());
+        this.showCommunityInfo(communityInfo)
         this.infoOpen();
-        document.getElementById("title").innerHTML = title;
 
     }
 
     showUserInfo(userInfo) {
-        document.getElementById("user-gender-row").className = "myShow";
-        document.getElementById("user-gender").innerHTML = userInfo.explicit_community.Gender;
-    }
-
-    showCommunityInfo(communityInfo, type) {
-        if (type === "user") {
-            document.getElementById("user-community-title-row").className = "myShow";
-            document.getElementById("user-community-title").innerHTML = communityInfo.name;
-        }
-        if (type === "community") {
-            document.getElementById("user-community-title-row").className = "hide";
-            document.getElementById("user-gender-row").className = "hide";
-        }
-
-        document.getElementById("community-nUsers-row").className = "myShow";
-        document.getElementById("community-nUsers").innerHTML = communityInfo.users.length;
 
     }
+
+    showCommunityInfo(communityInfo) {
+        let name = document.getElementById("nameCommunity");
+        let nUsers = document.getElementById("nUsersCommunity");
+
+
+        name.innerHTML = "<h4>" + communityInfo["name"] + "</h4>";
+        nUsers.innerHTML = "<h4>N Users: " + communityInfo["users"].length + "</h4>";
+        let explanations = communityInfo["explanations"];
+        let explanation;
+        for (let e of explanations) {
+            if (e["explanation_type"] === 3) {
+                explanation = e;
+                break;
+            }
+        }
+        this.buildImChart(explanation["explanation_data"]);
+        let statsEx = this.generateExStats(communityInfo["users"])
+
+        this.buildExChart("Gender", "genderChart", statsEx.gender);
+        this.buildExChart("Age", "ageChart", statsEx.age);
+        this.buildExChart("Language", "languageChart", statsEx.language);
+
+    }
+
+    generateExStats(usersList){
+        let stats = {
+            age: {
+                young: 0,
+                adult: 0,
+                elderly: 0,
+            },
+            gender: {
+                Male: 0,
+                Female: 0
+            },
+            language:{
+                IT: 0,
+                ES: 0,
+                GER: 0,
+                FR: 0
+            }
+        }
+        for (let x of usersList) {
+            let user = this.dataManager.getUserById(x).getDataByKey("explicit_community");
+            stats.age[user["ageGroup"]]++;
+            stats.gender[user["Gender"]]++;
+            stats.language[user["language"]]++;
+        }
+        for(let key in stats){
+            for(let key2 in stats[key]){
+                stats[key][key2] /= usersList.length;
+            }
+        }
+        return stats;
+    }
+
+    buildImChart(eData) {
+        document.getElementById("infoImCommunity").innerHTML = "<canvas class='grafico' id ='graficoIm'></canvas>"
+
+        let xValues = [];
+        let yValues = [];
+        let barColors = [
+            "#b91d47",
+            "#00aba9",
+            "#2b5797",
+            "#e8c3b9",
+            "#1e7145"
+        ];
+
+        for (let x of eData["data"]) {
+            xValues.push(x["value"])
+            yValues.push(x["count"])
+        }
+        let ctx = document.getElementById('graficoIm').getContext('2d');
+        const myChar = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                size: 20,
+                            },
+                            boxWidth: 20,
+                            color: "white"
+                        },
+                    },
+                    title: {
+                        font: {
+                            size: 20,
+                        },
+                        display: true,
+                         text: eData["label"],
+                         color: "white"
+                    }
+                },
+                mantainAspectRatio: false,
+                aspectRatio: 3
+
+            }
+        });
+    }
+
+    buildExChart(title, canva, stats){
+        document.getElementById(canva).innerHTML = "<canvas id ='" + canva + "_canvas'></canvas>"
+
+        let xValues = [];
+        let yValues = [];
+        let barColors = [
+            "#b91d47",
+            "#00aba9",
+            "#2b5797",
+            "#e8c3b9",
+            "#1e7145"
+        ];
+
+        for (let [x, y] of Object.entries(stats)) {
+            xValues.push(x)
+            yValues.push(y*100)
+        }
+
+        
+        let ctx = document.getElementById(canva + "_canvas").getContext('2d');
+        const myChar = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        font: {
+                            size: 20,
+                        },
+                        display: true,
+                         text: title,
+                         color: "white"
+                    }
+                },
+                mantainAspectRatio: false,
+                aspectRatio: 1
+
+            }
+        });
+    }
+    
+
 }
 
