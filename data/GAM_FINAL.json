@@ -21,7 +21,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -255,7 +255,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -491,7 +491,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -718,7 +718,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "love",
@@ -928,7 +928,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "surprise",
@@ -1069,7 +1069,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -1260,7 +1260,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -1465,7 +1465,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "serenity",
@@ -1622,7 +1622,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
@@ -1791,7 +1791,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "sadness",
@@ -2004,7 +2004,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "interest",
@@ -2170,7 +2170,7 @@
                     "explanation_type": 3,
                     "explanation_key": "interest.itMakesMeThinkAbout.emotions",
                     "explanation_data": {
-                        "label": "Percentage distribution of the implicit attribute (interest.itMakesMeThinkAbout.emotions):",
+                        "label": "Percentage distribution of the implicit attribute:",
                         "data": [
                             {
                                 "value": "joy",
