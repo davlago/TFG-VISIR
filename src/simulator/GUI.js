@@ -60,7 +60,7 @@ export default class GUI {
     infoClose() {
         document.getElementById("info-box").className = "info retract";
         document.getElementById("info-box").style.zIndex = 5;
-
+        document.getElementById("infoDiv").className = "hide";
         document.getElementById("icross").className = "smalliIcon myShow"
 
         this.goDown();
@@ -79,8 +79,12 @@ export default class GUI {
 
     filterOpen() {
         document.getElementById("filter-box").className = "filter expand"
-        document.getElementById("filterDiv").className = "myShow"
         document.getElementById("filterIcon").className = "hide"
+        document.getElementById("filterDiv").className = "myShow transparent"
+        setTimeout(() => {
+            document.getElementById("filterDiv").className = "myShow"
+        }, 250);
+       
     }
 
     filterClose() {
@@ -110,9 +114,12 @@ export default class GUI {
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             communityInfo = this.dataManager.getCommunityById(comEntity.getName()).getData();
             title = "User: " + this.dataManager.getUserById(entity.getName()).getData().label;
+            document.getElementById("rowUser").className = "row";
+
             this.showUserInfo(userInfo)
         }
         else if (entity.getType() === "community") {
+            document.getElementById("rowUser").className = "hide";
             communityInfo = this.dataManager.getCommunityById(entity.getName()).getData();
             title = "Community: " + this.dataManager.getCommunityById(entity.getName()).getData().name;
         }
@@ -122,6 +129,13 @@ export default class GUI {
     }
 
     showUserInfo(userInfo) {
+        let name = document.getElementById("nameUser");
+        let infoEx = document.getElementById("infoExUser");
+        name.innerHTML = "<h4>ID: " + userInfo["id"] + "</h4>";
+        let gender=  "<div class='col'><h5>Gender: </h5><h4>" + userInfo["explicit_community"]["Gender"] + "</h4></div>";
+        let age=  "<div class='col'><h5>Age: </h5><h4>" + userInfo["explicit_community"]["ageGroup"] + "</h4></div>";
+        let language=  "<div class='col'><h5>Language: </h5><h4>" + userInfo["explicit_community"]["language"] + "</h4></div>";
+        infoEx.innerHTML = gender + age + language
 
     }
 
