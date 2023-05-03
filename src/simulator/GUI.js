@@ -73,7 +73,10 @@ export default class GUI {
         document.getElementById("icross").className = "smalliIcon hide";
         document.getElementById("xInfo").className = "pointer xInfo myShow";
         document.getElementById("infoDiv").className = "myShow";
-
+        document.getElementById("rowUser").className="row transparent"
+        setTimeout(() => {
+            document.getElementById("rowUser").className = "row"
+        }, 250);
         this.noAlertBox()
     }
 
