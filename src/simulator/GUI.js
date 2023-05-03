@@ -67,16 +67,25 @@ export default class GUI {
         this.alertBox();
     }
 
-    infoOpen() {
-        document.getElementById("info-box").className = "info expand";
-        document.getElementById("info-box").style.zIndex = 0;
+    infoOpen(type) {
+        let info_box = document.getElementById("info-box")
         document.getElementById("icross").className = "smalliIcon hide";
         document.getElementById("xInfo").className = "pointer xInfo myShow";
         document.getElementById("infoDiv").className = "myShow";
-        document.getElementById("rowUser").className="row transparent"
-        setTimeout(() => {
-            document.getElementById("rowUser").className = "row"
-        }, 250);
+        if (type === "user") {
+            document.getElementById("rowUser").className = "row transparent"
+            if (info_box.classList.contains("retract")) {
+                setTimeout(() => {
+                    document.getElementById("rowUser").className = "row"
+                }, 250);
+            }
+            else {
+                document.getElementById("rowUser").className = "row"
+            }
+
+        } 
+        info_box.className = "info expand";
+        info_box.style.zIndex = 0;
         this.noAlertBox()
     }
 
@@ -87,7 +96,7 @@ export default class GUI {
         setTimeout(() => {
             document.getElementById("filterDiv").className = "myShow"
         }, 250);
-       
+
     }
 
     filterClose() {
@@ -127,7 +136,7 @@ export default class GUI {
             title = "Community: " + this.dataManager.getCommunityById(entity.getName()).getData().name;
         }
         this.showCommunityInfo(communityInfo)
-        this.infoOpen();
+        this.infoOpen(entity.getType());
 
     }
 
@@ -135,9 +144,9 @@ export default class GUI {
         let name = document.getElementById("nameUser");
         let infoEx = document.getElementById("infoExUser");
         name.innerHTML = "<h4>ID: " + userInfo["id"] + "</h4>";
-        let gender=  "<div class='col'><h5>Gender: </h5><h4>" + userInfo["explicit_community"]["Gender"] + "</h4></div>";
-        let age=  "<div class='col'><h5>Age: </h5><h4>" + userInfo["explicit_community"]["ageGroup"] + "</h4></div>";
-        let language=  "<div class='col'><h5>Language: </h5><h4>" + userInfo["explicit_community"]["language"] + "</h4></div>";
+        let gender = "<div class='col'><h5>Gender: </h5><h4>" + userInfo["explicit_community"]["Gender"] + "</h4></div>";
+        let age = "<div class='col'><h5>Age: </h5><h4>" + userInfo["explicit_community"]["ageGroup"] + "</h4></div>";
+        let language = "<div class='col'><h5>Language: </h5><h4>" + userInfo["explicit_community"]["language"] + "</h4></div>";
         infoEx.innerHTML = gender + age + language
 
     }
@@ -166,7 +175,7 @@ export default class GUI {
 
     }
 
-    generateExStats(usersList){
+    generateExStats(usersList) {
         let stats = {
             age: {
                 young: 0,
@@ -177,7 +186,7 @@ export default class GUI {
                 Male: 0,
                 Female: 0
             },
-            language:{
+            language: {
                 IT: 0,
                 ES: 0,
                 GER: 0,
@@ -190,8 +199,8 @@ export default class GUI {
             stats.gender[user["Gender"]]++;
             stats.language[user["language"]]++;
         }
-        for(let key in stats){
-            for(let key2 in stats[key]){
+        for (let key in stats) {
+            for (let key2 in stats[key]) {
                 stats[key][key2] /= usersList.length;
             }
         }
@@ -243,8 +252,8 @@ export default class GUI {
                             size: 20,
                         },
                         display: true,
-                         text: eData["label"],
-                         color: "white"
+                        text: eData["label"],
+                        color: "white"
                     }
                 },
                 mantainAspectRatio: false,
@@ -254,7 +263,7 @@ export default class GUI {
         });
     }
 
-    buildExChart(title, canva, stats){
+    buildExChart(title, canva, stats) {
         document.getElementById(canva).innerHTML = "<canvas id ='" + canva + "_canvas'></canvas>"
 
         let xValues = [];
@@ -269,10 +278,10 @@ export default class GUI {
 
         for (let [x, y] of Object.entries(stats)) {
             xValues.push(x)
-            yValues.push(y*100)
+            yValues.push(y * 100)
         }
 
-        
+
         let ctx = document.getElementById(canva + "_canvas").getContext('2d');
         const myChar = new Chart(ctx, {
             type: "doughnut",
@@ -294,8 +303,8 @@ export default class GUI {
                             size: 20,
                         },
                         display: true,
-                         text: title,
-                         color: "white"
+                        text: title,
+                        color: "white"
                     }
                 },
                 mantainAspectRatio: false,
@@ -304,7 +313,7 @@ export default class GUI {
             }
         });
     }
-    
+
 
 }
 
