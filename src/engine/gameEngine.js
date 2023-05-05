@@ -5,11 +5,9 @@ import * as THREE from 'three';
 import Camera from './entities/camera';
 import Scene from './entities/scene';
 import Stats from 'stats.js';
-
-
-
-
-const roomSizeKey = "roomSize";
+import CameraManager from './managers/cameraManager';
+import * as simulatorMap from '../../assets/data/simulatorMap.json';
+const generalCameraPositionKey = "cameraGeneralPosition";
 
 export default class GameEngine{
 
@@ -49,7 +47,11 @@ export default class GameEngine{
     }
 
     createManagers(){
+        this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
+        this.postCreateManagers()
     }
+
+    postCreateManagers(){}
 
     createMyEntities(){
         return new Promise((resolve, reject) => {
@@ -57,8 +59,7 @@ export default class GameEngine{
         });
     }
 
-    postUpdates(){
-    }
+    postUpdates(){}
     
     /**
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
