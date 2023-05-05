@@ -4,7 +4,6 @@
 import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
-import Light from '../engine/entities/light';
 import DataManager from './managers/dataManager';
 
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
@@ -69,9 +68,6 @@ export default class Simulator extends GameEngine {
     }
 
     createSimulatorEntities() {
-
-        let light = new Light(0xffffff, 1);
-        this.scene.add("light", light)
 
         //Crear la habitación
         let room = new Room(this.roomSize,

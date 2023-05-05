@@ -8,6 +8,8 @@ import Stats from 'stats.js';
 import CameraManager from './managers/cameraManager';
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 const generalCameraPositionKey = "cameraGeneralPosition";
+import Light from './entities/light';
+
 
 export default class GameEngine{
 
@@ -36,7 +38,7 @@ export default class GameEngine{
         container.appendChild(this.renderer.domElement);
         this.stats = new Stats();
 		container.appendChild( this.stats.dom );
-
+        this.scene.add("light", new Light(0xffffff, 1))
         this.scene.add("camera", new Camera(window.innerWidth, window.innerHeight));
 
         this.createManagers();
