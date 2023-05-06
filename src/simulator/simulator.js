@@ -4,9 +4,7 @@
 import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
-import Light from '../engine/entities/light';
 import DataManager from './managers/dataManager';
-import CameraManager from './managers/cameraManager';
 
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
@@ -40,6 +38,7 @@ export default class Simulator extends GameEngine {
 
         this.dataManager = new DataManager(simulatorMap);
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
+        this.postCreateManagers = this.postCreateManagers.bind(this);
         this.setSelected = this.setSelected.bind(this);
         this.getSelected = this.getSelected.bind(this);
         this.goDown = this.goDown.bind(this);
@@ -54,8 +53,7 @@ export default class Simulator extends GameEngine {
         this.animationManager.update(deltaTime);
     }
 
-    createManagers() {
-        this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
+    postCreateManagers() {
         this.animationManager = new AnimationManager();
         this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager, this.setSelected, this.getSelected);
     }
@@ -70,9 +68,6 @@ export default class Simulator extends GameEngine {
     }
 
     createSimulatorEntities() {
-
-        let light = new Light(0xffffff, 1);
-        this.scene.add("light", light)
 
         //Crear la habitación
         let room = new Room(this.roomSize,

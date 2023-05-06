@@ -5,11 +5,11 @@ import * as THREE from 'three';
 import Camera from './entities/camera';
 import Scene from './entities/scene';
 import Stats from 'stats.js';
+import CameraManager from './managers/cameraManager';
+import * as simulatorMap from '../../assets/data/simulatorMap.json';
+const generalCameraPositionKey = "cameraGeneralPosition";
+import Light from './entities/light';
 
-
-
-
-const roomSizeKey = "roomSize";
 
 export default class GameEngine{
 
@@ -38,7 +38,7 @@ export default class GameEngine{
         container.appendChild(this.renderer.domElement);
         this.stats = new Stats();
 		container.appendChild( this.stats.dom );
-
+        this.scene.add("light", new Light(0xffffff, 1))
         this.scene.add("camera", new Camera(window.innerWidth, window.innerHeight));
 
         this.createManagers();
@@ -49,7 +49,11 @@ export default class GameEngine{
     }
 
     createManagers(){
+        this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
+        this.postCreateManagers()
     }
+
+    postCreateManagers(){}
 
     createMyEntities(){
         return new Promise((resolve, reject) => {
@@ -57,8 +61,7 @@ export default class GameEngine{
         });
     }
 
-    postUpdates(){
-    }
+    postUpdates(){}
     
     /**
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime

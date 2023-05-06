@@ -1,7 +1,7 @@
 import "./style.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ModelManager from './src/engine/loaders/modelManager';
-import TextureManager from './src/engine/loaders/textureManager';
+import ModelManager from './src/engine/managers/modelManager';
+import TextureManager from './src/engine/managers/textureManager';
 import * as texturesModelsData from './assets/data/texturesModelsData.json';
 
 import Simulator from './src/simulator/simulator';
