@@ -18,10 +18,10 @@ export default class InputManager {
         this.eventsList = []
         this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this)
         this.animationManager = animationManager;
-        window.addEventListener('dblclick', (event) => { this.onDocumentMouseUp(event) }, false);
+        window.addEventListener('dblclick', (event) => { this.handleClick(event) }, false);
     }
 
-    onDocumentMouseUp(event) {
+    handleClick(event) {
         event.preventDefault();
         this.mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
         this.mouse.y = - (event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
