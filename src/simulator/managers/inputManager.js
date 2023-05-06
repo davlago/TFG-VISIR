@@ -16,7 +16,7 @@ export default class InputManager {
         this.entitiesObjArray = [];
         this.camera = camera;
         this.eventsList = []
-        this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         this.animationManager = animationManager;
         window.addEventListener('dblclick', (event) => { this.handleClick(event) }, false);
     }
