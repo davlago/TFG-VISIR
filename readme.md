@@ -1,7 +1,7 @@
 ## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
 
+Run this followed commands:
+Node.JS v14 is required
 ``` bash
 # Install dependencies (only the first time)
 npm install
