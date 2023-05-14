@@ -8,8 +8,9 @@ import * as THREE from 'three';
 
 export default class Entity {
 
-    constructor(name) {
+    constructor(type) {
         this.object;
+        this.type = type;
         this.isActive = true;
         this.isClicked = false;
         this.position = { x: 0, y: 0, z: 0 };
@@ -17,6 +18,10 @@ export default class Entity {
         this.childrenEntities = {};
         this.name = "No_Name";
         this.info;
+    }
+
+    getType(){
+        return this.type;
     }
 
     getInfo(){
@@ -96,6 +101,11 @@ export default class Entity {
     activate() {
         this.isActive = true;
     }
+
+    deactivate() {
+        this.isActive = false;
+    }
+
 
     /**
      * Función para actualizar entidades

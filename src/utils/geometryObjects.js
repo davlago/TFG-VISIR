@@ -40,26 +40,26 @@ export function cylinder(radius, height) {
 
 export function flag(texture) {
     // BANDERA NORMAL
-    const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 50, 32);
-    const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
-    const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-    cylinder.position.y=190;
+    // const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 50, 32);
+    // const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+    // const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+    // cylinder.position.y=190;
     
-    let material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-    let geometry = new THREE.PlaneGeometry(45, 30);
-    let flag = new THREE.Mesh(geometry, material);
-
+    // let material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+    // let geometry = new THREE.PlaneGeometry(45, 30);
+    // let flag = new THREE.Mesh(geometry, material);
+    // flag.position.x = 22.5;
 
     //BILLBOARD
-    // const material = new THREE.SpriteMaterial( { map: texture } );
-    // const flag = new THREE.Sprite( material );
-    // flag.scale.set( 60, 40, 0);
+    const material = new THREE.SpriteMaterial( { map: texture } );
+    const flag = new THREE.Sprite( material );
+    flag.scale.set( 45, 30, 0);
 
 
     flag.position.y = 200;
-    flag.position.x = 22.5;
+    
     const flagComplete = new THREE.Group();
-    flagComplete.add(cylinder);
+    //flagComplete.add(cylinder);
     flagComplete.add(flag);
 
     return flagComplete;

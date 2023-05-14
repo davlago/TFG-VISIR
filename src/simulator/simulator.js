@@ -4,9 +4,7 @@
 import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
-import Light from '../engine/entities/light';
 import DataManager from './managers/dataManager';
-import CameraManager from './managers/cameraManager';
 
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
@@ -16,7 +14,6 @@ import { clone } from '../utils/SkeletonUtils';
 import * as geometryUtils from "../utils/geometryUtils";
 import { flag } from "../utils/geometryObjects";
 import CircleFocus from './entities/circleFocus';
-import InputManager from './managers/inputManager';
 import GUI from './GUI';
 
 
@@ -39,8 +36,8 @@ export default class Simulator extends GameEngine {
 
         this.dataManager = new DataManager(simulatorMap);
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
+        this.postCreateManagers = this.postCreateManagers.bind(this);
         this.setSelected = this.setSelected.bind(this);
-        this.getSelected = this.getSelected.bind(this);
         this.goDown = this.goDown.bind(this);
         this.filter = this.filter.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
@@ -50,13 +47,12 @@ export default class Simulator extends GameEngine {
 
     postUpdates(deltaTime) {
         this.cameraManager.update(deltaTime);
+        this.animationManager.update(deltaTime);
     }
 
-    createManagers() {
-        this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
-        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.setSelected, this.getSelected);
+    postCreateManagers() {
+        this.inputManager.setFunctionSelect(this.setSelected);
     }
-
 
 
     createMyEntities() {
@@ -69,9 +65,6 @@ export default class Simulator extends GameEngine {
     }
 
     createSimulatorEntities() {
-
-        let light = new Light(0xffffff, 1);
-        this.scene.add("light", light)
 
         //Crear la habitación
         let room = new Room(this.roomSize,
@@ -96,11 +89,10 @@ export default class Simulator extends GameEngine {
             let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
             let center = vertexArray[aux];
             let texture = this.texturesManager.getOneTexture("loft");
-            if(value.getDataByKey("community-type")==="inexistent"){
+            if (value.getDataByKey("community-type") === "inexistent") {
                 texture = null
             }
             let community = new Community(key, radius, value, center, texture);
-            community.setName(key)
 
             let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
             for (let i = 0; i < numUsers; i++) {
@@ -108,14 +100,15 @@ export default class Simulator extends GameEngine {
                 let userInfo = this.dataManager.getUserById(userId);
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
                 let flagLan = this.getFlag(userModel[languageKey])
-                flagLan.name = "Flag-" + userId;
+                flagLan.name = userId;
+                flagLan.type = "Flag";
                 let model = this.getModel(userModel);
                 model.add(flagLan);
                 let user = new User(userId, model, userInfo);
                 user.setPosition(coords[i].x + center.x, 2.5, coords[i].z + center.z);
-                user.setName(userId);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
+                this.animationManager.animateEntity(user)
             }
 
             this.communitiesArray.push(community);
@@ -142,25 +135,29 @@ export default class Simulator extends GameEngine {
         let age = userModel[ageKey];
         try {
             let model = this.modelManager.getOneModel(age + "_" + gender);
-            return clone(model);
+            let modelClone = clone(model);
+            modelClone.animations = model.animations;
+            return modelClone;
         } catch (err) {
             console.log("Cant clone: " + age + "_" + gender);
-            let model = this.modelManager.getOneModel("adult_Female");
-            return clone(model);
+            let model = this.modelManager.getOneModel(age + "_" + gender);
+            let modelClone = clone(model);
+            modelClone.animations = model.animations;
+            return modelClone;
         }
 
     }
 
-    focusObj(entity, type) {
+    focusObj(entity) {
         let pos = entity.getPosition();
         this.scene.remove("circleFocus");
         let color;
-        if (type === "Community") {
+        if (entity.getType() === "community") {
             color = entity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(entity.getRadius() + 3, color, pos))
             this.cameraManager.focusObj(entity, 30);
         }
-        else if (type === "User") {
+        else if (entity.getType() === "user") {
             let comEntity = this.scene.getEntity(entity.getInfo().getDataByKey("community"));
             color = comEntity.getInfo().getColor();
             this.scene.add("circleFocus", new CircleFocus(comEntity.getRadius() + 3, color, comEntity.getPosition()))
@@ -170,16 +167,35 @@ export default class Simulator extends GameEngine {
     }
 
 
-    setSelected(entity) {
-        console.log(entity)
-        this.entitySelected = entity;
-        let type = entity.constructor.name;
-        this.focusObj(entity, type);
-        this.gui.changeBox(entity, type);
-    }
+    setSelected(selectObject) {
+        while (selectObject.name === "") {
+            selectObject = selectObject.parent;
+        }
+        if (selectObject.type === "SkinnedMesh") {
+            selectObject = selectObject.parent;
+        }
+        let name = selectObject.name;
+        if (selectObject.type === "Flag") {
+            name = selectObject.name
+        }
+        let myEntity = this.scene.getEntity(name);
+        if (this.entitySelected !== undefined) {
+            let entitySelectedName = this.entitySelected.getName()
+            if (selectObject.name !== entitySelectedName) {
+                this.scene.getEntity(entitySelectedName).goDown();
+                myEntity.setClicked();
+                this.entitySelected = myEntity;
+                this.focusObj(this.entitySelected);
+                this.gui.setInfo(myEntity);
+            }
+        }
+        else {
+            myEntity.setClicked();
+            this.entitySelected = myEntity;
+            this.focusObj(this.entitySelected);
+            this.gui.setInfo(myEntity);
+        }
 
-    getSelected() {
-        return this.entitySelected;
     }
 
     goDown() {
@@ -187,6 +203,7 @@ export default class Simulator extends GameEngine {
         this.entitySelected = undefined;
         this.scene.remove("circleFocus");
         this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
+        //this.animationManager.stopAnimate();
     }
 
     filter(arrayFilter) {
@@ -199,10 +216,19 @@ export default class Simulator extends GameEngine {
                 gender = user.getDataByKey("explicit_community")[genderKey];
                 language = user.getDataByKey("explicit_community")[languageKey];
                 if (arrayFilter.includes(age) && arrayFilter.includes(gender) && arrayFilter.includes(language)) {
-                    entity.setVisible(true);
+                    entity.activate();
+                    entity.setOpacity(1);
+                    if (age === "young") {
+                        console.log(1, language, entity)
+
+                    }
                 }
                 else {
-                    entity.setVisible(false);
+                    entity.deactivate();
+                    entity.setOpacity(0.3);
+                    if (age === "young") {
+                        console.log(0, language, entity)
+                    }
                 }
             }
         }

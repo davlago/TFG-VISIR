@@ -7,10 +7,10 @@ import * as THREE from 'three';
 
 export default class Camera extends Entity {
     constructor(sizeWidth, sizeHeight) {
-        super();
+        super("camera");
         this.object = new THREE.PerspectiveCamera(100, sizeWidth / sizeHeight, 1, 1000);
         this.target = null;
-
+        this.setName("Camera");
     }
 
     focusObj(pos) {
