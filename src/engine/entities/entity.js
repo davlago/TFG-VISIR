@@ -102,6 +102,11 @@ export default class Entity {
         this.isActive = true;
     }
 
+    deactivate() {
+        this.isActive = false;
+    }
+
+
     /**
      * Función para actualizar entidades
      * @param {*} deltaTime 

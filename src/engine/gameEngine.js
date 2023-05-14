@@ -9,6 +9,8 @@ import CameraManager from './managers/cameraManager';
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 const generalCameraPositionKey = "cameraGeneralPosition";
 import Light from './entities/light';
+import AnimationManager from './managers/animationManager';
+import InputManager from './managers/inputManager';
 
 
 export default class GameEngine{
@@ -50,6 +52,9 @@ export default class GameEngine{
 
     createManagers(){
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
+        this.animationManager = new AnimationManager();
+        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager);
+
         this.postCreateManagers()
     }
 

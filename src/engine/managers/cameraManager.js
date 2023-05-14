@@ -8,7 +8,6 @@ export default class CameraManager {
     constructor(camera, pos, renderer) {
         this.camera = camera;
         this.camera.setPosition(pos.x, pos.y, pos.z);
-        let cameraGenPos = { x: pos.x, y: pos.y, z: pos.z }
         this.controls = new OrbitControls( this.camera.get3DObject(), renderer.domElement );
         this.controls.enablePan = false; //Deshabilitar mover
         this.target = null;

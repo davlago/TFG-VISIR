@@ -8,14 +8,12 @@ import DataManager from './managers/dataManager';
 
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
-import AnimationManager from './managers/animationManager';
 
 import { clone } from '../utils/SkeletonUtils';
 
 import * as geometryUtils from "../utils/geometryUtils";
 import { flag } from "../utils/geometryObjects";
 import CircleFocus from './entities/circleFocus';
-import InputManager from './managers/inputManager';
 import GUI from './GUI';
 
 
@@ -40,7 +38,6 @@ export default class Simulator extends GameEngine {
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.postCreateManagers = this.postCreateManagers.bind(this);
         this.setSelected = this.setSelected.bind(this);
-        this.getSelected = this.getSelected.bind(this);
         this.goDown = this.goDown.bind(this);
         this.filter = this.filter.bind(this);
         this.roomSize = simulatorMap[roomSizeKey];
@@ -54,9 +51,9 @@ export default class Simulator extends GameEngine {
     }
 
     postCreateManagers() {
-        this.animationManager = new AnimationManager();
-        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager, this.setSelected, this.getSelected);
+        this.inputManager.setFunctionSelect(this.setSelected);
     }
+
 
     createMyEntities() {
         return new Promise((resolve, reject) => {
@@ -92,7 +89,7 @@ export default class Simulator extends GameEngine {
             let radius = geometryUtils.generateRadius(numUsers, simulatorMap.geometrical.coordAcom);
             let center = vertexArray[aux];
             let texture = this.texturesManager.getOneTexture("loft");
-            if(value.getDataByKey("community-type")==="inexistent"){
+            if (value.getDataByKey("community-type") === "inexistent") {
                 texture = null
             }
             let community = new Community(key, radius, value, center, texture);
@@ -103,13 +100,15 @@ export default class Simulator extends GameEngine {
                 let userInfo = this.dataManager.getUserById(userId);
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
                 let flagLan = this.getFlag(userModel[languageKey])
-                flagLan.name = "Flag-" + userId;
+                flagLan.name = userId;
+                flagLan.type = "Flag";
                 let model = this.getModel(userModel);
                 model.add(flagLan);
                 let user = new User(userId, model, userInfo);
                 user.setPosition(coords[i].x + center.x, 2.5, coords[i].z + center.z);
                 community.addUser(userId, user);
                 this.inputManager.addEntity(user);
+                this.animationManager.animateEntity(user)
             }
 
             this.communitiesArray.push(community);
@@ -168,15 +167,35 @@ export default class Simulator extends GameEngine {
     }
 
 
-    setSelected(entity) {
-        console.log(entity)
-        this.entitySelected = entity;
-        this.focusObj(entity);
-        this.gui.setInfo(entity);
-    }
+    setSelected(selectObject) {
+        while (selectObject.name === "") {
+            selectObject = selectObject.parent;
+        }
+        if (selectObject.type === "SkinnedMesh") {
+            selectObject = selectObject.parent;
+        }
+        let name = selectObject.name;
+        if (selectObject.type === "Flag") {
+            name = selectObject.name
+        }
+        let myEntity = this.scene.getEntity(name);
+        if (this.entitySelected !== undefined) {
+            let entitySelectedName = this.entitySelected.getName()
+            if (selectObject.name !== entitySelectedName) {
+                this.scene.getEntity(entitySelectedName).goDown();
+                myEntity.setClicked();
+                this.entitySelected = myEntity;
+                this.focusObj(this.entitySelected);
+                this.gui.setInfo(myEntity);
+            }
+        }
+        else {
+            myEntity.setClicked();
+            this.entitySelected = myEntity;
+            this.focusObj(this.entitySelected);
+            this.gui.setInfo(myEntity);
+        }
 
-    getSelected() {
-        return this.entitySelected;
     }
 
     goDown() {
@@ -197,10 +216,19 @@ export default class Simulator extends GameEngine {
                 gender = user.getDataByKey("explicit_community")[genderKey];
                 language = user.getDataByKey("explicit_community")[languageKey];
                 if (arrayFilter.includes(age) && arrayFilter.includes(gender) && arrayFilter.includes(language)) {
-                    entity.setVisible(true);
+                    entity.activate();
+                    entity.setOpacity(1);
+                    if (age === "young") {
+                        console.log(1, language, entity)
+
+                    }
                 }
                 else {
-                    entity.setVisible(false);
+                    entity.deactivate();
+                    entity.setOpacity(0.3);
+                    if (age === "young") {
+                        console.log(0, language, entity)
+                    }
                 }
             }
         }
