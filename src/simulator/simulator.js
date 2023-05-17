@@ -199,11 +199,12 @@ export default class Simulator extends GameEngine {
     }
 
     goDown() {
-        this.entitySelected.goDown();
-        this.entitySelected = undefined;
-        this.scene.remove("circleFocus");
-        this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
-        //this.animationManager.stopAnimate();
+        if (this.entitySelected !== undefined) {
+            this.entitySelected.goDown();
+            this.entitySelected = undefined;
+            this.scene.remove("circleFocus");
+            this.cameraManager.noFocusObj(this.scene.getEntity("room"), simulatorMap[generalCameraPositionKey]);
+        }
     }
 
     filter(arrayFilter) {
@@ -224,7 +225,10 @@ export default class Simulator extends GameEngine {
                     }
                 }
                 else {
-                    entity.deactivate();
+                    this.gui.infoClose()
+                    setTimeout(() => {
+                        entity.deactivate();
+                    }, 250);
                     entity.setOpacity(0.3);
                     if (age === "young") {
                         console.log(0, language, entity)
