@@ -6,22 +6,21 @@ import * as THREE from 'three';
 
 export default class InputManager {
 
-    constructor(camera, renderer, animationManager) {
+    constructor(camera, renderer) {
         this.setSelected;
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
         this.entities = {};
         this.renderer = renderer;
         this.entitiesObjArray = [];
+        this.observers = [];
         this.camera = camera;
-        this.eventsList = []
         this.handleClick = this.handleClick.bind(this)
-        this.animationManager = animationManager;
         window.addEventListener('dblclick', (event) => { this.handleClick(event) }, false);
     }
 
-    setFunctionSelect(setSelected){
-        this.setSelected = setSelected;
+    addObserver(observer){
+        this.observers.push(observer);
     }
 
     handleClick(event) {
@@ -32,7 +31,9 @@ export default class InputManager {
         let intersects = this.raycaster.intersectObjects(this.entitiesObjArray, true);
         if (intersects.length > 0) {
             let selectObject = intersects[0].object;
-            this.setSelected(selectObject);
+            for(let x of this.observers){
+                x.update(selectObject);
+            }
         }
 
     }

@@ -15,6 +15,7 @@ import * as geometryUtils from "../utils/geometryUtils";
 import { flag } from "../utils/geometryObjects";
 import CircleFocus from './entities/circleFocus';
 import GUI from './GUI';
+import SimulatorObserver from './observers/simulatorObserver';
 
 
 const roomSizeKey = "roomSize";
@@ -33,7 +34,7 @@ export default class Simulator extends GameEngine {
 
     constructor() {
         super();
-
+        this.observer = new SimulatorObserver(this);
         this.dataManager = new DataManager(simulatorMap);
         this.createSimulatorEntities = this.createSimulatorEntities.bind(this);
         this.postCreateManagers = this.postCreateManagers.bind(this);
@@ -50,11 +51,9 @@ export default class Simulator extends GameEngine {
         this.animationManager.update(deltaTime);
     }
 
-    postCreateManagers() {
-        this.inputManager.setFunctionSelect(this.setSelected);
+    postCreateManagers(){
+        this.inputManager.addObserver(this.observer);
     }
-
-
     createMyEntities() {
         return new Promise((resolve, reject) => {
             this.dataManager.loadData().then(() => {
