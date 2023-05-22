@@ -53,7 +53,7 @@ export default class GameEngine{
     createManagers(){
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
         this.animationManager = new AnimationManager();
-        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer, this.animationManager);
+        this.inputManager = new InputManager(this.scene.getCamera(), this.renderer);
 
         this.postCreateManagers()
     }

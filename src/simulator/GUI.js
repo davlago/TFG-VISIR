@@ -1,4 +1,5 @@
 import Chart from 'chart.js/auto';
+import * as levelData from '../../assets/data/GAM_DATA.json'
 export default class GUI {
 
     constructor(dataManager, scene, goDown, filter) {
@@ -25,12 +26,26 @@ export default class GUI {
 
     }
 
+    capitalize(str){
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    }
     filterCheckbox() {
-        let filters = ["gen-Male", "gen-Female", "age-young", "age-adult", "age-elderly", "lang-GER", "lang-ES", "lang-FR", "lang-IT"];
-        for (let id of filters) {
-            document.getElementById(id).addEventListener('click', () => {
-                this.filterMethod()
-            });
+        let filters = [];
+        for (let i = 1; i <= 3; i++) {
+            let atriKey = "atribute"+((i===3) ? "B" : i);
+            let atribute = levelData.keys[atriKey];
+            let title = atribute.key;
+            document.getElementById(atriKey+"-filterTitle").innerHTML = "<h5>"+this.capitalize(title)+"</h5>"
+            for (let j = 1; j <=atribute.values.length; j++) {
+                let id = "atribute"+((i===3) ? "B" : i) + "-filter"+j;
+                let idCB = id+"-CB";
+                let name = atribute.values[j-1];
+                document.getElementById(id).innerHTML = "<input class='form-check-input' type='checkbox' id='"+idCB+"' checked><label>"+ this.capitalize(name)+"</label>"
+                filters.push(idCB);
+                document.getElementById(idCB).addEventListener('click', () => {
+                    this.filterMethod(filters)
+                });
+            }
         }
     }
 
@@ -83,7 +98,7 @@ export default class GUI {
                 document.getElementById("rowUser").className = "row"
             }
 
-        } 
+        }
         info_box.className = "info expand";
         info_box.style.zIndex = 0;
         this.noAlertBox()
@@ -104,13 +119,15 @@ export default class GUI {
         document.getElementById("filter-box").className = "filter retractFilter"
         document.getElementById("filterIcon").className = "myShow"
     }
-
-    filterMethod() {
-        let filters = ["gen-Male", "gen-Female", "age-young", "age-adult", "age-elderly", "lang-GER", "lang-ES", "lang-FR", "lang-IT"];
+    
+    filterMethod(filters) {
         let arrayFilter = [];
         for (let id of filters) {
             if (document.getElementById(id).checked) {
-                arrayFilter.push(id.split("-")[1])
+                console.log(id)
+                let atribute = id.split("-")[0];
+                let valueIndex = id.split("-")[1].slice(-1);
+                arrayFilter.push(levelData.keys[atribute].values[valueIndex-1])
             }
         }
         this.filter(arrayFilter);
@@ -143,19 +160,23 @@ export default class GUI {
     showUserInfo(userInfo) {
         let name = document.getElementById("nameUser");
         let infoEx = document.getElementById("infoExUser");
+        let contribution = document.getElementById("contributionUser");
         name.innerHTML = "<h4>ID: " + userInfo["id"] + "</h4>";
-        let gender = "<div class='col'><h5>Gender: </h5><h4>" + userInfo["explicit_community"]["Gender"] + "</h4></div>";
-        let age = "<div class='col'><h5>Age: </h5><h4>" + userInfo["explicit_community"]["ageGroup"] + "</h4></div>";
-        let language = "<div class='col'><h5>Language: </h5><h4>" + userInfo["explicit_community"]["language"] + "</h4></div>";
-        infoEx.innerHTML = gender + age + language
-
+        let atribute1 = "<div class='col'><h5>" + levelData.keys.atribute1.key + ": </h5><h4>" + userInfo["explicit_community"][levelData.keys.atribute1.key] + "</h4></div>";
+        let atribute2 = "<div class='col'><h5>" + levelData.keys.atribute2.key + "</h5><h4>" + userInfo["explicit_community"][levelData.keys.atribute2.key] + "</h4></div>";
+        let atributeB = "<div class='col'><h5>" + levelData.keys.atributeB.key + "</h5><h4>" + userInfo["explicit_community"][levelData.keys.atributeB.key] + "</h4></div>";
+        infoEx.innerHTML = atribute1 + atribute2 + atributeB
+        let artId = userInfo["community_interactions"][0]["artwork_id"]
+        console.log(artId)
+        let artwork = levelData.data["artworks"].find(function (a) {
+            return JSON.stringify(a["@id"]) === artId
+        })
+        contribution.innerHTML = "<h4>Most important contribution: </h4> <img src='" + artwork["image"] + "' style='max-height: 200px; width: auto;'></img> <h5 style='text-align: center;'>" + artwork["tittle"] + "</h5>"
     }
 
     showCommunityInfo(communityInfo) {
         let name = document.getElementById("nameCommunity");
         let nUsers = document.getElementById("nUsersCommunity");
-
-
         name.innerHTML = "<h4>" + communityInfo["name"] + "</h4>";
         nUsers.innerHTML = "<h4>N Users: " + communityInfo["users"].length + "</h4>";
         let explanations = communityInfo["explanations"];
@@ -168,36 +189,27 @@ export default class GUI {
         }
         this.buildImChart(explanation["explanation_data"]);
         let statsEx = this.generateExStats(communityInfo["users"])
-
-        this.buildExChart("Gender", "genderChart", statsEx.gender);
-        this.buildExChart("Age", "ageChart", statsEx.age);
-        this.buildExChart("Language", "languageChart", statsEx.language);
+        console.log(statsEx)
+        this.buildExChart(levelData.keys.atribute1.key, "atribute1Chart", statsEx.atribute1);
+        this.buildExChart(levelData.keys.atribute2.key, "atribute2Chart", statsEx.atribute2);
+        this.buildExChart(levelData.keys.atributeB.key, "atributeBChart", statsEx.atributeB);
 
     }
 
     generateExStats(usersList) {
         let stats = {
-            age: {
-                young: 0,
-                adult: 0,
-                elderly: 0,
-            },
-            gender: {
-                Male: 0,
-                Female: 0
-            },
-            language: {
-                IT: 0,
-                ES: 0,
-                GER: 0,
-                FR: 0
-            }
+            atribute1: {},
+            atribute2: {},
+            atributeB: {}
         }
         for (let x of usersList) {
             let user = this.dataManager.getUserById(x).getDataByKey("explicit_community");
-            stats.age[user["ageGroup"]]++;
-            stats.gender[user["Gender"]]++;
-            stats.language[user["language"]]++;
+            let a1 = user[levelData.keys.atribute1.key]
+            let a2 = user[levelData.keys.atribute2.key]
+            let aB = user[levelData.keys.atributeB.key]
+            stats.atribute1[a1] === undefined ? stats.atribute1[a1] = 1 : stats.atribute1[a1]++;
+            stats.atribute2[a2] === undefined ? stats.atribute2[a2] = 1 : stats.atribute2[a2]++;
+            stats.atributeB[aB] === undefined ? stats.atributeB[aB] = 1 : stats.atributeB[aB]++;
         }
         for (let key in stats) {
             for (let key2 in stats[key]) {
