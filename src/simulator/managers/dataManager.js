@@ -33,7 +33,7 @@ export default class DataManager {
 
     loadUsers() {
         return new Promise((resolve, reject) => {
-            let usersData = levelData[userKey];
+            let usersData = levelData.data[userKey];
             for (const userData of usersData) {
                 let user = new UserInfo(userData);
                 let idUser = user.getDataByKey("id");
@@ -45,7 +45,7 @@ export default class DataManager {
 
     loadCommunities() {
         return new Promise((resolve, reject) => {
-            let communitiesData = levelData[communityKey];
+            let communitiesData = levelData.data[communityKey];
             let index = 0;
             for (const communityData of communitiesData) {
                 let color = this.simulatorMap["communityColors"][index%10];

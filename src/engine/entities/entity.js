@@ -13,6 +13,7 @@ export default class Entity {
         this.type = type;
         this.isActive = true;
         this.isClicked = false;
+        this.canClicked = true;
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = { x: 1, y: 1, z: 1 };
         this.childrenEntities = {};
@@ -40,12 +41,16 @@ export default class Entity {
         return !(this.childrenEntities.length === 0);
     }
 
-    getIsActive() {
+    isActive() {
         return this.isActive;
     }
 
-    setIsActive(activate) {
-        this.isActive = activate;
+    getCanClicked(){
+        return this.canClicked;
+    }
+
+    setCanCliked(b){
+        this.canClicked = b;
     }
 
     getPosition() {

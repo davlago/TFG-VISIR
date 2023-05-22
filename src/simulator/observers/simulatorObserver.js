@@ -4,9 +4,10 @@ export default class SimulatorObserver extends Observer{
     constructor(mainClass){
         super(mainClass);
     }
-    update(event) {
-        console.log(event)
-        this.mainClass.setSelected(event)
+    update(event, data) {
+        if(event === "selectObject"){        
+            this.mainClass.setSelected(data)
+        }
     }
 }
 

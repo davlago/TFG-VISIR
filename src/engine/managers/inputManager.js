@@ -32,7 +32,7 @@ export default class InputManager {
         if (intersects.length > 0) {
             let selectObject = intersects[0].object;
             for(let x of this.observers){
-                x.update(selectObject);
+                x.update("selectObject",selectObject);
             }
         }
 

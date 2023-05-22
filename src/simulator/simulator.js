@@ -5,7 +5,7 @@ import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
 import DataManager from './managers/dataManager';
-
+import * as levelData from '../../assets/data/GAM_DATA.json'
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
 
@@ -22,10 +22,6 @@ const roomSizeKey = "roomSize";
 const generalCameraPositionKey = "cameraGeneralPosition";
 const usersKey = "users";
 const usersDetailsKey = "explicit_community";
-const genderKey = "Gender";
-const ageKey = "ageGroup";
-const languageKey = "language";
-const artKey = "RelationshipWithArt";
 
 
 
@@ -46,12 +42,13 @@ export default class Simulator extends GameEngine {
         this.gui = new GUI(this.dataManager, this.scene, this.goDown, this.filter);
     }
 
+
     postUpdates(deltaTime) {
         this.cameraManager.update(deltaTime);
         this.animationManager.update(deltaTime);
     }
 
-    postCreateManagers(){
+    postCreateManagers() {
         this.inputManager.addObserver(this.observer);
     }
     createMyEntities() {
@@ -98,7 +95,7 @@ export default class Simulator extends GameEngine {
                 let userId = usersArray[i];
                 let userInfo = this.dataManager.getUserById(userId);
                 let userModel = userInfo.getDataByKey(usersDetailsKey);
-                let flagLan = this.getFlag(userModel[languageKey])
+                let flagLan = this.getBillboard(userModel[levelData.keys.atributeB.key])
                 flagLan.name = userId;
                 flagLan.type = "Flag";
                 let model = this.getModel(userModel);
@@ -118,28 +115,28 @@ export default class Simulator extends GameEngine {
 
     }
 
-    getFlag(language) {
+    getBillboard(atribute) {
         try {
-            let flagLan = new flag(this.texturesManager.getOneTexture(language));
-            return clone(flagLan);
+            let billboard = new flag(this.texturesManager.getOneTexture(atribute));
+            return clone(billboard);
         } catch (err) {
-            console.log("Cant clone: " + language);
-            let flagLan = this.texturesManager.getOneTexture("WHITE");
-            return clone(flagLan);
+            console.log("Cant clone: " + atribute);
+            let billboard = this.texturesManager.getOneTexture("WHITE");
+            return clone(billboard);
         }
     }
 
     getModel(userModel) {
-        let gender = userModel[genderKey];
-        let age = userModel[ageKey];
+        let atribute2 = userModel[levelData.keys.atribute2.key];
+        let atribute1 = userModel[levelData.keys.atribute1.key];
         try {
-            let model = this.modelManager.getOneModel(age + "_" + gender);
+            let model = this.modelManager.getOneModel(atribute1 + "_" + atribute2);
             let modelClone = clone(model);
             modelClone.animations = model.animations;
             return modelClone;
         } catch (err) {
-            console.log("Cant clone: " + age + "_" + gender);
-            let model = this.modelManager.getOneModel(age + "_" + gender);
+            console.log("Cant clone: " + atribute1 + "_" + atribute2);
+            let model = this.modelManager.getOneModel(atribute1 + "_" + atribute2);
             let modelClone = clone(model);
             modelClone.animations = model.animations;
             return modelClone;
@@ -178,22 +175,24 @@ export default class Simulator extends GameEngine {
             name = selectObject.name
         }
         let myEntity = this.scene.getEntity(name);
-        if (this.entitySelected !== undefined) {
-            let entitySelectedName = this.entitySelected.getName()
-            if (selectObject.name !== entitySelectedName) {
-                this.scene.getEntity(entitySelectedName).goDown();
+        if (myEntity.getCanClicked()) {
+            if (this.entitySelected !== undefined) {
+                let entitySelectedName = this.entitySelected.getName()
+                if (selectObject.name !== entitySelectedName) {
+                    this.scene.getEntity(entitySelectedName).goDown();
+                    myEntity.setClicked();
+                    this.entitySelected = myEntity;
+                    this.focusObj(this.entitySelected);
+                    console.log(myEntity)
+                    this.gui.setInfo(myEntity);
+                }
+            }
+            else {
                 myEntity.setClicked();
                 this.entitySelected = myEntity;
                 this.focusObj(this.entitySelected);
-                console.log(myEntity)
                 this.gui.setInfo(myEntity);
             }
-        }
-        else {
-            myEntity.setClicked();
-            this.entitySelected = myEntity;
-            this.focusObj(this.entitySelected);
-            this.gui.setInfo(myEntity);
         }
 
     }
@@ -208,31 +207,23 @@ export default class Simulator extends GameEngine {
     }
 
     filter(arrayFilter) {
+        console.log(arrayFilter);
         let usersInfo = this.dataManager.getUsers();
-        let entity, age, gender, language;
+        let atribute1, atribute2, atributeB;
         for (let [userName, user] of Object.entries(usersInfo)) {
-            entity = this.scene.getEntity(userName);
+            const entity = this.scene.getEntity(userName);
             if (entity !== undefined) {
-                age = user.getDataByKey("explicit_community")[ageKey];
-                gender = user.getDataByKey("explicit_community")[genderKey];
-                language = user.getDataByKey("explicit_community")[languageKey];
-                if (arrayFilter.includes(age) && arrayFilter.includes(gender) && arrayFilter.includes(language)) {
-                    entity.activate();
+                atribute1 = user.getDataByKey("explicit_community")[levelData.keys.atribute1.key];
+                atribute2 = user.getDataByKey("explicit_community")[levelData.keys.atribute2.key];
+                atributeB = user.getDataByKey("explicit_community")[levelData.keys.atributeB.key];
+                if (arrayFilter.includes(atribute1) && arrayFilter.includes(atribute2) && arrayFilter.includes(atributeB)) {
+                    entity.setCanCliked(true);
                     entity.setOpacity(1);
-                    if (age === "young") {
-                        console.log(1, language, entity)
-
-                    }
                 }
                 else {
                     this.gui.infoClose()
-                    setTimeout(() => {
-                        entity.deactivate();
-                    }, 250);
+                    entity.setCanCliked(false);
                     entity.setOpacity(0.3);
-                    if (age === "young") {
-                        console.log(0, language, entity)
-                    }
                 }
             }
         }
