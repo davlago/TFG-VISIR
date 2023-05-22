@@ -359,3 +359,8 @@ hr.hr2 {
 
   fill: red;
 }
+
+#infoDiv{
+  max-height: 650px;
+  overflow-y: scroll;
+}

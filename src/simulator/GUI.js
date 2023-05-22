@@ -1,4 +1,5 @@
 import Chart from 'chart.js/auto';
+import * as levelData from '../../assets/data/GAM_DATA.json'
 export default class GUI {
 
     constructor(dataManager, scene, goDown, filter) {
@@ -143,11 +144,24 @@ export default class GUI {
     showUserInfo(userInfo) {
         let name = document.getElementById("nameUser");
         let infoEx = document.getElementById("infoExUser");
+        let contribution = document.getElementById("contributionUser");
         name.innerHTML = "<h4>ID: " + userInfo["id"] + "</h4>";
         let gender = "<div class='col'><h5>Gender: </h5><h4>" + userInfo["explicit_community"]["Gender"] + "</h4></div>";
         let age = "<div class='col'><h5>Age: </h5><h4>" + userInfo["explicit_community"]["ageGroup"] + "</h4></div>";
         let language = "<div class='col'><h5>Language: </h5><h4>" + userInfo["explicit_community"]["language"] + "</h4></div>";
         infoEx.innerHTML = gender + age + language
+        let artId = userInfo["community_interactions"][0]["artwork_id"]
+        console.log(artId)
+        let artwork = levelData["artworks"].find(function(a){
+            return JSON.stringify(a["@id"]) === artId
+        })
+        contribution.innerHTML = "<h4>Most important contribution: </h4> <img src='" + artwork["image"] + "' style='max-height: 200px; width: auto;'></img> <h5 style='text-align: center;'>" +  artwork["tittle"] + "</h5>"
+        
+
+
+        
+
+
 
     }
 

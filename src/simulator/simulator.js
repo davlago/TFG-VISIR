@@ -185,6 +185,7 @@ export default class Simulator extends GameEngine {
                 myEntity.setClicked();
                 this.entitySelected = myEntity;
                 this.focusObj(this.entitySelected);
+                console.log(myEntity)
                 this.gui.setInfo(myEntity);
             }
         }
