@@ -1,6 +1,6 @@
 # TFG-VISIR
 
-This is the repository for the Final Degree Project (TFG).
+This is the repository for the Final Degree Project (TFG) of VISIR.
 
 ## Web
 
