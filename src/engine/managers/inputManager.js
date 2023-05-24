@@ -35,6 +35,11 @@ export default class InputManager {
                 x.update("selectObject",selectObject);
             }
         }
+        else{
+            for(let x of this.observers){
+                x.update("noObject");
+            }
+        }
 
     }
 

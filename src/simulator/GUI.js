@@ -26,21 +26,21 @@ export default class GUI {
 
     }
 
-    capitalize(str){
+    capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     }
     filterCheckbox() {
         let filters = [];
         for (let i = 1; i <= 3; i++) {
-            let atriKey = "atribute"+((i===3) ? "B" : i);
+            let atriKey = "atribute" + ((i === 3) ? "B" : i);
             let atribute = levelData.keys[atriKey];
             let title = atribute.key;
-            document.getElementById(atriKey+"-filterTitle").innerHTML = "<h5>"+this.capitalize(title)+"</h5>"
-            for (let j = 1; j <=atribute.values.length; j++) {
-                let id = "atribute"+((i===3) ? "B" : i) + "-filter"+j;
-                let idCB = id+"-CB";
-                let name = atribute.values[j-1];
-                document.getElementById(id).innerHTML = "<input class='form-check-input' type='checkbox' id='"+idCB+"' checked><label>"+ this.capitalize(name)+"</label>"
+            document.getElementById(atriKey + "-filterTitle").innerHTML = "<h5>" + this.capitalize(title) + "</h5>"
+            for (let j = 1; j <= atribute.values.length; j++) {
+                let id = "atribute" + ((i === 3) ? "B" : i) + "-filter" + j;
+                let idCB = id + "-CB";
+                let name = atribute.values[j - 1];
+                document.getElementById(id).innerHTML = "<input class='form-check-input' type='checkbox' id='" + idCB + "' checked><label>" + this.capitalize(name) + "</label>"
                 filters.push(idCB);
                 document.getElementById(idCB).addEventListener('click', () => {
                     this.filterMethod(filters)
@@ -119,7 +119,7 @@ export default class GUI {
         document.getElementById("filter-box").className = "filter retractFilter"
         document.getElementById("filterIcon").className = "myShow"
     }
-    
+
     filterMethod(filters) {
         let arrayFilter = [];
         for (let id of filters) {
@@ -127,7 +127,7 @@ export default class GUI {
                 console.log(id)
                 let atribute = id.split("-")[0];
                 let valueIndex = id.split("-")[1].slice(-1);
-                arrayFilter.push(levelData.keys[atribute].values[valueIndex-1])
+                arrayFilter.push(levelData.keys[atribute].values[valueIndex - 1])
             }
         }
         this.filter(arrayFilter);
@@ -166,12 +166,17 @@ export default class GUI {
         let atribute2 = "<div class='col'><h5>" + levelData.keys.atribute2.key + "</h5><h4>" + userInfo["explicit_community"][levelData.keys.atribute2.key] + "</h4></div>";
         let atributeB = "<div class='col'><h5>" + levelData.keys.atributeB.key + "</h5><h4>" + userInfo["explicit_community"][levelData.keys.atributeB.key] + "</h4></div>";
         infoEx.innerHTML = atribute1 + atribute2 + atributeB
-        let artId = userInfo["community_interactions"][0]["artwork_id"]
-        console.log(artId)
-        let artwork = levelData.data["artworks"].find(function (a) {
-            return JSON.stringify(a["@id"]) === artId
-        })
-        contribution.innerHTML = "<h4>Most important contribution: </h4> <img src='" + artwork["image"] + "' style='max-height: 200px; width: auto;'></img> <h5 style='text-align: center;'>" + artwork["tittle"] + "</h5>"
+        if (userInfo["community_interactions"][0] !== undefined) {
+            let artId = userInfo["community_interactions"][0]["artwork_id"]
+
+            let artwork = levelData.data["artworks"].find(function (a) {
+                return JSON.stringify(a["@id"]) === artId
+            })
+            contribution.innerHTML = "<hr class='hr2'></hr><h4>Most important contribution: </h4> <img src='" + artwork["image"] + "' style='max-height: 200px; width: auto;'></img> <h5 style='text-align: center;'>" + artwork["tittle"] + "</h5>"
+        }
+        else{
+            contribution.innerHTML = ""
+        }
     }
 
     showCommunityInfo(communityInfo) {
@@ -187,9 +192,13 @@ export default class GUI {
                 break;
             }
         }
-        this.buildImChart(explanation["explanation_data"]);
+        if (explanation !== undefined) {
+            this.buildImChart(explanation["explanation_data"]);
+        }
+        else {
+            document.getElementById("infoImCommunity").innerHTML = ""
+        }
         let statsEx = this.generateExStats(communityInfo["users"])
-        console.log(statsEx)
         this.buildExChart(levelData.keys.atribute1.key, "atribute1Chart", statsEx.atribute1);
         this.buildExChart(levelData.keys.atribute2.key, "atribute2Chart", statsEx.atribute2);
         this.buildExChart(levelData.keys.atributeB.key, "atributeBChart", statsEx.atributeB);

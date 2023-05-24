@@ -286,6 +286,9 @@ hr.hr2 {
   padding-left: 0px !important;
 
 }
+.rightFilter{
+  text-align: right;
+}
 
 .h70 {
   height: 70%;
