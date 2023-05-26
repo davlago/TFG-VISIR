@@ -14,18 +14,5 @@
     "geometrical":{
         "coordAcom" : [1, 7, 21, 42, 73],
         "coordCircle" : [1, 6, 14, 21, 29]
-    },
-
-    "communityColors":[
-        "0x3FFF28",
-        "0xff2222",
-        "0x2838FF",
-        "0xFF28F5",
-        "0xFFFF28",
-        "0xFF9A28",
-        "0x28FFF5",
-        "0x8A28FF",
-        "0x28FF93",
-        "0x939393"
-    ]
+    }
 }

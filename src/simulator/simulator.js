@@ -164,34 +164,40 @@ export default class Simulator extends GameEngine {
 
 
     setSelected(selectObject) {
-        while (selectObject.name === "") {
-            selectObject = selectObject.parent;
+        if (selectObject === null) {
+            this.gui.infoClose()
         }
-        if (selectObject.type === "SkinnedMesh") {
-            selectObject = selectObject.parent;
-        }
-        let name = selectObject.name;
-        if (selectObject.type === "Flag") {
-            name = selectObject.name
-        }
-        let myEntity = this.scene.getEntity(name);
-        if (myEntity.getCanClicked()) {
-            if (this.entitySelected !== undefined) {
-                let entitySelectedName = this.entitySelected.getName()
-                if (selectObject.name !== entitySelectedName) {
-                    this.scene.getEntity(entitySelectedName).goDown();
+        else {
+
+            while (selectObject.name === "") {
+                selectObject = selectObject.parent;
+            }
+            if (selectObject.type === "SkinnedMesh") {
+                selectObject = selectObject.parent;
+            }
+            let name = selectObject.name;
+            if (selectObject.type === "Flag") {
+                name = selectObject.name
+            }
+            let myEntity = this.scene.getEntity(name);
+            if (myEntity.getCanClicked()) {
+                if (this.entitySelected !== undefined) {
+                    let entitySelectedName = this.entitySelected.getName()
+                    if (selectObject.name !== entitySelectedName) {
+                        this.scene.getEntity(entitySelectedName).goDown();
+                        myEntity.setClicked();
+                        this.entitySelected = myEntity;
+                        this.focusObj(this.entitySelected);
+                        console.log(myEntity)
+                        this.gui.setInfo(myEntity);
+                    }
+                }
+                else {
                     myEntity.setClicked();
                     this.entitySelected = myEntity;
                     this.focusObj(this.entitySelected);
-                    console.log(myEntity)
                     this.gui.setInfo(myEntity);
                 }
-            }
-            else {
-                myEntity.setClicked();
-                this.entitySelected = myEntity;
-                this.focusObj(this.entitySelected);
-                this.gui.setInfo(myEntity);
             }
         }
 

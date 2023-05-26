@@ -8,6 +8,9 @@ export default class SimulatorObserver extends Observer{
         if(event === "selectObject"){        
             this.mainClass.setSelected(data)
         }
+        if(event === "noObject"){
+            this.mainClass.setSelected(null)
+        }
     }
 }
 

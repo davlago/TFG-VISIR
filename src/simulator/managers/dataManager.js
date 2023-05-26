@@ -48,7 +48,7 @@ export default class DataManager {
             let communitiesData = levelData.data[communityKey];
             let index = 0;
             for (const communityData of communitiesData) {
-                let color = this.simulatorMap["communityColors"][index%10];
+                let color = "0x3FFF28";
                 let community = new CommunityInfo(communityData,color);
                 let idCommunity = community.getDataByKey("id");
                 this.communities[idCommunity] = community;
