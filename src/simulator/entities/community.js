@@ -16,11 +16,20 @@ export default class Community extends Entity {
         this.radius = radius;
     }
 
+    /**
+     * Agrega un usuario a la comunidad.
+     * @param {string} idUser - El identificador del usuario.
+     * @param {User} user - El objeto de usuario a agregar.
+     */
     addUser(idUser, user) {
         user.setCommunity(this.getName())
         this.childrenEntities[idUser] = user;
     }
 
+    /**
+     * Método de actualización de la comunidad.
+     * @param {number} deltaTime - El tiempo transcurrido desde la última actualización.
+     */
     onUpdate(deltaTime) {
         if (this.isClicked) {
             this.isClicked = false;
@@ -28,7 +37,10 @@ export default class Community extends Entity {
 
     }
 
-
+    /**
+     * Obtiene el radio de la comunidad.
+     * @returns {number} El radio de la comunidad.
+     */
     getRadius(){
         return this.radius;
     }

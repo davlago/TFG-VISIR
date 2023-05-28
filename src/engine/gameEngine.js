@@ -50,6 +50,9 @@ export default class GameEngine{
         window.requestAnimationFrame(this.gameLoop);
     }
 
+    /**
+     * Crea los gestores de la simulación, como el gestor de la cámara, el gestor de animaciones y el gestor de entrada.
+     */
     createManagers(){
         this.cameraManager = new CameraManager(this.scene.getEntity("camera"), simulatorMap[generalCameraPositionKey], this.renderer);
         this.animationManager = new AnimationManager();
@@ -60,13 +63,15 @@ export default class GameEngine{
 
     postCreateManagers(){}
 
+    /**
+     * Crea las entidades personalizadas de la simulación.
+     * @returns {Promise} Una promesa que se resuelve una vez que se han creado las entidades personalizadas.
+     */
     createMyEntities(){
         return new Promise((resolve, reject) => {
             resolve();
         });
     }
-
-    postUpdates(){}
     
     /**
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
@@ -75,7 +80,8 @@ export default class GameEngine{
         this.stats.begin();
         let deltaTimeSec = this.clock.getDelta();
         this.scene.update(deltaTimeSec);
-        this.postUpdates(deltaTimeSec);
+        this.cameraManager.update(deltaTimeSec);
+        this.animationManager.update(deltaTimeSec);
         let scene = this.scene.get3DObject();
         this.renderer.render(scene, this.scene.getCamera());
         this.stats.end();

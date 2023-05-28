@@ -17,6 +17,10 @@ export default class DataManager {
         this.simulatorMap = simulatorMap;
     }
 
+    /**
+     * Carga los datos necesarios para la simulación.
+     * @returns {Promise} Una promesa que se resuelve una vez que se han cargado todos los datos.
+     */
     loadData() {
         return new Promise((resolve, reject) => {
             let promises = [
@@ -31,6 +35,10 @@ export default class DataManager {
         });
     }
 
+    /**
+     * Carga los datos de los usuarios para la simulación.
+     * @returns {Promise} Una promesa que se resuelve una vez que se han cargado los datos de los usuarios.
+     */
     loadUsers() {
         return new Promise((resolve, reject) => {
             let usersData = levelData.data[userKey];
@@ -43,6 +51,10 @@ export default class DataManager {
         });
     }
 
+    /**
+     * Carga los datos de las comunidades para la simulación.
+     * @returns {Promise} Una promesa que se resuelve una vez que se han cargado los datos de las comunidades.
+     */
     loadCommunities() {
         return new Promise((resolve, reject) => {
             let communitiesData = levelData.data[communityKey];

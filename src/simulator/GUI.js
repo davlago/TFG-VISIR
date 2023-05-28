@@ -26,9 +26,18 @@ export default class GUI {
 
     }
 
+    /**
+     * Funcion que pone la primera letra de uns tring en mayuscula
+     * @param {*} str cadena a trransformar
+     * @returns 
+     */
     capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     }
+    
+    /**
+     * Crea los checkbox de los filtros en funcion de los atributos
+     */
     filterCheckbox() {
         let filters = [];
         for (let i = 1; i <= 3; i++) {
@@ -49,13 +58,23 @@ export default class GUI {
         }
     }
 
+    /**
+     * Muestra el cuadro de alerta.
+     */
     displayAlertBox() {
         document.getElementById('miCuadroEmergente').style.display = 'block';
     }
+
+    /**
+     * Oculta el cuadro de alerta.
+     */
     noDisplayAlertBox() {
         document.getElementById('miCuadroEmergente').style.display = 'none';
     }
 
+    /**
+     * Habilita la interacción del cuadro de alerta para mostrar y ocultar el cuadro emergente.
+     */
     alertBox() {
         document.getElementById('info-box').addEventListener('mouseover', this.displayAlertBox);
         document.getElementById('info-box').addEventListener('mouseout', this.noDisplayAlertBox);
@@ -64,6 +83,9 @@ export default class GUI {
         document.getElementById('icross').addEventListener('mouseout', this.noDisplayAlertBox);
     }
 
+    /**
+     * Deshabilita la interacción del cuadro de alerta para mostrar y ocultar el cuadro emergente.
+     */
     noAlertBox() {
         document.getElementById('info-box').removeEventListener('mouseover', this.displayAlertBox);
         document.getElementById('info-box').removeEventListener('mouseout', this.noDisplayAlertBox);
@@ -72,6 +94,10 @@ export default class GUI {
         document.getElementById('icross').removeEventListener('mouseout', this.noDisplayAlertBox);
     }
 
+    /**
+     * Cierra el cuadro de información, ocultando su contenido y restableciendo su estado inicial.
+     * Realiza acciones de animación y restablecimiento de elementos visuales.
+     */
     infoClose() {
         document.getElementById("info-box").className = "info retract";
         document.getElementById("info-box").style.zIndex = 5;
@@ -82,6 +108,12 @@ export default class GUI {
         this.alertBox();
     }
 
+    /**
+     * Abre el cuadro de información con el contenido correspondiente al tipo especificado.
+     * Realiza acciones de animación y visualización de elementos relacionados.
+     *
+     * @param {string} type - El tipo de información a mostrar.
+     */
     infoOpen(type) {
         let info_box = document.getElementById("info-box")
         document.getElementById("icross").className = "smalliIcon hide";
@@ -104,6 +136,9 @@ export default class GUI {
         this.noAlertBox()
     }
 
+    /**
+     * Abre el cuadro de filtro, mostrando su contenido y realizando acciones de animación para su visualización.
+     */
     filterOpen() {
         document.getElementById("filter-box").className = "filter expand"
         document.getElementById("filterIcon").className = "hide"
@@ -114,12 +149,22 @@ export default class GUI {
 
     }
 
+    /**
+     * Cierra el cuadro de filtro, ocultando su contenido y restableciendo su estado inicial.
+     * Realiza acciones de animación y restablecimiento de elementos visuales.
+     */
     filterClose() {
         document.getElementById("filterDiv").className = "hide"
         document.getElementById("filter-box").className = "filter retractFilter"
         document.getElementById("filterIcon").className = "myShow"
     }
 
+    /**
+     * Aplica los filtros seleccionados y realiza la acción de filtrado utilizando los valores seleccionados.
+     * Obtiene los valores seleccionados de los elementos de filtro y llama a la función de filtrado correspondiente.
+     *
+     * @param {Array} filters - Los identificadores de los elementos de filtro seleccionados.
+     */
     filterMethod(filters) {
         let arrayFilter = [];
         for (let id of filters) {
@@ -133,7 +178,13 @@ export default class GUI {
         this.filter(arrayFilter);
     }
 
-
+    /**
+     * Establece la información y muestra el cuadro de información para la entidad especificada.
+     * Obtiene la información necesaria de los datos del administrador y actualiza los elementos visuales del cuadro de información.
+     * Abre el cuadro de información correspondiente al tipo de entidad y muestra los datos relevantes.
+     *
+     * @param {Object} entity - La entidad para la cual se debe mostrar la información.
+     */
     setInfo(entity) {
         let title;
         let communityInfo;
@@ -157,6 +208,12 @@ export default class GUI {
 
     }
 
+    /**
+     * Muestra la información del usuario en el cuadro de información.
+     * Actualiza los elementos visuales con los datos del usuario proporcionados.
+     *
+     * @param {Object} userInfo - Los datos del usuario para mostrar.
+     */
     showUserInfo(userInfo) {
         let name = document.getElementById("nameUser");
         let infoEx = document.getElementById("infoExUser");
@@ -179,6 +236,12 @@ export default class GUI {
         }
     }
 
+    /**
+     * Muestra la información de la comunidad en el cuadro de información.
+     * Actualiza los elementos visuales con los datos de la comunidad proporcionados.
+     *
+     * @param {Object} communityInfo - Los datos de la comunidad para mostrar.
+     */
     showCommunityInfo(communityInfo) {
         let name = document.getElementById("nameCommunity");
         let nUsers = document.getElementById("nUsersCommunity");
@@ -205,6 +268,13 @@ export default class GUI {
 
     }
 
+    /**
+     * Genera estadísticas de atributos explicitos para la lista de usuarios proporcionada.
+     * Calcula la frecuencia de los valores de los atributos en la lista de usuarios y normaliza los resultados.
+     *
+     * @param {Array} usersList - La lista de usuarios para la cual se deben generar las estadísticas.
+     * @returns {Object} - Las estadísticas de atributos generadas.
+     */
     generateExStats(usersList) {
         let stats = {
             atribute1: {},
@@ -228,6 +298,12 @@ export default class GUI {
         return stats;
     }
 
+    /**
+     * Construye un gráfico  para mostrar los atributos implicitos de la comunidad.
+     * Crea un gráfico utilizando los datos proporcionados y los muestra en el elemento visual correspondiente.
+     *
+     * @param {Object} eData - Los datos de los atributos implicitos de la comunidad para mostrar en el gráfico.
+     */
     buildImChart(eData) {
         document.getElementById("infoImCommunity").innerHTML = "<canvas class='grafico' id ='graficoIm'></canvas>"
 
@@ -284,6 +360,14 @@ export default class GUI {
         });
     }
 
+    /**
+     * Construye un gráfico de dona para mostrar datos de atributos explícitos de la comunidad.
+     * Crea un gráfico utilizando los datos proporcionados y los muestra en el elemento visual correspondiente.
+     *
+     * @param {string} title - El título del gráfico.
+     * @param {string} canva - El identificador del elemento visual del gráfico.
+     * @param {Object} stats - Los datos de atributos explícitos de la comunidad para mostrar en el gráfico.
+     */
     buildExChart(title, canva, stats) {
         document.getElementById(canva).innerHTML = "<canvas id ='" + canva + "_canvas'></canvas>"
 
