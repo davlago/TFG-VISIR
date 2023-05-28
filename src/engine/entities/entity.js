@@ -90,11 +90,13 @@ export default class Entity {
         return this.rotation;
     }
 
+
     setRotation(x,y,z) {
         this.object.rotation.x = x;
         this.object.rotation.y = y;
         this.object.rotation.z = z;
     }
+
 
     get3DObject() {
         return this.object;
@@ -107,6 +109,9 @@ export default class Entity {
         this.isActive = true;
     }
 
+    /**
+     * Función para desactivar entidades
+     */
     deactivate() {
         this.isActive = false;
     }

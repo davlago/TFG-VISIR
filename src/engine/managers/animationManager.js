@@ -7,6 +7,10 @@ export default class AnimationManager {
         this.actions = [];
     }
 
+    /**
+     * Anima una entidad reproduciendo su animación principal.
+     * @param {Entity} entity - La entidad a animar.
+     */
     animateEntity(entity) {
         let object = entity.get3DObject();
         if (object.animations.length > 0) {
@@ -16,12 +20,19 @@ export default class AnimationManager {
         }
     }
 
+    /**
+     * Para las animaciones
+     */
     stopAnimate() {
         this.actions.forEach((action) => action.stop());
         this.mixer.stopAllAction();
         this.actions = [];
     }
 
+    /**
+     * Actualiza las animaciones con el tiempo transcurrido.
+     * @param {number} deltaTime - El tiempo transcurrido desde la última actualización.
+     */
     update(deltaTime) {
         this.mixer.update(deltaTime);
     }

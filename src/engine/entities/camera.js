@@ -13,15 +13,26 @@ export default class Camera extends Entity {
         this.setName("Camera");
     }
 
+/**
+ * Establece la posición de enfoque de la cámara.
+ * @param {THREE.Vector3} pos - La posición en la que se desea enfocar la cámara.
+ */
     focusObj(pos) {
-        console.log(pos);
         this.target = pos;
     }
 
+    
+    /**
+     * Elimina el target de la camara
+     */
     stopCamera() {
         this.target = null;
     }
 
+/**
+ * Actualiza la posición de la cámara en función de la posición objetivo.
+ * @param {number} deltaTime - El tiempo transcurrido desde la última actualización.
+ */
     update(deltaTime) {
         if (this.target !== null) {
             this.object.position.lerp(this.target, deltaTime*1.5);

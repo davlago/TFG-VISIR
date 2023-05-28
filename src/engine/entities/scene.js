@@ -12,6 +12,10 @@ export default class Scene {
         this.entities = {};
     }
 
+    /**
+     * Actualiza el estado de todas las entidades en el juego.
+     * @param {number} deltaTimeSec - El tiempo transcurrido desde la última actualización en segundos.
+     */
     add(name, entity) {
         if (Array.isArray(entity)) {
             for (let e of entity) {
@@ -32,6 +36,10 @@ export default class Scene {
         }
     }
 
+    /**
+     * Elimina una entidad de la escena según su nombre.
+     * @param {string} name - El nombre de la entidad a eliminar.
+     */
     remove(name) {
         if (this.entities[name] !== undefined) {
             if (this.entities[name].isObject3D) {
@@ -43,6 +51,10 @@ export default class Scene {
         }
     }
 
+    /**
+     * Actualiza el estado de todas las entidades en la escena.
+     * @param {number} deltaTimeSec - El tiempo transcurrido desde la última actualización en segundos.
+     */
     update(deltaTimeSec) {
         for (let [entityName, entity] of Object.entries(this.entities)) {
             if (Array.isArray(entity)) {

@@ -20,7 +20,6 @@ export default class Light extends Entity {
      * Establecer configuración de las luces
      * @param {*} color 
      * @param {*} intensity 
-     * @param {*} distance 
      */
     setConfLight(color, intensity) {
         this.object.color.setHex(color);
