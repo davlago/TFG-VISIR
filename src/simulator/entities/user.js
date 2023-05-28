@@ -14,6 +14,10 @@ export default class User extends Entity {
         this.setScale(0.06, 0.06, 0.06);
     }
 
+    /**
+     * Método de actualización de la entidad.
+     * @param {number} deltaTime - El tiempo transcurrido desde la última actualización.
+     */
     onUpdate(deltaTime) {
         if (this.isClicked) {
             let pos = { x: this.position.x, y: this.position.y + 10, z: this.position.z }
@@ -29,14 +33,25 @@ export default class User extends Entity {
 
     }
 
+    /**
+     * Desciende la entidad.
+     */
     goDown() {
         this.isClicked = false;
     }
 
+    /**
+     * Establece la comunidad a la que pertenece la entidad.
+     * @param {string} name - El nombre de la comunidad.
+     */
     setCommunity(name) {
         this.info.setData("community", name)
     }
 
+    /**
+     * Establece la opacidad de la entidad y sus objetos hijos.
+     * @param {boolean} b - El valor de opacidad a establecer.
+     */
     setOpacity(b) {
         this.object.children.forEach(function (objeto) {
             if (objeto.type === "Flag") {

@@ -19,10 +19,18 @@ export default class InputManager {
         window.addEventListener('dblclick', (event) => { this.handleClick(event) }, false);
     }
 
+    /**
+     * Agrega un observador a la lista de observadores.
+     * @param {Observer} observer - El observador a agregar.
+     */
     addObserver(observer){
         this.observers.push(observer);
     }
 
+    /**
+     * Maneja el evento de clic del mouse.
+     * @param {MouseEvent} event - El evento de clic del raton.
+     */
     handleClick(event) {
         event.preventDefault();
         this.mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
@@ -43,6 +51,10 @@ export default class InputManager {
 
     }
 
+    /**
+     * Agrega una entidad a la lista de entidades para realizar intersecciones con el raycaster.
+     * @param {Entity} entity - La entidad a agregar.
+    */ 
     addEntity(entity) {
         this.entitiesObjArray.push(entity.get3DObject());
     }
