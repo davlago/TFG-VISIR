@@ -72,8 +72,6 @@ export default class GameEngine{
             resolve();
         });
     }
-
-    postUpdates(){}
     
     /**
      * Bucle de juego, para ir realizando las actualización de forma visual cada cierto tiempo, dado por un deltaTime
@@ -82,7 +80,8 @@ export default class GameEngine{
         this.stats.begin();
         let deltaTimeSec = this.clock.getDelta();
         this.scene.update(deltaTimeSec);
-        this.postUpdates(deltaTimeSec);
+        this.cameraManager.update(deltaTimeSec);
+        this.animationManager.update(deltaTimeSec);
         let scene = this.scene.get3DObject();
         this.renderer.render(scene, this.scene.getCamera());
         this.stats.end();

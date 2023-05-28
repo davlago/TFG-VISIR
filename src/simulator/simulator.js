@@ -41,16 +41,17 @@ export default class Simulator extends GameEngine {
         this.entitySelected;
         this.gui = new GUI(this.dataManager, this.scene, this.goDown, this.filter);
     }
-
-
-    postUpdates(deltaTime) {
-        this.cameraManager.update(deltaTime);
-        this.animationManager.update(deltaTime);
-    }
-
+    /**
+     * Añade al inputManager el observador de esta clase
+     */
     postCreateManagers() {
         this.inputManager.addObserver(this.observer);
     }
+
+    /**
+     * Realiza de forma asincrona la creacion de entidades
+     * @returns promise
+     */
     createMyEntities() {
         return new Promise((resolve, reject) => {
             this.dataManager.loadData().then(() => {
@@ -60,6 +61,9 @@ export default class Simulator extends GameEngine {
         });
     }
 
+    /**
+     * Crea las entidades de nuestro simulador
+     */
     createSimulatorEntities() {
 
         //Crear la habitación
@@ -75,8 +79,8 @@ export default class Simulator extends GameEngine {
         let communities = this.dataManager.getCommunities();
         let numCommunities = Object.keys(communities).length;
         let vertexArray = geometryUtils.generatePolygon(numCommunities, this.roomSize.coordX * (0.5 - 1 / numCommunities));
-        // (this.roomSize.coordX /2) -(200/numCommunities));
         let aux = 0;
+        //Bucle para crear cada comunidad y sus usuarios
         for (const [key, value] of Object.entries(communities)) {
 
             let usersArray = value.getDataByKey(usersKey);
@@ -91,6 +95,7 @@ export default class Simulator extends GameEngine {
             let community = new Community(key, radius, value, center, texture);
 
             let coords = geometryUtils.generateGeomPos(numUsers, radius, simulatorMap.geometrical.coordAcom, simulatorMap.geometrical.coordCircle);
+            //Bucle para crear los  usuarios
             for (let i = 0; i < numUsers; i++) {
                 let userId = usersArray[i];
                 let userInfo = this.dataManager.getUserById(userId);
@@ -115,6 +120,11 @@ export default class Simulator extends GameEngine {
 
     }
 
+    /**
+     * Crea un billboard pasandole el atributo que se quiere utilizar para ello
+     * @param {String} atribute 
+     * @returns Object3D del billboard
+     */
     getBillboard(atribute) {
         try {
             let billboard = new flag(this.texturesManager.getOneTexture(atribute));
@@ -126,6 +136,11 @@ export default class Simulator extends GameEngine {
         }
     }
 
+    /**
+     * Dados dos atributos del usuario coge el modelo y lo devuelve para que lo use ese usuario
+     * @param {3DObject} userModel 
+     * @returns 3DObject model
+     */
     getModel(userModel) {
         let atribute2 = userModel[levelData.keys.atribute2.key];
         let atribute1 = userModel[levelData.keys.atribute1.key];
@@ -144,6 +159,10 @@ export default class Simulator extends GameEngine {
 
     }
 
+    /**
+     * Funcion que nos permite realizar el focus, el centro de atencion, de la entidad que previamente a sido seleccionada y pasada por parametro
+     * @param {Entity} entity 
+     */
     focusObj(entity) {
         let pos = entity.getPosition();
         this.scene.remove("circleFocus");
@@ -162,7 +181,10 @@ export default class Simulator extends GameEngine {
 
     }
 
-
+    /**
+     * Function que coge el objeto que ha sido seleccionado y lo analiza para conseguir la entidad a la que pertenece y marcarlo como selccionado
+     * @param {3DObject} selectObject 
+     */
     setSelected(selectObject) {
         if (selectObject === null) {
             this.gui.infoClose()
@@ -203,6 +225,9 @@ export default class Simulator extends GameEngine {
 
     }
 
+    /**
+     * Funcion que permite desseleccionar la entidad selccionada y volver al mapa general
+     */
     goDown() {
         if (this.entitySelected !== undefined) {
             this.entitySelected.goDown();
@@ -212,6 +237,10 @@ export default class Simulator extends GameEngine {
         }
     }
 
+    /**
+     * Funcion que recibe un array con los atributos que están seleccionados en el filtro y recorre las entidades para indicar que hacer con las que no cumple el filtro
+     * @param {Array} arrayFilter 
+     */
     filter(arrayFilter) {
         console.log(arrayFilter);
         let usersInfo = this.dataManager.getUsers();
