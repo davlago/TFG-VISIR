@@ -1,5 +1,5 @@
 import Chart from 'chart.js/auto';
-import * as levelData from '../../assets/data/GAM_DATA.json'
+import * as levelData from '../../assets/data/DATA.json'
 export default class GUI {
 
     constructor(dataManager, scene, goDown, filter) {
