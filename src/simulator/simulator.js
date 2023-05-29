@@ -5,7 +5,7 @@ import Room from './entities/room';
 import Community from './entities/community';
 import GameEngine from '../engine/gameEngine';
 import DataManager from './managers/dataManager';
-import * as levelData from '../../assets/data/GAM_DATA.json'
+import * as levelData from '../../assets/data/DATA.json'
 import * as simulatorMap from '../../assets/data/simulatorMap.json';
 import User from './entities/user';
 
